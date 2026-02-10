@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0e14">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CyberEsports Pro | Ultimate Arena</title>
+    
+    <!-- Fonts: Rajdhani for Gaming Feel, Inter for Readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons: FontAwesome & RemixIcon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css">
+
+    <!-- Payment Success Animation -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Firebase SDK (Compat Version for Stability) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
+    <style>
+        /* =========================================
+           1. CORE VARIABLES & RESET
+           ========================================= */
+        :root {
+            /* Colors */
+            --bg-body: #050505;
+            --bg-dark: #0b0e14;
+            --bg-card: rgba(20, 24, 35, 0.7);
+            --bg-card-hover: rgba(30, 35, 50, 0.8);
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            
+            --primary: #00ff88;
+            --primary-dark: #00cc6a;
+            --primary-glow: rgba(0, 255, 136, 0.3);
+            
+            --secondary: #00d2ff;
+            --secondary-glow: rgba(0, 210, 255, 0.3);
+            
+            --accent: #ff0055;
+            --accent-glow: rgba(255, 0, 85, 0.3);
+            
+            --warning: #ffcc00;
+            --success: #00ff88;
+            --danger: #ff3333;
+            
+            --text-main: #ffffff;
+            --text-secondary: #c0c0c0;
+            --text-muted: #6b7b8e;
+            
+            /* Borders & Shapes */
+            --border: 1px solid rgba(255, 255, 255, 0.08);
+            --border-active: 1px solid rgba(0, 255, 136, 0.5);
+            
+            --radius-s: 8px;
+            --radius-m: 16px;
+            --radius-l: 24px;
+            --radius-pill: 50px;
+            
+            /* Layout */
+            --nav-height: 75px;
+            --header-height: 65px;
+            
+            /* Fonts */
+            --font-display: 'Orbitron', sans-serif;
+            --font-heading: 'Rajdhani', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; user-select: none; }
+        
+        html { scroll-behavior: smooth; height: 100%; }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: calc(var(--nav-height) + 30px);
+            background-image: 
+                radial-gradient(circle at 5% 10%, rgba(0, 210, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 95% 90%, rgba(0, 255, 136, 0.06) 0%, transparent 40%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+
+        /* Typography */
+        h1, h2, h3, h4, h5 { font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+        .font-display { font-family: var(--font-display); }
+        
+        .text-gradient { 
+            background: linear-gradient(90deg, var(--primary), var(--secondary)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            text-shadow: 0 0 20px rgba(0,255,136,0.2);
+        }
+        
+        /* =========================================
+           2. UTILITY & COMPONENTS
+           ========================================= */
+        .hidden { display: none !important; }
+        .flex-center { display: flex; justify-content: center; align-items: center; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .flex-col { display: flex; flex-direction: column; }
+        .gap-10 { gap: 10px; }
+        
+        .container { padding: 0 20px; max-width: 600px; margin: 0 auto; position: relative; }
+        
+        /* Glass Card - Professional */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: var(--border);
+            border-radius: var(--radius-m);
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .glass-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%;
+            background: linear-gradient(to bottom, var(--primary), transparent);
+            opacity: 0; transition: 0.3s;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            background: var(--bg-card-hover);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .glass-card:hover::before { opacity: 1; }
+        .glass-card:active { transform: scale(0.98); }
+
+        /* Buttons - Ultimate */
+        .btn {
+            width: 100%; padding: 14px; border: none; border-radius: 12px;
+            font-family: var(--font-heading); font-weight: 700; font-size: 16px;
+            text-transform: uppercase; cursor: pointer; letter-spacing: 1px;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            z-index: 1;
+        }
+        .btn::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 0%; height: 100%;
+            background: rgba(255,255,255,0.1); transition: 0.3s; z-index: -1; transform: skewX(-15deg);
+        }
+        .btn:hover::after { width: 120%; }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #00c268);
+            color: #050505; box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        .btn-primary:active { box-shadow: 0 2px 5px var(--primary-glow); }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05); color: #fff; 
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+        
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #d00045); 
+            color: #fff; box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); box-shadow: none; }
+
+        /* Inputs - Cyber Style */
+        .input-group { margin-bottom: 18px; position: relative; }
+        .input-label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; margin-left: 4px; font-weight: 600; text-transform: uppercase; }
+        
+        .input-box {
+            width: 100%; padding: 16px 16px 16px 48px;
+            background: rgba(10, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; color: #fff; font-family: var(--font-body); font-size: 14px;
+            transition: 0.3s;
+        }
+        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 255, 136, 0.1); background: rgba(10, 15, 25, 0.9); }
+        .input-icon { 
+            position: absolute; left: 16px; top: 50%; 
+            transform: translateY(-50%) translateY(11px); /* Adjustment for label */
+            color: var(--text-muted); transition: 0.3s; 
+        }
+        .input-group .input-icon { transform: translateY(-50%); top: 43px; } /* Override if label exists */
+        .input-box:focus + .input-icon, .input-box:not(:placeholder-shown) + .input-icon { color: var(--primary); }
+
+        /* =========================================
+           3. ANIMATIONS & LOADERS
+           ========================================= */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); } 70% { box-shadow: 0 0 0 12px rgba(0, 255, 136, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        .fade-in { animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        
+        /* System Loader */
+        .loader-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-body); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .hex-loader {
+            width: 60px; height: 60px; position: relative; margin-bottom: 20px;
+        }
+        .hex-loader::before, .hex-loader::after {
+            content: ''; position: absolute; border-radius: 50%;
+            width: 100%; height: 100%; border: 3px solid transparent;
+            border-top-color: var(--primary); animation: spin 1.5s linear infinite;
+        }
+        .hex-loader::after {
+            width: 70%; height: 70%; top: 15%; left: 15%;
+            border-top-color: var(--secondary); animation: spin 2s linear infinite reverse;
+        }
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, #1a1a2e 25%, #252540 50%, #1a1a2e 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 6px;
+        }
+
+        /* =========================================
+           4. APP STRUCTURE - HEADER & NAV
+           ========================================= */
+        /* Header */
+        .app-header {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px);
+            padding: 10px 20px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            height: var(--header-height);
+        }
+        .user-chip { display: flex; align-items: center; gap: 12px; }
+        .user-avatar-frame {
+            position: relative; width: 42px; height: 42px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 50%; padding: 2px;
+        }
+        .user-avatar { width: 100%; height: 100%; border-radius: 50%; background: #000; object-fit: cover; border: 2px solid #000; }
+        .status-dot {
+            position: absolute; bottom: 0; right: 0; width: 12px; height: 12px;
+            background: var(--primary); border: 2px solid #000; border-radius: 50%;
+            box-shadow: 0 0 5px var(--primary);
+        }
+        
+        .balance-pill {
+            background: rgba(255,255,255,0.05); padding: 8px 16px; 
+            border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; gap: 8px; cursor: pointer;
+            transition: 0.3s;
+        }
+        .balance-pill:hover { border-color: var(--primary); background: rgba(0,255,136,0.1); }
+        .coin-icon { color: #ffd700; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5)); }
+
+        /* Announcement Ticker */
+        .marquee-container {
+            background: linear-gradient(90deg, #000, rgba(0,255,136,0.1), #000);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden; white-space: nowrap; height: 30px; display: flex; align-items: center;
+        }
+        .marquee-content {
+            display: inline-block; padding-left: 100%; animation: marquee 20s linear infinite;
+            font-size: 12px; color: var(--text-secondary); font-family: var(--font-heading);
+        }
+        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height);
+            background: rgba(11, 14, 20, 0.95); backdrop-filter: blur(20px);
+            display: grid; grid-template-columns: repeat(5, 1fr); align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05); z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        }
+        .nav-item {
+            position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 10px; transition: 0.3s; height: 100%;
+        }
+        .nav-icon { font-size: 22px; margin-bottom: 5px; transition: 0.3s; position: relative; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active .nav-icon { transform: translateY(-5px); filter: drop-shadow(0 0 8px var(--primary-glow)); }
+        .nav-label { font-weight: 500; transition: 0.3s; opacity: 0; transform: translateY(10px); position: absolute; bottom: 12px; }
+        .nav-item.active .nav-label { opacity: 1; transform: translateY(0); }
+        .nav-indicator {
+            position: absolute; top: 0; width: 40px; height: 3px;
+            background: var(--primary); border-radius: 0 0 4px 4px; 
+            box-shadow: 0 5px 15px var(--primary); display: none;
+        }
+        .nav-item.active .nav-indicator { display: block; }
+
+        /* =========================================
+           5. VIEW SPECIFIC STYLES
+           ========================================= */
+        
+        /* Home View */
+        .banner-slider {
+            display: flex; overflow-x: auto; gap: 15px; padding: 20px 20px 10px;
+            scrollbar-width: none; scroll-behavior: smooth;
+        }
+        .promo-card {
+            min-width: 300px; height: 170px; border-radius: var(--radius-m);
+            background: #111; position: relative; overflow: hidden; border: var(--border);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .promo-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; opacity: 0.7; }
+        .promo-text { position: absolute; bottom: 0; left: 0; padding: 15px; background: linear-gradient(to top, #000, transparent); width: 100%; }
+        
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 20px; margin-top: 10px;
+        }
+        .section-title { font-size: 18px; font-weight: 700; border-left: 3px solid var(--primary); padding-left: 10px; }
+        
+        .filter-tabs { display: flex; gap: 10px; padding: 0 20px 15px; overflow-x: auto; scrollbar-width: none; }
+        .tab { 
+            padding: 8px 18px; background: var(--bg-glass); border: var(--border);
+            border-radius: 50px; font-size: 12px; font-weight: 600; white-space: nowrap;
+            transition: 0.3s; cursor: pointer; display: flex; align-items: center; gap: 6px;
+        }
+        .tab.active { background: var(--primary); color: #000; border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
+
+        /* Match Card Enhancements */
+        .match-card { padding: 0 !important; border-top: 1px solid rgba(255,255,255,0.1); }
+        .match-header { position: relative; height: 130px; }
+        .match-img { width: 100%; height: 100%; object-fit: cover; }
+        .match-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(20,24,35,1) 100%); }
+        
+        .badge { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; backdrop-filter: blur(5px); }
+        .badge.open { background: rgba(0, 255, 136, 0.2); color: var(--primary); border: 1px solid var(--primary); }
+        .badge.full { background: rgba(255, 0, 85, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+        
+        .match-meta { position: absolute; bottom: 10px; left: 15px; right: 15px; display: flex; justify-content: space-between; align-items: flex-end; }
+        
+        .info-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; background: rgba(0,0,0,0.2);
+        }
+        .info-box { text-align: center; }
+        .info-label { font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px; }
+        .info-value { font-size: 14px; font-weight: 700; color: #fff; font-family: var(--font-heading); }
+        .text-win { color: var(--success); }
+        .text-kill { color: var(--warning); }
+
+        .progress-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 5px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--secondary); border-radius: 2px; transition: width 0.5s; box-shadow: 0 0 10px var(--secondary); }
+
+        /* Wallet Styles */
+        .wallet-card {
+            background: linear-gradient(135deg, #161623, #0b0e14);
+            border-radius: 20px; padding: 30px 20px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;
+        }
+        .wallet-card::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(0,255,136,0.05) 0%, transparent 60%);
+            animation: spin 10s linear infinite; pointer-events: none;
+        }
+        .balance-lg { font-size: 48px; font-weight: 700; font-family: var(--font-heading); margin: 10px 0; background: linear-gradient(to bottom, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; position: relative; z-index: 2; }
+        
+        .txn-filter { display: flex; gap: 10px; margin: 20px 0 10px; }
+        .txn-chip { font-size: 11px; padding: 6px 12px; background: rgba(255,255,255,0.05); border-radius: 20px; cursor: pointer; color: var(--text-muted); }
+        .txn-chip.active { background: var(--primary); color: #000; font-weight: 600; }
+
+        /* Support Float */
+        .support-float {
+            position: fixed; bottom: 90px; right: 20px;
+            width: 50px; height: 50px; background: var(--secondary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 20px rgba(0, 210, 255, 0.4); z-index: 900;
+            color: #000; font-size: 24px; cursor: pointer; animation: pulseGlow 2s infinite;
+        }
+
+        /* =========================================
+           6. MODALS & OVERLAYS
+           ========================================= */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            z-index: 3000; display: none; justify-content: center; align-items: flex-end;
+            padding-bottom: 0;
+        }
+        .modal.active { display: flex; animation: fadeIn 0.3s ease; }
+        .modal-content {
+            background: #12151e; width: 100%; max-width: 600px;
+            border-radius: 24px 24px 0 0; padding: 30px 25px 40px; 
+            border-top: 1px solid rgba(255,255,255,0.1);
+            position: relative; animation: slideUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            max-height: 90vh; overflow-y: auto;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        .modal-handle { width: 50px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 10px; margin: 0 auto 20px; }
+        .modal-close { position: absolute; top: 20px; right: 20px; width: 30px; height: 30px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+        /* Payment Receipt */
+        .receipt-box {
+            background: #fff; color: #000; padding: 20px; border-radius: 15px;
+            text-align: center; margin-bottom: 20px; position: relative;
+        }
+        .receipt-dashed { border-bottom: 2px dashed #ccc; margin: 15px 0; }
+        .stamp {
+            position: absolute; top: 30%; right: 20px; transform: rotate(-15deg);
+            border: 3px solid var(--success); color: var(--success);
+            font-weight: 900; padding: 5px 10px; font-size: 20px; opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- SYSTEM LOADER -->
+    <div id="loader" class="loader-overlay">
+        <div class="hex-loader"></div>
+        <h2 class="font-display text-gradient" style="letter-spacing: 2px;">CYBER ESPORTS</h2>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">PRO EDITION v2.0</p>
+        <p style="font-size: 10px; color: #333; margin-top: 50px;">Initializing Secure Connection...</p>
+    </div>
+
+    <!-- NOTIFICATION CONTAINER -->
+    <div id="toast-container" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 5000; width: 90%; max-width: 400px; pointer-events: none;"></div>
+
+    <!-- SUPPORT FLOATING BUTTON -->
+    <div class="support-float" onclick="App.utils.openSupport()">
+        <i class="ri-customer-service-2-fill"></i>
+    </div>
+
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="auth-screen" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; padding: 30px; overflow-y: auto;">
+        <div style="margin-top: 40px; text-align: center;">
+            <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: rgba(0,255,136,0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--primary); box-shadow: 0 0 20px rgba(0,255,136,0.2);">
+                <i class="fas fa-gamepad" style="font-size: 40px; color: var(--primary);"></i>
+            </div>
+            <h1 class="font-display">Welcome Back</h1>
+            <p style="color: var(--text-muted); margin-bottom: 40px;">Enter the arena of champions</p>
+        </div>
+
+        <div id="auth-forms">
+            <!-- LOGIN -->
+            <div id="login-form">
+                <div class="input-group">
+                    <label class="input-label">Mobile Number</label>
+                    <input type="number" id="login-phone" class="input-box" placeholder="01XXXXXXXXX">
+                    <i class="fas fa-phone input-icon"></i>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Password</label>
+                    <input type="password" id="login-pass" class="input-box" placeholder="••••••••">
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                <button class="btn btn-primary" onclick="App.auth.login()">Login Securely</button>
+                <div style="text-align: center; margin-top: 25px; font-size: 13px;">
+                    <span style="color: var(--text-muted);">No account?</span> 
+                    <span onclick="App.ui.toggleAuth('register')" style="color: var(--primary); cursor: pointer; font-weight: 600;">Create Profile</span>
+                </div>
+            </div>
+
+            <!-- REGISTER -->
+            <div id="register-form" class="hidden">
+                <div class="input-group">
+                    <label class="input-label">Username</label>
+                    <input type="text" id="reg-username" class="input-box" placeholder="Striker_01">
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Mobile Number (Payment)</label>
+                    <input type="number" id="reg-phone" class="input-box" placeholder="01XXXXXXXXX">
+                    <i class="fas fa-phone input-icon"></i>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Game ID (FreeFire/PUBG)</label>
+                    <input type="text" id="reg-gameid" class="input-box" placeholder="UID Number">
+                    <i class="fas fa-hashtag input-icon"></i>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Password</label>
+                    <input type="password" id="reg-pass" class="input-box" placeholder="••••••••">
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                <button class="btn btn-primary" onclick="App.auth.register()">Create Account</button>
+                <div style="text-align: center; margin-top: 25px; font-size: 13px;">
+                    <span style="color: var(--text-muted);">Already joined?</span> 
+                    <span onclick="App.ui.toggleAuth('login')" style="color: var(--primary); cursor: pointer; font-weight: 600;">Login Here</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app-interface" class="hidden">
+        
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="user-chip" onclick="App.router.nav('profile')">
+                <div class="user-avatar-frame">
+                    <img src="" id="header-avatar" class="user-avatar">
+                    <div class="status-dot"></div>
+                </div>
+                <div class="flex-col">
+                    <span id="header-username" style="font-size: 14px; font-weight: 700; line-height: 1;">User</span>
+                    <span style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">LVL 01 Rookie</span>
+                </div>
+            </div>
+            <div class="balance-pill" onclick="App.router.nav('wallet')">
+                <i class="fas fa-coins coin-icon"></i>
+                <span id="header-balance" style="font-weight: 700; font-size: 13px;">৳0</span>
+            </div>
+        </header>
+
+        <!-- ANNOUNCEMENT BAR -->
+        <div class="marquee-container">
+            <div class="marquee-content" id="announcement-text">
+                WELCOME TO CYBER ESPORTS PRO - PLAY DAILY SCRIMS - WIN HUGE PRIZES - WITHDRAW INSTANTLY via BKASH/NAGAD - FAIR PLAY GUARANTEED
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT AREA -->
+        <main id="main-content" style="min-height: 80vh;">
+
+            <!-- 1. HOME VIEW -->
+            <section id="view-home" class="fade-in">
+                <!-- Sliders -->
+                <div class="banner-slider">
+                    <div class="promo-card">
+                        <img src="https://wallpapers.com/images/hd/free-fire-cool-blue-cobra-skin-l34k600x700.jpg" alt="Promo">
+                        <div class="promo-text">
+                            <h3 class="font-display">Daily Scrims</h3>
+                            <p style="font-size: 11px; color: #ddd;">Join squad battles everyday at 8 PM</p>
+                        </div>
+                    </div>
+                    <div class="promo-card">
+                        <img src="https://images.hdqwalls.com/wallpapers/pubg-mobile-4k-game-2020-3i.jpg" alt="Promo">
+                        <div class="promo-text">
+                            <h3 class="font-display">Squad Cup</h3>
+                            <p style="font-size: 11px; color: #ddd;">Registration open for Mega Tournament</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="section-header">
+                    <h3 class="section-title">Matches</h3>
+                </div>
+                <div class="filter-tabs">
+                    <div class="tab active" onclick="App.tournaments.filter('All', this)"><i class="fas fa-globe"></i> All</div>
+                    <div class="tab" onclick="App.tournaments.filter('FreeFire', this)"><i class="fas fa-fire"></i> FreeFire</div>
+                    <div class="tab" onclick="App.tournaments.filter('Ludo', this)"><i class="fas fa-dice"></i> Ludo</div>
+                    <div class="tab" onclick="App.tournaments.filter('PUBG', this)"><i class="fas fa-crosshairs"></i> PUBG</div>
+                </div>
+
+                <!-- Match List -->
+                <div class="container" id="matches-container" style="padding-bottom: 20px;">
+                    <!-- Injected by JS -->
+                    <div class="glass-card skeleton" style="height: 200px;"></div>
+                    <div class="glass-card skeleton" style="height: 200px;"></div>
+                </div>
+            </section>
+
+            <!-- 2. MY MATCHES VIEW -->
+            <section id="view-matches" class="hidden fade-in container" style="padding-top: 20px;">
+                <h2 style="margin-bottom: 20px; font-family: var(--font-display);">My Operations</h2>
+                <div id="my-matches-list">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- 3. RANKING VIEW -->
+            <section id="view-ranking" class="hidden fade-in container" style="padding-top: 20px;">
+                <div class="glass-card" style="background: linear-gradient(to right, #1a1a2e, #16213e); text-align: center;">
+                    <i class="ri-trophy-fill" style="font-size: 40px; color: #ffd700; filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));"></i>
+                    <h2 class="font-display" style="margin-top: 10px;">Leaderboard</h2>
+                    <p style="font-size: 12px; color: var(--text-muted);">Top Performers of the Week</p>
+                </div>
+                <div id="leaderboard-list"></div>
+            </section>
+
+            <!-- 4. WALLET VIEW -->
+            <section id="view-wallet" class="hidden fade-in container" style="padding-top: 20px;">
+                <div class="wallet-card">
+                    <p style="color: var(--text-muted); font-size: 12px; letter-spacing: 2px;">AVAILABLE FUNDS</p>
+                    <div class="balance-lg" id="wallet-amount-lg">৳0</div>
+                    <div class="action-grid">
+                        <button class="btn btn-primary" onclick="App.ui.openModal('deposit-modal')">
+                            <i class="fas fa-plus-circle"></i> Deposit
+                        </button>
+                        <button class="btn btn-secondary" onclick="App.ui.openModal('withdraw-modal')">
+                            <i class="fas fa-arrow-circle-down"></i> Withdraw
+                        </button>
+                    </div>
+                </div>
+
+                <div class="txn-filter">
+                    <div class="txn-chip active" onclick="App.wallet.filterTxn('all', this)">All</div>
+                    <div class="txn-chip" onclick="App.wallet.filterTxn('credit', this)">In</div>
+                    <div class="txn-chip" onclick="App.wallet.filterTxn('debit', this)">Out</div>
+                </div>
+
+                <div id="transaction-list">
+                    <!-- Injected -->
+                </div>
+            </section>
+
+            <!-- 5. PROFILE VIEW -->
+            <section id="view-profile" class="hidden fade-in" style="padding-top: 20px;">
+                <div class="container" style="text-align: center;">
+                    <div style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; padding: 3px; background: linear-gradient(var(--primary), var(--secondary)); position: relative;">
+                        <img src="" id="profile-img-lg" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #000; object-fit: cover;">
+                        <div style="position: absolute; bottom: 0; right: 0; background: #222; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff;"><i class="fas fa-camera" style="font-size: 12px;"></i></div>
+                    </div>
+                    <h2 id="profile-name" style="margin-top: 15px;">User</h2>
+                    <p id="profile-phone" style="color: var(--text-muted); font-size: 13px;">01XXXXXXXXX</p>
+                    
+                    <div class="glass-card flex-between" style="margin-top: 20px; padding: 15px;">
+                        <div class="text-center">
+                            <h3 id="stat-matches" style="color: #fff;">0</h3>
+                            <span style="font-size: 10px; color: var(--text-muted);">MATCHES</span>
+                        </div>
+                        <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.1);"></div>
+                        <div class="text-center">
+                            <h3 id="stat-kills" style="color: var(--warning);">0</h3>
+                            <span style="font-size: 10px; color: var(--text-muted);">KILLS</span>
+                        </div>
+                        <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.1);"></div>
+                        <div class="text-center">
+                            <h3 id="stat-won" style="color: var(--success);">৳0</h3>
+                            <span style="font-size: 10px; color: var(--text-muted);">WON</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card" style="padding: 0; text-align: left;">
+                        <div style="padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">REFERRAL CODE</div>
+                            <div class="flex-between">
+                                <span id="ref-code" style="font-weight: 700; letter-spacing: 1px; font-family: monospace; font-size: 16px;">...</span>
+                                <i class="far fa-copy" onclick="App.utils.copyRef()" style="color: var(--primary); cursor: pointer;"></i>
+                            </div>
+                        </div>
+                        <div class="flex-between" style="padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);" onclick="App.utils.toast('Settings Coming Soon', 'info')">
+                            <span><i class="fas fa-cog" style="width: 25px; color: var(--text-muted);"></i> App Settings</span>
+                            <i class="fas fa-chevron-right" style="font-size: 12px; color: var(--text-muted);"></i>
+                        </div>
+                        <div class="flex-between" style="padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);" onclick="window.location.href='https://t.me/yourchannel'">
+                            <span><i class="fab fa-telegram" style="width: 25px; color: #0088cc;"></i> Telegram Channel</span>
+                            <i class="fas fa-external-link-alt" style="font-size: 12px; color: var(--text-muted);"></i>
+                        </div>
+                        <div class="flex-between" style="padding: 15px; color: var(--danger);" onclick="App.auth.logout()">
+                            <span><i class="fas fa-sign-out-alt" style="width: 25px;"></i> Logout</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- NAVIGATION -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="App.router.nav('home', this)">
+                <div class="nav-indicator"></div>
+                <i class="ri-home-5-line nav-icon"></i> <span class="nav-label">Home</span>
+            </div>
+            <div class="nav-item" onclick="App.router.nav('matches', this)">
+                <div class="nav-indicator"></div>
+                <i class="ri-gamepad-line nav-icon"></i> <span class="nav-label">My Match</span>
+            </div>
+            <div class="nav-item" onclick="App.router.nav('ranking', this)">
+                <div class="nav-indicator"></div>
+                <i class="ri-bar-chart-grouped-line nav-icon"></i> <span class="nav-label">Rank</span>
+            </div>
+            <div class="nav-item" onclick="App.router.nav('wallet', this)">
+                <div class="nav-indicator"></div>
+                <i class="ri-wallet-3-line nav-icon"></i> <span class="nav-label">Wallet</span>
+            </div>
+            <div class="nav-item" onclick="App.router.nav('profile', this)">
+                <div class="nav-indicator"></div>
+                <i class="ri-user-smile-line nav-icon"></i> <span class="nav-label">Me</span>
+            </div>
+        </nav>
+
+    </div>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- 1. MATCH DETAILS MODAL -->
+    <div id="match-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-handle"></div>
+            <span class="modal-close" onclick="App.ui.closeModal('match-modal')">&times;</span>
+            
+            <h2 id="m-title" style="margin-bottom: 5px;">Match Title</h2>
+            <p id="m-subtitle" style="color: var(--text-muted); font-size: 12px; margin-bottom: 20px;">Map • Type</p>
+            
+            <div class="glass-card" style="padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center;">
+                <div>
+                    <div style="font-size: 10px; color: var(--text-muted);">ENTRY FEE</div>
+                    <div id="m-fee" style="font-size: 20px; font-weight: 700; color: #fff;">৳0</div>
+                </div>
+                <div>
+                    <div style="font-size: 10px; color: var(--text-muted);">PRIZE POOL</div>
+                    <div id="m-prize" style="font-size: 20px; font-weight: 700; color: var(--primary);">৳0</div>
+                </div>
+            </div>
+
+            <h4 style="margin-bottom: 10px; font-size: 14px;">Rules & Regulations</h4>
+            <ul style="font-size: 12px; color: var(--text-secondary); margin-bottom: 20px; padding-left: 20px; line-height: 1.6;">
+                <li>Teaming up with enemies is strictly forbidden.</li>
+                <li>Hackers will be banned permanently.</li>
+                <li>Room ID/Pass will be given 10 mins before start.</li>
+                <li>Screenshot of results is required for disputes.</li>
+            </ul>
+
+            <button id="m-join-btn" class="btn btn-primary">JOIN MATCH</button>
+        </div>
+    </div>
+
+    <!-- 2. DEPOSIT MODAL -->
+    <div id="deposit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-handle"></div>
+            <span class="modal-close" onclick="App.ui.closeModal('deposit-modal')">&times;</span>
+            
+            <h3>Add Funds</h3>
+            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 20px;">Instant Auto-Deposit System</p>
+            
+            <div class="input-group">
+                <label class="input-label">Enter Amount</label>
+                <input type="number" id="dep-amount" class="input-box" placeholder="Min ৳10">
+                <i class="fas fa-coins input-icon"></i>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+                <button class="btn btn-secondary" onclick="document.getElementById('dep-amount').value=50" style="padding: 8px; font-size: 12px;">৳50</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('dep-amount').value=100" style="padding: 8px; font-size: 12px;">৳100</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('dep-amount').value=500" style="padding: 8px; font-size: 12px;">৳500</button>
+            </div>
+
+            <button class="btn btn-primary" onclick="App.wallet.initDeposit()">
+                <span>Proceed to Pay</span> <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. WITHDRAW MODAL -->
+    <div id="withdraw-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-handle"></div>
+            <span class="modal-close" onclick="App.ui.closeModal('withdraw-modal')">&times;</span>
+            
+            <h3>Withdraw Winnings</h3>
+            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 20px;">Funds will reach within 30-60 mins.</p>
+            
+            <div class="input-group">
+                <label class="input-label">Method</label>
+                <select id="with-method" class="input-box" style="padding-left: 15px;">
+                    <option value="bkash">bKash Personal</option>
+                    <option value="nagad">Nagad Personal</option>
+                    <option value="rocket">Rocket Personal</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Wallet Number</label>
+                <input type="number" id="with-number" class="input-box" placeholder="01XXXXXXXXX">
+                <i class="fas fa-phone input-icon"></i>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Amount</label>
+                <input type="number" id="with-amount" class="input-box" placeholder="Min ৳100">
+                <i class="fas fa-money-bill-wave input-icon"></i>
+            </div>
+            
+            <button class="btn btn-accent" onclick="App.wallet.processWithdraw()">Request Withdraw</button>
+        </div>
+    </div>
+
+    <!-- 4. PROCESSING OVERLAY -->
+    <div id="processing-overlay" class="loader-overlay hidden" style="background: rgba(0,0,0,0.9);">
+        <div class="hex-loader"></div>
+        <h3 style="margin-top: 20px;">Connecting Gateway...</h3>
+        <p style="font-size: 12px; color: var(--text-muted);">Please do not close this window</p>
+    </div>
+
+    <!-- 5. RECEIPT MODAL -->
+    <div id="receipt-modal" class="modal">
+        <div class="modal-content" style="background: #f0f0f0;">
+            <span class="modal-close" onclick="App.ui.closeModal('receipt-modal')" style="background: #ddd; color: #000;">&times;</span>
+            <h3 style="color: #000; text-align: center; margin-bottom: 15px;">Payment Receipt</h3>
+            
+            <div class="receipt-box">
+                <div class="stamp">PAID</div>
+                <h2 style="font-size: 32px; font-weight: 700;">৳<span id="rcpt-amt">0</span></h2>
+                <p style="font-size: 12px; color: #666;">Transaction Successful</p>
+                <div class="receipt-dashed"></div>
+                <div class="flex-between" style="font-size: 12px; margin-bottom: 5px;">
+                    <span style="color: #666;">Trx ID:</span>
+                    <span style="font-weight: 600;" id="rcpt-id">...</span>
+                </div>
+                <div class="flex-between" style="font-size: 12px; margin-bottom: 5px;">
+                    <span style="color: #666;">Date:</span>
+                    <span style="font-weight: 600;" id="rcpt-date">...</span>
+                </div>
+                <div class="flex-between" style="font-size: 12px;">
+                    <span style="color: #666;">Method:</span>
+                    <span style="font-weight: 600;">PayFlow Gateway</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="App.ui.closeModal('receipt-modal')">Close</button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ==========================================
+        // 1. CONFIGURATION
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDO9RoLM6ZtJXiwNIG0c9soZEsSDOUh6pc",
+            authDomain: "global-98f25.firebaseapp.com",
+            databaseURL: "https://global-98f25-default-rtdb.firebaseio.com",
+            projectId: "global-98f25",
+            storageBucket: "global-98f25.firebasestorage.app",
+            messagingSenderId: "18868844294",
+            appId: "1:18868844294:web:416125c6e19f1f5dcc9087"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // ==========================================
+        // 2. APP STATE MANAGEMENT
+        // ==========================================
+        const App = {
+            state: {
+                user: null,
+                matches: [],
+                transactions: [],
+                filter: 'All',
+                txnFilter: 'all',
+                intervals: [] // for countdowns
+            },
+
+            // ==========================================
+            // 3. AUTH MODULE
+            // ==========================================
+            auth: {
+                init: function() {
+                    const stored = localStorage.getItem('cyber_user_v3');
+                    if (stored) {
+                        App.state.user = JSON.parse(stored);
+                        App.core.start();
+                    } else {
+                        setTimeout(() => {
+                            document.getElementById('loader').classList.add('hidden');
+                            document.getElementById('auth-screen').classList.remove('hidden');
+                        }, 1500);
+                    }
+                },
+
+                register: async function() {
+                    const u = document.getElementById('reg-username').value.trim();
+                    const p = document.getElementById('reg-phone').value.trim();
+                    const g = document.getElementById('reg-gameid').value.trim();
+                    const pass = document.getElementById('reg-pass').value.trim();
+
+                    if (!u || !p || !g || !pass) return App.utils.toast("Please fill all fields", "error");
+                    if (p.length < 11) return App.utils.toast("Invalid Phone Number", "error");
+
+                    const uid = "u_" + p;
+                    
+                    try {
+                        const snap = await db.ref('users/' + uid).get();
+                        if (snap.exists()) {
+                            App.utils.toast("User already exists! Login now.", "error");
+                            App.ui.toggleAuth('login');
+                        } else {
+                            const newUser = {
+                                uid: uid,
+                                username: u,
+                                phone: p,
+                                gameId: g,
+                                password: pass,
+                                balance: 0,
+                                matchesPlayed: 0,
+                                kills: 0,
+                                winnings: 0,
+                                refCode: 'PRO' + Math.floor(1000 + Math.random() * 9000),
+                                joinDate: Date.now()
+                            };
+                            await db.ref('users/' + uid).set(newUser);
+                            this.finalizeLogin(newUser);
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        App.utils.toast("Network Error. Try again.", "error");
+                    }
+                },
+
+                login: async function() {
+                    const p = document.getElementById('login-phone').value.trim();
+                    const pass = document.getElementById('login-pass').value.trim();
+                    if (!p || !pass) return App.utils.toast("Enter Phone & Password", "error");
+
+                    const uid = "u_" + p;
+                    try {
+                        const snap = await db.ref('users/' + uid).get();
+                        if (snap.exists()) {
+                            const data = snap.val();
+                            if (data.password === pass) {
+                                this.finalizeLogin(data);
+                            } else {
+                                App.utils.toast("Incorrect Password", "error");
+                            }
+                        } else {
+                            App.utils.toast("Account not found", "error");
+                        }
+                    } catch (e) { App.utils.toast("Login Error", "error"); }
+                },
+
+                finalizeLogin: function(userObj) {
+                    App.state.user = userObj;
+                    localStorage.setItem('cyber_user_v3', JSON.stringify(userObj));
+                    document.getElementById('auth-screen').classList.add('hidden');
+                    document.getElementById('loader').classList.remove('hidden');
+                    App.core.start();
+                },
+
+                logout: function() {
+                    if(confirm("Logout from current session?")) {
+                        localStorage.removeItem('cyber_user_v3');
+                        location.reload();
+                    }
+                }
+            },
+
+            // ==========================================
+            // 4. CORE APP LOGIC
+            // ==========================================
+            core: {
+                start: function() {
+                    // Start Listeners
+                    this.syncUser();
+                    this.syncMatches();
+                    this.syncTransactions();
+                    
+                    // Initial Render
+                    App.ui.updateProfileHeader();
+                    
+                    // Check Payment Returns
+                    App.wallet.checkPaymentReturn();
+
+                    // Remove Loader with delay for effect
+                    setTimeout(() => {
+                        document.getElementById('loader').classList.add('hidden');
+                        document.getElementById('app-interface').classList.remove('hidden');
+                        App.router.nav('home');
+                    }, 1000);
+                },
+
+                syncUser: function() {
+                    db.ref('users/' + App.state.user.uid).on('value', snap => {
+                        if(snap.exists()) {
+                            App.state.user = snap.val();
+                            localStorage.setItem('cyber_user_v3', JSON.stringify(App.state.user));
+                            App.ui.updateProfileHeader();
+                            // Update Profile Page if active
+                            if(!document.getElementById('view-profile').classList.contains('hidden')) {
+                                App.ui.renderProfilePage();
+                            }
+                        }
+                    });
+                },
+
+                syncMatches: function() {
+                    db.ref('tournaments').on('value', snap => {
+                        App.state.matches = [];
+                        const data = snap.val();
+                        if (data) {
+                            Object.keys(data).forEach(key => {
+                                App.state.matches.push({ id: key, ...data[key] });
+                            });
+                            // Sort: Upcoming first
+                            App.state.matches.sort((a,b) => new Date(a.dateTime) - new Date(b.dateTime));
+                            
+                            App.tournaments.render();
+                            App.tournaments.renderMyMatches();
+                        } else {
+                            document.getElementById('matches-container').innerHTML = '<div style="padding:40px; text-align:center; color:#666;">No matches scheduled.</div>';
+                        }
+                    });
+                },
+
+                syncTransactions: function() {
+                    db.ref('transactions').orderByChild('uid').equalTo(App.state.user.uid).limitToLast(50).on('value', snap => {
+                        App.state.transactions = [];
+                        const data = snap.val();
+                        if(data) {
+                            App.state.transactions = Object.values(data).reverse();
+                        }
+                        App.wallet.renderTxn();
+                    });
+                }
+            },
+
+            // ==========================================
+            // 5. TOURNAMENT SYSTEM
+            // ==========================================
+            tournaments: {
+                filter: function(type, el) {
+                    App.state.filter = type;
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    el.classList.add('active');
+                    this.render();
+                },
+
+                render: function() {
+                    const container = document.getElementById('matches-container');
+                    container.innerHTML = '';
+                    
+                    // Clear old intervals
+                    App.state.intervals.forEach(clearInterval);
+                    App.state.intervals = [];
+
+                    const filtered = App.state.matches.filter(m => 
+                        App.state.filter === 'All' || m.game === App.state.filter
+                    );
+
+                    if(filtered.length === 0) {
+                        container.innerHTML = '<div style="padding:40px; text-align:center; color:var(--text-muted);">No matches found in this category.</div>';
+                        return;
+                    }
+
+                    filtered.forEach(m => {
+                        const playerCount = m.players ? Object.keys(m.players).length : 0;
+                        const isFull = playerCount >= m.totalSlots;
+                        const isJoined = m.players && m.players[App.state.user.uid];
+                        const progress = (playerCount / m.totalSlots) * 100;
+                        
+                        // Image Logic
+                        let img = 'https://wallpaperaccess.com/full/1247094.jpg'; // PUBG
+                        if(m.game.includes('FreeFire')) img = 'https://wallpapers.com/images/hd/free-fire-cool-blue-cobra-skin-l34k600x700.jpg';
+                        if(m.game.includes('Ludo')) img = 'https://play-lh.googleusercontent.com/IIVYm3Kk3YwI8hJ_9sJ-dJ50g_g7sB8i7K7w2xRk_K8J_x_X_X_X_X_X_X_X_X_X';
+
+                        // Button State
+                        let btnText = isFull ? 'FULL' : 'JOIN NOW';
+                        let btnClass = isFull ? 'btn-secondary' : 'btn-primary';
+                        if(isJoined) { btnText = 'JOINED'; btnClass = 'btn-secondary'; }
+
+                        const cardId = `match-${m.id}`;
+                        
+                        const html = `
+                        <div class="glass-card match-card fade-in" onclick="App.tournaments.openDetails('${m.id}')">
+                            <div class="match-header">
+                                <img src="${img}" class="match-img">
+                                <div class="match-overlay"></div>
+                                <div class="badge ${isFull ? 'full' : 'open'}">${isFull ? 'Sold Out' : 'Reg Open'}</div>
+                                <div class="match-meta">
+                                    <div>
+                                        <h3 style="text-shadow: 0 2px 4px rgba(0,0,0,1);">${m.title}</h3>
+                                        <div style="font-size: 11px; color: #ddd; display: flex; align-items: center; gap: 5px;">
+                                            <i class="far fa-clock"></i> <span id="timer-${m.id}">Loading...</span>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-size: 10px; color: #ccc;">ENTRY</div>
+                                        <div style="font-size: 16px; font-weight: 700; color: var(--primary);">৳${m.entryFee}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-box">
+                                    <span class="info-label">POOL</span>
+                                    <span class="info-value text-win">৳${m.prizePool}</span>
+                                </div>
+                                <div class="info-box">
+                                    <span class="info-label">PER KILL</span>
+                                    <span class="info-value text-kill">৳${m.perKill || 0}</span>
+                                </div>
+                                <div class="info-box">
+                                    <span class="info-label">TYPE</span>
+                                    <span class="info-value">${m.type}</span>
+                                </div>
+                            </div>
+                            <div style="padding: 0 15px 15px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 3px; color: #ccc;">
+                                    <span>${playerCount} / ${m.totalSlots} Players</span>
+                                    <span>${Math.round(progress)}% Filled</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+                                <button class="btn ${btnClass}" style="margin-top: 15px; height: 40px; font-size: 13px;">${btnText}</button>
+                            </div>
+                        </div>`;
+                        container.innerHTML += html;
+
+                        // Start Countdown
+                        App.utils.startTimer(m.dateTime, `timer-${m.id}`);
+                    });
+                },
+
+                openDetails: function(mid) {
+                    const m = App.state.matches.find(x => x.id === mid);
+                    if(!m) return;
+
+                    document.getElementById('m-title').innerText = m.title;
+                    document.getElementById('m-subtitle').innerText = `${m.game} • ${m.map || 'Erangel'} • ${m.type}`;
+                    document.getElementById('m-fee').innerText = `৳${m.entryFee}`;
+                    document.getElementById('m-prize').innerText = `৳${m.prizePool}`;
+                    
+                    const btn = document.getElementById('m-join-btn');
+                    const isJoined = m.players && m.players[App.state.user.uid];
+                    const isFull = (m.players ? Object.keys(m.players).length : 0) >= m.totalSlots;
+
+                    if(isJoined) {
+                        btn.innerText = "ALREADY JOINED";
+                        btn.disabled = true;
+                        btn.className = "btn btn-secondary";
+                        btn.onclick = null;
+                    } else if (isFull) {
+                        btn.innerText = "MATCH FULL";
+                        btn.disabled = true;
+                        btn.className = "btn btn-secondary";
+                    } else {
+                        btn.innerText = `JOIN MATCH (৳${m.entryFee})`;
+                        btn.disabled = false;
+                        btn.className = "btn btn-primary";
+                        btn.onclick = () => App.tournaments.join(m);
+                    }
+
+                    App.ui.openModal('match-modal');
+                },
+
+                join: function(m) {
+                    if (App.state.user.balance < m.entryFee) {
+                        App.ui.closeModal('match-modal');
+                        App.utils.toast("Low Balance! Please Deposit.", "error");
+                        setTimeout(() => App.ui.openModal('deposit-modal'), 500);
+                        return;
+                    }
+
+                    // Optimistic UI Update not done here for safety, relying on DB transaction
+                    const joinRef = db.ref(`tournaments/${m.id}`);
+                    
+                    joinRef.transaction((curr) => {
+                        if (curr) {
+                            if (!curr.players) curr.players = {};
+                            if (Object.keys(curr.players).length < curr.totalSlots) {
+                                if (!curr.players[App.state.user.uid]) {
+                                    curr.players[App.state.user.uid] = {
+                                        username: App.state.user.username,
+                                        gameId: App.state.user.gameId,
+                                        uid: App.state.user.uid,
+                                        joinedAt: Date.now()
+                                    };
+                                    return curr;
+                                }
+                            }
+                        }
+                        return;
+                    }, (err, committed, snap) => {
+                        if (committed) {
+                            // Deduct Balance
+                            const newBal = App.state.user.balance - m.entryFee;
+                            const newPlayed = (App.state.user.matchesPlayed || 0) + 1;
+                            
+                            db.ref(`users/${App.state.user.uid}`).update({
+                                balance: newBal,
+                                matchesPlayed: newPlayed
+                            });
+                            
+                            // Log Transaction
+                            db.ref('transactions').push({
+                                uid: App.state.user.uid,
+                                type: 'debit',
+                                amount: m.entryFee,
+                                note: `Joined: ${m.title}`,
+                                date: Date.now(),
+                                matchId: m.id
+                            });
+
+                            App.ui.closeModal('match-modal');
+                            App.utils.toast("Successfully Joined! Good Luck.", "success");
+                            // Confetti effect could go here
+                        } else {
+                            App.utils.toast("Join Failed. Match may be full.", "error");
+                        }
+                    });
+                },
+
+                renderMyMatches: function() {
+                    const list = document.getElementById('my-matches-list');
+                    list.innerHTML = '';
+                    let hasMatch = false;
+
+                    App.state.matches.forEach(m => {
+                        if (m.players && m.players[App.state.user.uid]) {
+                            hasMatch = true;
+                            const matchTime = new Date(m.dateTime).getTime();
+                            const now = Date.now();
+                            
+                            // Room Logic
+                            let roomContent = '';
+                            if (now >= matchTime - (15 * 60 * 1000)) { // 15 mins before
+                                if (m.roomId && m.roomPass) {
+                                    roomContent = `
+                                    <div style="background: rgba(0,255,136,0.1); border: 1px dashed var(--primary); padding: 10px; border-radius: 8px; margin-top: 10px;">
+                                        <div class="flex-between">
+                                            <span style="font-size:10px; color:var(--text-muted);">ROOM ID:</span>
+                                            <span style="font-weight:700; font-family:monospace; font-size:14px;">${m.roomId}</span>
+                                            <i class="far fa-copy" onclick="App.utils.copy('${m.roomId}')" style="color:var(--primary); cursor:pointer;"></i>
+                                        </div>
+                                        <div class="flex-between" style="margin-top:5px;">
+                                            <span style="font-size:10px; color:var(--text-muted);">PASSWORD:</span>
+                                            <span style="font-weight:700; font-family:monospace; font-size:14px;">${m.roomPass}</span>
+                                            <i class="far fa-copy" onclick="App.utils.copy('${m.roomPass}')" style="color:var(--primary); cursor:pointer;"></i>
+                                        </div>
+                                    </div>`;
+                                } else {
+                                    roomContent = `<div style="margin-top:10px; padding:8px; background:rgba(255,200,0,0.1); border:1px solid var(--warning); color:var(--warning); font-size:11px; text-align:center; border-radius:6px;">Room details appear here 15m before start.</div>`;
+                                }
+                            } else {
+                                roomContent = `<div style="margin-top:10px; padding:8px; background:rgba(255,255,255,0.05); font-size:11px; text-align:center; border-radius:6px; color:var(--text-muted);">Room Locked 🔒</div>`;
+                            }
+
+                            const html = `
+                            <div class="glass-card fade-in">
+                                <div class="flex-between">
+                                    <h4 style="color: var(--primary);">${m.title}</h4>
+                                    <span style="font-size:11px; background:var(--bg-body); padding:3px 8px; border-radius:4px;">${m.type}</span>
+                                </div>
+                                <div style="font-size:12px; color:var(--text-muted); margin:5px 0;">
+                                    <i class="far fa-calendar"></i> ${new Date(m.dateTime).toLocaleString()}
+                                </div>
+                                ${roomContent}
+                            </div>`;
+                            list.innerHTML += html;
+                        }
+                    });
+
+                    if(!hasMatch) list.innerHTML = '<div style="padding:30px; text-align:center; color:var(--text-muted); opacity:0.7;">You haven\'t joined any battles yet.</div>';
+                }
+            },
+
+            // ==========================================
+            // 6. WALLET & PAYFLOW PRO (CORRECTED)
+            // ==========================================
+            wallet: {
+                // Payment Configuration
+                config: {
+                    baseUrl: "https://payflow-git.vercel.app/",
+                    linkId: "EkGUXtFvtjPlzNicraLe"
+                },
+
+                initDeposit: function() {
+                    const amt = document.getElementById('dep-amount').value;
+                    if (!amt || amt < 10) return App.utils.toast("Minimum deposit is ৳10", "error");
+                    
+                    App.ui.closeModal('deposit-modal');
+                    
+                    // Show Processing Overlay
+                    document.getElementById('processing-overlay').classList.remove('hidden');
+                    
+                    // --- NEW PAYMENT LOGIC START ---
+                    const currentUrl = window.location.href.split('?')[0];
+                    const targetUrl = `${this.config.baseUrl}?pay=${this.config.linkId}&amount=${amt}&cus_id=${App.state.user.uid}&redirect_url=${encodeURIComponent(currentUrl)}`;
+                    
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 1500);
+                    // --- NEW PAYMENT LOGIC END ---
+                },
+
+                checkPaymentReturn: function() {
+                    const params = new URLSearchParams(window.location.search);
+                    
+                    if (params.get('status') === 'success' && params.get('trx_id')) {
+                        const trxId = params.get('trx_id');
+                        const amount = parseFloat(params.get('amount'));
+                        const cusId = params.get('cus_id');
+
+                        if (cusId !== App.state.user.uid) return;
+
+                        db.ref('transactions').orderByChild('trx_id').equalTo(trxId).once('value', snap => {
+                            if (!snap.exists()) {
+                                const newBal = parseFloat(App.state.user.balance) + amount;
+                                db.ref(`users/${App.state.user.uid}/balance`).set(newBal);
+                                
+                                db.ref('transactions').push({
+                                    trx_id: trxId,
+                                    uid: App.state.user.uid,
+                                    amount: amount,
+                                    type: 'credit',
+                                    note: 'Deposit Added',
+                                    date: Date.now()
+                                });
+
+                                if (typeof confetti === 'function') {
+                                    confetti({
+                                        particleCount: 150,
+                                        spread: 70,
+                                        origin: { y: 0.6 },
+                                        zIndex: 9999
+                                    });
+                                }
+
+                                App.ui.showReceipt(amount, trxId);
+                                App.utils.toast("Deposit Successful!", "success");
+                                
+                                window.history.replaceState({}, document.title, window.location.pathname);
+                            }
+                        });
+                    }
+                },
+
+                processWithdraw: function() {
+                    const method = document.getElementById('with-method').value;
+                    const number = document.getElementById('with-number').value;
+                    const amount = parseFloat(document.getElementById('with-amount').value);
+
+                    if(!number || amount < 100) return App.utils.toast("Min withdraw ৳100", "error");
+                    if(App.state.user.balance < amount) return App.utils.toast("Insufficient funds", "error");
+
+                    const newBal = App.state.user.balance - amount;
+                    db.ref(`users/${App.state.user.uid}/balance`).set(newBal);
+
+                    db.ref('withdraws').push({
+                        uid: App.state.user.uid,
+                        username: App.state.user.username,
+                        method: method,
+                        number: number,
+                        amount: amount,
+                        status: 'pending',
+                        date: Date.now()
+                    });
+
+                    db.ref('transactions').push({
+                        uid: App.state.user.uid,
+                        type: 'debit',
+                        amount: amount,
+                        note: `Withdraw: ${method}`,
+                        date: Date.now()
+                    });
+
+                    App.ui.closeModal('withdraw-modal');
+                    App.utils.toast("Withdraw Request Submitted!", "success");
+                },
+
+                filterTxn: function(type, el) {
+                    App.state.txnFilter = type;
+                    document.querySelectorAll('.txn-chip').forEach(c => c.classList.remove('active'));
+                    el.classList.add('active');
+                    this.renderTxn();
+                },
+
+                renderTxn: function() {
+                    const list = document.getElementById('transaction-list');
+                    list.innerHTML = '';
+                    
+                    const filtered = App.state.transactions.filter(t => 
+                        App.state.txnFilter === 'all' || t.type === App.state.txnFilter
+                    );
+
+                    if(filtered.length === 0) {
+                        list.innerHTML = '<div style="text-align:center; font-size:12px; color:#666; margin-top:20px;">No transactions found</div>';
+                        return;
+                    }
+
+                    filtered.forEach(t => {
+                        const isCredit = t.type === 'credit';
+                        const color = isCredit ? 'var(--success)' : 'var(--danger)';
+                        const icon = isCredit ? 'fa-arrow-down' : 'fa-arrow-up';
+                        const sign = isCredit ? '+' : '-';
+                        
+                        const html = `
+                        <div class="glass-card" style="padding: 12px; display: flex; align-items: center; margin-bottom: 8px;">
+                            <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                <i class="fas ${icon}" style="color: ${color}; font-size: 14px;"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 13px; font-weight: 600;">${t.note}</div>
+                                <div style="font-size: 10px; color: var(--text-muted);">${new Date(t.date).toDateString()}</div>
+                            </div>
+                            <div style="font-weight: 700; font-size: 14px; color: ${color}; font-family: var(--font-heading);">${sign}৳${t.amount}</div>
+                        </div>`;
+                        list.innerHTML += html;
+                    });
+                }
+            },
+
+            // ==========================================
+            // 7. UI MANAGERS
+            // ==========================================
+            router: {
+                nav: function(viewId, navEl) {
+                    if (navEl) {
+                        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                        navEl.classList.add('active');
+                    }
+                    
+                    ['home', 'matches', 'ranking', 'wallet', 'profile'].forEach(v => {
+                        document.getElementById('view-' + v).classList.add('hidden');
+                    });
+                    
+                    const target = document.getElementById('view-' + viewId);
+                    target.classList.remove('hidden');
+                    target.classList.remove('fade-in'); 
+                    void target.offsetWidth; // Trigger reflow
+                    target.classList.add('fade-in');
+                    
+                    window.scrollTo(0, 0);
+
+                    if(viewId === 'ranking') App.ui.loadRanking();
+                }
+            },
+
+            ui: {
+                toggleAuth: function(mode) {
+                    const reg = document.getElementById('register-form');
+                    const log = document.getElementById('login-form');
+                    if (mode === 'register') {
+                        log.classList.add('hidden');
+                        reg.classList.remove('hidden');
+                        reg.parentElement.classList.add('fade-in');
+                    } else {
+                        reg.classList.add('hidden');
+                        log.classList.remove('hidden');
+                        log.parentElement.classList.add('fade-in');
+                    }
+                },
+
+                updateProfileHeader: function() {
+                    const u = App.state.user;
+                    if(!u) return;
+                    document.getElementById('header-username').innerText = u.username;
+                    document.getElementById('header-balance').innerText = `৳${u.balance}`;
+                    document.getElementById('wallet-amount-lg').innerText = `৳${u.balance}`;
+                    
+                    const avatar = `https://ui-avatars.com/api/?name=${u.username}&background=00ff88&color=000&size=128&bold=true`;
+                    document.getElementById('header-avatar').src = avatar;
+                    document.getElementById('profile-img-lg').src = avatar;
+                },
+
+                renderProfilePage: function() {
+                    const u = App.state.user;
+                    document.getElementById('profile-name').innerText = u.username;
+                    document.getElementById('profile-phone').innerText = u.phone;
+                    document.getElementById('stat-matches').innerText = u.matchesPlayed || 0;
+                    document.getElementById('stat-kills').innerText = u.kills || 0;
+                    document.getElementById('stat-won').innerText = `৳${u.winnings || 0}`;
+                    document.getElementById('ref-code').innerText = u.refCode || '---';
+                },
+
+                loadRanking: function() {
+                    const list = document.getElementById('leaderboard-list');
+                    list.innerHTML = '<div class="hex-loader" style="margin: 20px auto;"></div>';
+
+                    db.ref('users').orderByChild('winnings').limitToLast(20).once('value', snap => {
+                        list.innerHTML = '';
+                        const data = snap.val();
+                        if(!data) { list.innerHTML = 'No data'; return; }
+
+                        const sorted = Object.values(data).sort((a,b) => (b.winnings || 0) - (a.winnings || 0));
+                        
+                        sorted.forEach((u, idx) => {
+                            let rankColor = '#fff';
+                            if(idx === 0) rankColor = '#ffd700'; // Gold
+                            if(idx === 1) rankColor = '#c0c0c0'; // Silver
+                            if(idx === 2) rankColor = '#cd7f32'; // Bronze
+                            
+                            const html = `
+                            <div class="glass-card" style="display: flex; align-items: center; padding: 10px 15px; margin-bottom: 8px;">
+                                <div style="font-size: 18px; font-weight: 700; width: 30px; color: ${rankColor}; font-family: var(--font-heading);">#${idx+1}</div>
+                                <img src="https://ui-avatars.com/api/?name=${u.username}&background=random" style="width: 35px; height: 35px; border-radius: 50%; margin-right: 15px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 14px;">${u.username}</div>
+                                    <div style="font-size: 10px; color: var(--text-muted);">${u.matchesPlayed || 0} Matches</div>
+                                </div>
+                                <div style="color: var(--primary); font-weight: 700;">৳${u.winnings || 0}</div>
+                            </div>`;
+                            list.innerHTML += html;
+                        });
+                    });
+                },
+
+                openModal: function(id) { document.getElementById(id).classList.add('active'); },
+                closeModal: function(id) { document.getElementById(id).classList.remove('active'); },
+                
+                showReceipt: function(amt, id) {
+                    document.getElementById('rcpt-amt').innerText = amt;
+                    document.getElementById('rcpt-id').innerText = id;
+                    document.getElementById('rcpt-date').innerText = new Date().toLocaleDateString();
+                    this.openModal('receipt-modal');
+                }
+            },
+
+            // ==========================================
+            // 8. UTILITIES
+            // ==========================================
+            utils: {
+                toast: function(msg, type = 'info') {
+                    const c = document.getElementById('toast-container');
+                    const t = document.createElement('div');
+                    t.style.cssText = `background: ${type === 'error' ? 'var(--danger)' : 'var(--bg-card)'}; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; padding: 12px 20px; border-radius: 50px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); font-size: 13px; transform: translateY(-20px); opacity: 0; transition: 0.3s;`;
+                    
+                    const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle');
+                    t.innerHTML = `<i class="fas ${icon}"></i> <span>${msg}</span>`;
+                    
+                    c.appendChild(t);
+                    setTimeout(() => { t.style.transform = 'translateY(0)'; t.style.opacity = '1'; }, 10);
+                    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3000);
+                },
+
+                copyRef: function() {
+                    const code = document.getElementById('ref-code').innerText;
+                    this.copy(code);
+                },
+
+                copy: function(txt) {
+                    navigator.clipboard.writeText(txt).then(() => this.toast("Copied to clipboard!", "success"));
+                },
+
+                startTimer: function(dateStr, elId) {
+                    const el = document.getElementById(elId);
+                    if(!el) return;
+
+                    const target = new Date(dateStr).getTime();
+                    
+                    const update = () => {
+                        const now = new Date().getTime();
+                        const diff = target - now;
+                        
+                        if (diff < 0) {
+                            el.innerText = "Started";
+                            el.style.color = "var(--accent)";
+                            return;
+                        }
+
+                        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        const s = Math.floor((diff % (1000 * 60)) / 1000);
+                        
+                        el.innerText = `${h}h ${m}m ${s}s`;
+                    };
+
+                    update();
+                    const int = setInterval(update, 1000);
+                    App.state.intervals.push(int);
+                },
+
+                openSupport: function() {
+                    // Replace with actual support link
+                    window.location.href = "https://t.me/codelibraryofficial";
+                }
+            }
+        };
+
+        // Initialize App
+        window.addEventListener('load', App.auth.init);
+
+    </script>
+</body>
+</html>
