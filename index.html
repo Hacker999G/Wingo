@@ -11,52 +11,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     
     <style>
-        body { background: #050810; color: #e2e8f0; font-family: 'Poppins', sans-serif; }
-        .glass-card { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 28px; }
-        .premium-btn { background: linear-gradient(90deg, #1e40af, #3b82f6); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+        body { background: #050810; color: #e2e8f0; font-family: 'Poppins', sans-serif; overflow: hidden; }
+        .glass-card { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 30px; }
+        .premium-btn { background: linear-gradient(90deg, #1e40af, #3b82f6); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
         .font-game { font-family: 'Orbitron', sans-serif; }
-        .loader { border-top-color: #3b82f6; animation: spinner 1s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .hidden { display: none; }
+        .loader-spin { border-top-color: #3b82f6; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body class="p-4 flex flex-col items-center min-h-screen">
 
     <div id="loading-screen" class="fixed inset-0 bg-[#050810] z-50 flex flex-col items-center justify-center">
-        <div class="loader w-12 h-12 border-4 border-blue-900 rounded-full mb-4"></div>
-        <p class="text-blue-400 animate-pulse text-sm">Verifying Access...</p>
+        <div class="loader-spin w-14 h-14 border-4 border-slate-800 rounded-full mb-4"></div>
+        <p class="text-blue-500 font-bold tracking-widest animate-pulse">VERIFYING DATABASE...</p>
     </div>
 
     <div class="w-full max-w-md flex items-center justify-between mb-6 glass-card p-4">
         <div class="flex items-center gap-3">
-            <div id="u-icon" class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold">?</div>
+            <div id="u-icon" class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white">?</div>
             <div>
-                <p id="u-name" class="text-sm font-bold">User</p>
-                <p id="u-status" class="text-[10px] text-red-400">Checking Status...</p>
+                <p id="u-name" class="text-sm font-bold">Guest User</p>
+                <p id="u-status" class="text-[10px] uppercase font-bold text-yellow-500 tracking-wider">Checking...</p>
             </div>
         </div>
-        <div class="text-[10px] bg-slate-900 px-3 py-1 rounded border border-gray-800 uppercase">ID: <span id="u-id">0000</span></div>
+        <div class="text-[10px] bg-slate-900 px-3 py-1 rounded-lg border border-gray-800">ID: <span id="u-id">0000</span></div>
     </div>
 
-    <div id="lock-screen" class="hidden glass-card p-8 w-full max-w-md text-center">
-        <div class="bg-blue-500/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div id="lock-screen" class="hidden glass-card p-10 w-full max-w-md text-center">
+        <div class="bg-blue-600/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 border border-blue-500/20">
+            <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <h2 class="text-xl font-bold mb-2">সাবস্ক্রিপশন প্রয়োজন</h2>
-        <p class="text-xs text-gray-400 mb-6 px-2">সঠিক সিগন্যাল পেতে আপনার একাউন্টটি ১০০ টাকায় ৭ দিনের জন্য একটিভ করুন।</p>
+        <h2 class="text-2xl font-black mb-2 text-white uppercase italic">Subscription Required</h2>
+        <p class="text-[11px] text-gray-400 mb-8 px-4 leading-relaxed">আপনার প্রিমিয়াম এক্সেসটি মেয়াদোত্তীর্ণ অথবা একটিভ নেই। ১০০ টাকা পেমেন্ট করে ৭ দিনের জন্য সিগন্যাল উপভোগ করুন।</p>
         
-        <div class="bg-black/40 p-4 rounded-2xl mb-6 border border-gray-800">
-            <p class="text-2xl font-black font-game">৳১০০ <span class="text-xs font-normal text-gray-500">/ ৭ দিন</span></p>
+        <div class="bg-slate-950/80 p-6 rounded-3xl mb-8 border border-gray-800 shadow-inner">
+            <p class="text-xs text-blue-400 font-bold mb-1">Standard 7-Days Access</p>
+            <p class="text-4xl font-black text-white font-game">৳১০০</p>
         </div>
 
-        <button onclick="handlePayment()" class="w-full py-4 rounded-2xl font-bold premium-btn text-white active:scale-95 transition-all">
+        <button onclick="handlePayment()" class="w-full py-5 rounded-2xl font-bold premium-btn text-white active:scale-95 transition-all shadow-xl">
             Pay Now via bKash/Nagad
         </button>
+        <p class="mt-4 text-[9px] text-gray-600 italic">পেমেন্ট করার পর ৫-১০ মিনিটের মধ্যে সিগন্যাল ওপেন হবে।</p>
     </div>
 
     <div id="app-screen" class="hidden w-full max-w-md space-y-4">
         <div class="glass-card p-6">
-            <select id="platform" class="w-full bg-slate-950 border border-gray-800 p-4 rounded-2xl mb-6 text-white outline-none">
+            <select id="platform" class="w-full bg-slate-950 border border-gray-800 p-4 rounded-2xl mb-6 text-white font-bold outline-none focus:border-blue-500 transition-all">
                 <option value="Dk win">Dk win</option>
                 <option value="amar club">amar club</option>
                 <option value="HAGZNIC">HAGZNIC</option>
@@ -64,24 +66,25 @@
 
             <div class="grid grid-cols-2 gap-3 mb-6 font-game">
                 <div class="bg-black/40 p-4 rounded-2xl text-center border border-gray-900">
-                    <p class="text-[9px] text-gray-500 uppercase mb-1">Period</p>
-                    <p id="period" class="text-blue-400 text-lg tracking-widest">---</p>
+                    <p class="text-[9px] text-gray-500 uppercase mb-1 italic">Period</p>
+                    <p id="period" class="text-blue-400 text-lg tracking-widest font-bold">---</p>
                 </div>
                 <div class="bg-black/40 p-4 rounded-2xl text-center border border-gray-900">
-                    <p class="text-[9px] text-gray-500 uppercase mb-1">Timer</p>
-                    <p id="timer" class="text-red-500 text-lg tracking-widest">00:30</p>
+                    <p class="text-[9px] text-gray-500 uppercase mb-1 italic">Timer</p>
+                    <p id="timer" class="text-red-500 text-lg tracking-widest font-bold">00:30</p>
                 </div>
             </div>
 
-            <div id="res-box" class="hidden py-10 rounded-[2.5rem] bg-slate-950 border-2 border-blue-500/20 mb-6 text-center shadow-inner">
-                <p class="text-[10px] text-gray-600 uppercase mb-2 tracking-[0.3em]">Next Signal</p>
-                <h1 id="res-text" class="text-6xl font-black font-game italic">---</h1>
+            <div id="res-box" class="hidden py-14 rounded-[3rem] bg-slate-950 border-2 border-blue-500/20 mb-6 text-center shadow-2xl animate-pulse">
+                <p class="text-[10px] text-gray-600 uppercase mb-2 tracking-[0.4em]">Signal Detected</p>
+                <h1 id="res-text" class="text-6xl font-black font-game italic tracking-tighter">---</h1>
             </div>
 
             <button onclick="generateSignal()" id="gen-btn" class="w-full py-5 rounded-2xl font-black premium-btn uppercase tracking-widest text-sm shadow-xl active:scale-95 transition-all">
-                Generate Signal
+                Generate Prediction
             </button>
         </div>
+        <p class="text-center text-[10px] text-gray-700 tracking-widest uppercase">© EDITX AI - PREMIUM ACCESS</p>
     </div>
 
     <script>
@@ -98,30 +101,50 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // --- Telegram & User Info ---
+        // --- Telegram Data ---
         const tg = window.Telegram.WebApp;
         tg.expand();
-        const user = tg.initDataUnsafe?.user || { first_name: "Gopal", id: "6849201" };
+        const user = tg.initDataUnsafe?.user || { first_name: "Developer", id: "6849201" };
         
         document.getElementById('u-name').innerText = user.first_name;
         document.getElementById('u-id').innerText = user.id;
         document.getElementById('u-icon').innerText = user.first_name[0];
 
-        // --- Check User Status from Firebase ---
-        async function checkAccess() {
-            const userRef = db.collection('users').doc(user.id.toString());
-            const doc = await userRef.get();
+        // --- Access Logic ---
+        async function verifyAccess() {
+            const userIdStr = user.id.toString();
+            const userRef = db.collection('users').doc(userIdStr);
 
-            if (doc.exists) {
-                const data = doc.data();
-                const now = new Date().getTime();
-                
-                if (data.expiryDate > now) {
-                    showApp();
+            // Timeout Logic (If DB fails to load in 5s)
+            const timeout = setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+                showLock();
+            }, 5000);
+
+            try {
+                const doc = await userRef.get();
+                clearTimeout(timeout);
+
+                if (doc.exists) {
+                    const data = doc.data();
+                    const now = new Date().getTime();
+                    if (data.expiryDate && data.expiryDate > now) {
+                        showApp();
+                    } else {
+                        showLock();
+                    }
                 } else {
+                    // নতুন ইউজার হলে ডাটাবেজে এন্ট্রি তৈরি হবে (Inactive হিসেবে)
+                    await userRef.set({
+                        name: user.first_name,
+                        id: user.id,
+                        expiryDate: 0,
+                        status: "Inactive"
+                    });
                     showLock();
                 }
-            } else {
+            } catch (error) {
+                console.error("DB Error:", error);
                 showLock();
             }
             document.getElementById('loading-screen').classList.add('hidden');
@@ -130,57 +153,57 @@
         function showApp() {
             document.getElementById('app-screen').classList.remove('hidden');
             document.getElementById('u-status').innerText = "Premium: Active";
-            document.getElementById('u-status').className = "text-[10px] text-green-400";
+            document.getElementById('u-status').className = "text-[10px] text-green-400 font-bold tracking-widest";
         }
 
         function showLock() {
             document.getElementById('lock-screen').classList.remove('hidden');
             document.getElementById('u-status').innerText = "Premium: Inactive";
+            document.getElementById('u-status').className = "text-[10px] text-red-500 font-bold tracking-widest";
         }
 
-        // --- Payment Logic ---
         function handlePayment() {
-            const payUrl = `https://payflow-git.vercel.app/?pay=9zaIHrtpb3iiAGKsRZjg&amount=100&cus_id=${user.id}&opt_a=7days_wingo`;
+            const payUrl = `https://payflow-git.vercel.app/?pay=9zaIHrtpb3iiAGKsRZjg&amount=100&cus_id=${user.id}&opt_a=7days_premium`;
             tg.openLink(payUrl);
-            
-            // অটো-ভেরিফিকেশন টেস্ট (ইউজারকে পেমেন্টের পর এই বাটন কাজ করাতে চাইলে)
-            alert("পেমেন্ট সম্পন্ন করার পর ব্যাক অ্যাপটি রিফ্রেশ দিন।");
+            tg.close(); // পেমেন্ট গেটওয়ে ওপেন হলে অ্যাপ ক্লোজ হবে অথবা নোটিশ দিবে
         }
 
-        // --- Predictor Logic ---
-        function updateTimer() {
-            const now = new Date();
-            const sec = now.getSeconds();
-            const remain = 30 - (sec % 30);
-            document.getElementById('timer').innerText = `00:${remain < 10 ? '0' : ''}${remain}`;
-            
-            const pNum = Math.floor((now.getHours() * 120) + (now.getMinutes() * 2) + (sec >= 30 ? 2 : 1));
-            document.getElementById('period').innerText = "..." + pNum;
+        // --- Prediction Logic ---
+        function runTimer() {
+            setInterval(() => {
+                const now = new Date();
+                const sec = now.getSeconds();
+                const remain = 30 - (sec % 30);
+                document.getElementById('timer').innerText = `00:${remain < 10 ? '0' : ''}${remain}`;
+                
+                const pNum = Math.floor((now.getHours() * 120) + (now.getMinutes() * 2) + (sec >= 30 ? 2 : 1));
+                document.getElementById('period').innerText = "..." + pNum;
 
-            if (remain === 30) {
-                document.getElementById('res-box').classList.add('hidden');
-                document.getElementById('gen-btn').disabled = false;
-                document.getElementById('gen-btn').innerText = "Generate Signal";
-            }
+                if (remain === 30) {
+                    document.getElementById('res-box').classList.add('hidden');
+                    document.getElementById('gen-btn').disabled = false;
+                    document.getElementById('gen-btn').innerText = "Generate Prediction";
+                }
+            }, 1000);
         }
-        setInterval(updateTimer, 1000);
 
         function generateSignal() {
             const btn = document.getElementById('gen-btn');
             btn.disabled = true;
-            btn.innerText = "Analyzing...";
+            btn.innerText = "Analyzing Server...";
 
             setTimeout(() => {
-                const res = ["BIG", "SMALL"][Math.floor(Math.random() * 2)];
+                const result = Math.random() > 0.5 ? "BIG" : "SMALL";
                 document.getElementById('res-box').classList.remove('hidden');
-                document.getElementById('res-text').innerText = res;
-                document.getElementById('res-text').className = `text-6xl font-black font-game italic ${res === 'BIG' ? 'text-blue-500' : 'text-red-500'}`;
-                btn.innerText = "Signal Ready";
-            }, 1200);
+                document.getElementById('res-text').innerText = result;
+                document.getElementById('res-text').className = `text-6xl font-black font-game italic ${result === 'BIG' ? 'text-blue-500' : 'text-red-600'}`;
+                btn.innerText = "Signal Received";
+            }, 1500);
         }
 
-        // Start checking access
-        checkAccess();
+        // Start
+        runTimer();
+        verifyAccess();
     </script>
 </body>
 </html>
