@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wingo Elite Hack Pro</title>
+    <title>Wingo Elite Hack Fixed</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        body { background: #050810; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body { background: #050810; color: white; font-family: sans-serif; user-select: none; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.08); }
         .gradient-text { background: linear-gradient(to right, #00f2ff, #7000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .pay-btn { background: linear-gradient(135deg, #00f2ff, #7000ff); box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2); }
+        .pay-btn { background: linear-gradient(135deg, #00f2ff, #7000ff); }
         .hidden-section { display: none; }
     </style>
 </head>
@@ -19,92 +19,85 @@
 
     <header class="p-6 flex justify-between items-center animate__animated animate__fadeInDown">
         <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl border-2 border-cyan-500/30 flex items-center justify-center bg-cyan-500/10 text-xl">👤</div>
+            <div class="w-12 h-12 rounded-2xl border-2 border-cyan-500/30 flex items-center justify-center bg-cyan-500/10 text-xl text-cyan-400">💎</div>
             <div>
                 <h2 id="u_name" class="font-bold text-sm">Loading...</h2>
-                <p id="u_status" class="text-[9px] font-black tracking-widest text-red-500 uppercase">Status: Unpaid</p>
+                <p id="u_status" class="text-[9px] font-black tracking-widest text-red-500 uppercase">Status: Checking...</p>
             </div>
         </div>
-        <div class="glass px-4 py-2 text-[10px] font-bold text-cyan-400">SERVER: STABLE</div>
+        <div class="glass px-4 py-2 text-[10px] font-bold text-cyan-400 border-cyan-500/20 uppercase">Network: Live</div>
     </header>
 
     <main class="h-[calc(100vh-160px)] overflow-y-auto px-6">
-        
         <section id="sec-plan" class="animate__animated animate__fadeIn">
-            <h1 class="text-3xl font-black mb-6 italic uppercase">Select <span class="gradient-text">Plan</span></h1>
+            <h1 class="text-3xl font-black mb-6 italic uppercase">Choose <span class="gradient-text">Plan</span></h1>
             <div class="grid gap-4" id="plan-list"></div>
         </section>
 
         <section id="sec-predict" class="hidden-section relative min-h-[400px]">
             <div id="lock-screen" class="absolute inset-0 z-50 glass flex flex-col items-center justify-center text-center p-8">
                 <div class="text-6xl mb-6">🔒</div>
-                <h2 class="text-xl font-bold mb-2">Access Restricted</h2>
-                <p class="text-gray-500 text-sm mb-8">দয়া করে একটি প্রিমিয়াম প্ল্যান কিনুন অথবা অ্যাডমিন এপ্রুভালের জন্য অপেক্ষা করুন।</p>
-                <button onclick="showSection('plan')" class="px-10 py-3 bg-white text-black rounded-full font-bold uppercase text-xs tracking-widest active:scale-95 transition-all">Buy Plan</button>
+                <h2 class="text-xl font-bold mb-2">Access Locked</h2>
+                <p class="text-gray-500 text-sm mb-8">প্ল্যান কিনলে এটি অটোমেটিক আনলক হবে।</p>
+                <button onclick="showSection('plan')" class="px-10 py-3 bg-white text-black rounded-full font-bold uppercase text-xs">Buy Plan</button>
             </div>
-
             <div id="predict-ui" class="opacity-20 pointer-events-none blur-md transition-all duration-700">
-                <h1 class="text-2xl font-black mb-6 gradient-text uppercase">Server Predictor</h1>
+                <h1 class="text-2xl font-black mb-6 gradient-text uppercase">Predictor Pro</h1>
                 <div class="glass p-8 text-center border-white/10">
-                    <p class="text-xs text-gray-500 mb-4 uppercase tracking-widest">Enter Period Number</p>
                     <input type="number" id="period_input" placeholder="000" class="w-full bg-black/40 border border-white/10 p-6 rounded-3xl mb-8 text-center text-5xl font-black text-cyan-400 focus:border-cyan-500/50 outline-none">
-                    <button onclick="getSignal()" id="sig_btn" class="pay-btn w-full py-5 rounded-3xl font-black text-lg tracking-widest uppercase">Analyze</button>
+                    <button onclick="getSignal()" id="sig_btn" class="pay-btn w-full py-5 rounded-3xl font-black text-lg uppercase shadow-lg shadow-cyan-500/20">Analyze</button>
                 </div>
                 <div id="res_div" class="mt-10 text-center hidden animate__animated animate__zoomIn">
-                    <h2 id="final_result" class="text-8xl font-black tracking-tighter">BIG</h2>
+                    <h2 id="final_result" class="text-8xl font-black tracking-tighter italic">BIG</h2>
                 </div>
             </div>
         </section>
 
         <section id="sec-profile" class="hidden-section animate__animated animate__fadeIn">
             <div class="glass p-10 text-center mt-4 border-white/5">
-                <div class="w-24 h-24 bg-gradient-to-tr from-cyan-500 to-purple-600 mx-auto rounded-[35px] flex items-center justify-center text-4xl mb-6">👤</div>
-                <h2 id="p_name" class="text-2xl font-black uppercase tracking-tight">User</h2>
+                <div class="w-24 h-24 bg-gradient-to-tr from-cyan-500 to-purple-600 mx-auto rounded-[35px] flex items-center justify-center text-4xl mb-6 shadow-2xl">👤</div>
+                <h2 id="p_name" class="text-2xl font-black uppercase">User</h2>
                 <p id="p_id" class="text-gray-500 font-mono text-xs mt-1">ID: 00000000</p>
                 <button onclick="window.open('https://t.me/Ruddro_nill')" class="w-full py-4 glass text-xs font-black uppercase tracking-widest border-cyan-500/20 text-cyan-400 mt-10">Contact Support</button>
             </div>
         </section>
-
     </main>
 
     <nav class="fixed bottom-6 left-6 right-6 h-20 glass flex items-center justify-around z-[100] border-white/10">
-        <button onclick="showSection('plan')" id="n-plan" class="active-nav flex flex-col items-center gap-1 text-[10px] font-black opacity-40"><span>💳</span>PLAN</button>
-        <button onclick="showSection('predict')" id="n-predict" class="flex flex-col items-center gap-1 text-[10px] font-black opacity-40"><span>🎯</span>SIGNAL</button>
-        <button onclick="showSection('profile')" id="n-profile" class="flex flex-col items-center gap-1 text-[10px] font-black opacity-40"><span>👤</span>USER</button>
+        <button onclick="showSection('plan')" id="n-plan" class="flex flex-col items-center gap-1 text-[10px] font-black"><span>💳</span>PLAN</button>
+        <button onclick="showSection('predict')" id="n-predict" class="flex flex-col items-center gap-1 text-[10px] font-black"><span>🎯</span>SIGNAL</button>
+        <button onclick="showSection('profile')" id="n-profile" class="flex flex-col items-center gap-1 text-[10px] font-black"><span>👤</span>USER</button>
     </nav>
 
-    <div id="pay-sheet" class="fixed inset-0 z-[200] hidden bg-black/90 backdrop-blur-md flex items-end">
+    <div id="pay-sheet" class="fixed inset-0 z-[200] hidden bg-black/95 flex items-end">
         <div class="w-full bg-[#e11d48] rounded-t-[50px] p-10 animate__animated animate__slideInUp">
-            <div class="w-16 h-1.5 bg-white/20 mx-auto rounded-full mb-8"></div>
-            <h2 class="text-3xl font-black text-white text-center mb-8 italic uppercase tracking-tighter">Nagad Payment</h2>
-            
-            <div class="bg-white rounded-[35px] p-8 text-black mb-8">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-6">
+            <h2 class="text-3xl font-black text-white text-center mb-8 italic uppercase italic">Nagad Payment</h2>
+            <div class="bg-white rounded-[35px] p-8 text-black mb-8 shadow-2xl">
+                <div class="flex justify-between items-center mb-4 border-b pb-4">
                     <div>
                         <p class="text-[10px] text-gray-400 font-bold uppercase mb-1">Number (Personal)</p>
-                        <p class="text-2xl font-black">01983256576</p>
+                        <p class="text-2xl font-black tracking-tight">01983256576</p>
                     </div>
-                    <button onclick="copyNum()" class="bg-rose-600 text-white px-6 py-2 rounded-2xl text-[10px] font-black">COPY</button>
+                    <button onclick="copyNum()" class="bg-rose-600 text-white px-5 py-2 rounded-2xl text-[10px] font-black uppercase">Copy</button>
                 </div>
-                <p id="amt_display" class="text-3xl font-black text-rose-600">৳0</p>
+                <p id="amt_display" class="text-3xl font-black text-rose-600 italic">৳0</p>
             </div>
-
-            <input type="text" id="trx_input" placeholder="Enter Transaction ID (TrxID)" class="w-full p-6 rounded-3xl bg-black/10 border border-white/20 text-white font-bold outline-none mb-6">
+            <input type="text" id="trx_input" placeholder="Enter TrxID" class="w-full p-6 rounded-3xl bg-black/20 border border-white/20 text-white font-bold outline-none mb-6 text-center">
             <button onclick="confirmDeposit()" class="w-full py-6 bg-white text-rose-600 rounded-3xl font-black text-lg uppercase shadow-2xl active:scale-95 transition-all">Verify Payment</button>
-            <button onclick="closePay()" class="w-full mt-6 text-white/40 text-[10px] font-black uppercase">Close Menu</button>
+            <button onclick="closePay()" class="w-full mt-6 text-white/40 text-[10px] font-black uppercase">Cancel</button>
         </div>
     </div>
 
     <script>
         const CONFIG = {
             db: "https://ff-esport-bd-9dbc0-default-rtdb.firebaseio.com",
-            token: "7968384087:AAEpp_OvCgQRvKAe_wq9pnxozHY9UHq36GI",
-            admin: "6045231271" // আপনার নতুন আইডি এখানে সেট করা হয়েছে
+            token: "8253327997:AAGbpYwA-NoZs3zT0X_MGez1zm3rCyuq-C8",
+            admin: "6045231271"
         };
 
         let tg = window.Telegram.WebApp;
         tg.expand();
-        const user = tg.initDataUnsafe.user || { first_name: "Guest", id: "6045231271" };
+        const user = tg.initDataUnsafe.user || { first_name: "Admin", id: "6045231271" };
 
         let currentPlan = "";
 
@@ -115,14 +108,14 @@
         const plans = [ {n:'3 Days', p:300}, {n:'7 Days', p:650}, {n:'15 Days', p:1400}, {n:'30 Days', p:2500} ];
         plans.forEach(plan => {
             document.getElementById('plan-list').innerHTML += `
-                <div onclick="openPay('${plan.n}', ${plan.p})" class="glass p-6 flex justify-between items-center active:scale-95 transition-all border-white/5">
-                    <div><h3 class="font-black text-lg">${plan.n} Access</h3></div>
+                <div onclick="openPay('${plan.n}', ${plan.p})" class="glass p-6 flex justify-between items-center active:scale-95 transition-all">
+                    <div><h3 class="font-black text-lg">${plan.n} Access</h3><p class="text-[10px] text-cyan-400 uppercase font-bold tracking-widest">VIP Server</p></div>
                     <div class="text-2xl font-black italic">৳${plan.p}</div>
                 </div>`;
         });
 
         function checkStatus() {
-            // আপনার জন্য অটো-আনলক
+            // Lifetime for your ID
             if(String(user.id) === CONFIG.admin) {
                 unlockUI("OWNER / LIFETIME");
                 return;
@@ -131,11 +124,15 @@
             fetch(`${CONFIG.db}/users/${user.id}.json`)
             .then(r => r.json())
             .then(data => {
-                if(data && data.isPaid) unlockUI(data.plan);
+                if(data && data.isPaid) {
+                    unlockUI(data.plan);
+                } else {
+                    document.getElementById('u_status').innerText = "Status: Unpaid";
+                }
             });
         }
 
-        function unlockUI(planName) {
+        function unlockUI(plan) {
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('predict-ui').classList.remove('opacity-20', 'pointer-events-none', 'blur-md');
             document.getElementById('u_status').innerText = "Status: Premium Active";
@@ -149,59 +146,47 @@
             document.getElementById('n-' + id).style.opacity = "1";
         }
 
-        function openPay(n, p) {
-            currentPlan = n;
-            document.getElementById('amt_display').innerText = "৳" + p;
-            document.getElementById('pay-sheet').classList.remove('hidden');
-        }
-
+        function openPay(n, p) { currentPlan = n; document.getElementById('amt_display').innerText = "৳" + p; document.getElementById('pay-sheet').classList.remove('hidden'); }
         function closePay() { document.getElementById('pay-sheet').classList.add('hidden'); }
-
-        function copyNum() {
-            const el = document.createElement('textarea');
-            el.value = "01983256576";
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            tg.showAlert("Number Copied! ✅");
-        }
+        function copyNum() { navigator.clipboard.writeText("01983256576"); tg.showAlert("Number Copied! ✅"); }
 
         function confirmDeposit() {
             const trx = document.getElementById('trx_input').value.trim();
             if(trx.length < 5) return tg.showAlert("Invalid Transaction ID!");
 
-            const message = `🔔 *NEW PAYMENT REQUEST*\n\n👤 *User:* ${user.first_name}\n🆔 *UID:* \`${user.id}\`\n💎 *Plan:* ${currentPlan}\n💵 *TrxID:* \`${trx}\`\n\n_Please verify and approve from Admin Panel_`;
+            const message = `🚀 *NEW PAYMENT REQUEST*\n\n👤 *User:* ${user.first_name}\n🆔 *UID:* \`${user.id}\`\n💎 *Plan:* ${currentPlan}\n💵 *TrxID:* \`${trx}\`\n\n_Verify and Approve manually via Admin Panel_`;
 
-            fetch(`https://api.telegram.org/bot${CONFIG.token}/sendMessage`, {
+            const url = `https://api.telegram.org/bot${CONFIG.token}/sendMessage`;
+
+            fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    chat_id: CONFIG.admin,
-                    text: message,
-                    parse_mode: "Markdown"
-                })
+                body: JSON.stringify({ chat_id: CONFIG.admin, text: message, parse_mode: "Markdown" })
             })
             .then(res => res.json())
             .then(json => {
                 if(json.ok) {
-                    tg.showAlert("রিকোয়েস্ট আপনার ইনবক্সে পাঠানো হয়েছে! ✅");
+                    tg.showAlert("আপনার রিকোয়েস্টটি সরাসরি অ্যাডমিন ইনবক্সে পাঠানো হয়েছে! ✅");
                     closePay();
                 } else {
-                    tg.showAlert("বট মেসেজ পাঠাতে পারেনি। চেক করুন আপনি বটকে স্টার্ট করেছেন কিনা।");
+                    tg.showAlert("ভুল হয়েছে: " + json.description);
                 }
             })
-            .catch(err => tg.showAlert("ইন্টারনেট সমস্যা!"));
+            .catch(err => tg.showAlert("ইন্টারনেট এরর!"));
         }
 
         function getSignal() {
             const p = document.getElementById('period_input').value;
-            if(!p) return tg.showAlert("পিরিয়ড নম্বর দিন!");
+            if(!p) return tg.showAlert("Period Number দিন!");
+            const btn = document.getElementById('sig_btn');
+            btn.innerText = "Analyzing...";
             setTimeout(() => {
                 const res = Math.random() > 0.5 ? "BIG" : "SMALL";
                 document.getElementById('res_div').classList.remove('hidden');
                 document.getElementById('final_result').innerText = res;
                 document.getElementById('final_result').className = res === "BIG" ? "text-8xl font-black text-orange-500 animate__animated animate__pulse" : "text-8xl font-black text-blue-500 animate__animated animate__pulse";
+                btn.innerText = "Analyze";
+                document.getElementById('period_input').value = parseInt(p) + 1;
             }, 1000);
         }
 
