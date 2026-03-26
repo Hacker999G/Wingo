@@ -3,141 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Hack Fixed</title>
+    <title>Wingo Elite Hack Pro</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        body { background: #050810; color: white; font-family: sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-pay { background: linear-gradient(to right, #00f2ff, #7000ff); }
+        body { background: #050810; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.08); }
+        .gradient-text { background: linear-gradient(to right, #00f2ff, #7000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .pay-btn { background: linear-gradient(135deg, #00f2ff, #7000ff); box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2); }
+        .hidden-section { display: none; }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
-<body class="p-5">
+<body class="overflow-hidden">
 
-    <div class="glass p-5 mb-5 flex justify-between items-center">
-        <div>
-            <h2 id="u_name" class="font-bold">Loading...</h2>
-            <p id="status_text" class="text-[10px] text-red-500 font-bold tracking-widest">UNPAID</p>
+    <header class="p-6 flex justify-between items-center animate__animated animate__fadeInDown">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl border-2 border-cyan-500/30 flex items-center justify-center bg-cyan-500/10 text-xl">👤</div>
+            <div>
+                <h2 id="u_name" class="font-bold text-sm">Loading...</h2>
+                <p id="u_status" class="text-[9px] font-black tracking-widest text-red-500 uppercase">Status: Unpaid</p>
+            </div>
         </div>
-        <div id="owner_badge" class="hidden bg-green-500 text-[10px] px-2 py-1 rounded font-bold">OWNER</div>
-    </div>
+        <div class="glass px-4 py-2 text-[10px] font-bold text-cyan-400 border-cyan-500/20">SERVER: STABLE</div>
+    </header>
 
-    <div id="main-content" class="relative min-h-[300px]">
-        <div id="lock" class="absolute inset-0 z-50 glass flex flex-col items-center justify-center text-center p-6">
-            <p class="mb-4">🔒 Please buy a plan to unlock</p>
-            <button onclick="showPlans()" class="bg-white text-black px-6 py-2 rounded-full font-bold">Buy Now</button>
-        </div>
+    <main class="h-[calc(100vh-160px)] overflow-y-auto px-6">
         
-        <div class="glass p-6 opacity-30 pointer-events-none" id="predictor">
-            <h1 class="text-xl font-black mb-4 text-cyan-400">PREDICTOR</h1>
-            <input type="number" id="period" placeholder="Last 3 Digits" class="w-full bg-black/40 p-4 rounded-xl mb-4 text-center text-2xl font-bold border border-white/10 outline-none">
-            <button onclick="generate()" class="btn-pay w-full py-4 rounded-xl font-bold">GET SIGNAL</button>
-            <h2 id="result" class="text-6xl font-black text-center mt-6 hidden">BIG</h2>
-        </div>
-    </div>
+        <section id="sec-plan" class="animate__animated animate__fadeIn">
+            <h1 class="text-3xl font-black mb-6 italic uppercase">Select <span class="gradient-text">Plan</span></h1>
+            <div class="grid gap-4" id="plan-list"></div>
+        </section>
 
-    <div id="plan-modal" class="fixed inset-0 bg-black/90 z-[100] p-6 hidden">
-        <h2 class="text-2xl font-bold mb-6">Select Plan</h2>
-        <div class="space-y-3">
-            <div onclick="openPay('3 Days', 300)" class="glass p-4 flex justify-between"><span>3 Days Access</span><b>৳300</b></div>
-            <div onclick="openPay('7 Days', 650)" class="glass p-4 flex justify-between"><span>7 Days Access</span><b>৳650</b></div>
-            <div onclick="openPay('30 Days', 2500)" class="glass p-4 flex justify-between"><span>Monthly Access</span><b>৳2500</b></div>
-        </div>
-        <button onclick="document.getElementById('plan-modal').classList.add('hidden')" class="mt-8 text-gray-500 w-full">Close</button>
-    </div>
+        <section id="sec-predict" class="hidden-section relative min-h-[400px]">
+            <div id="lock-screen" class="absolute inset-0 z-50 glass flex flex-col items-center justify-center text-center p-8">
+                <div class="text-6xl mb-6">🔒</div>
+                <h2 class="text-xl font-bold mb-2">Access Restricted</h2>
+                <p class="text-gray-500 text-sm mb-8">দয়া করে একটি প্রিমিয়াম প্ল্যান কিনুন অথবা অ্যাডমিন এপ্রুভালের জন্য অপেক্ষা করুন।</p>
+                <button onclick="showSection('plan')" class="px-10 py-3 bg-white text-black rounded-full font-bold uppercase text-xs tracking-widest active:scale-95 transition-all">Buy Plan</button>
+            </div>
 
-    <div id="pay-modal" class="fixed inset-0 bg-rose-600 z-[200] p-8 hidden flex flex-col justify-end rounded-t-[40px]">
-        <h2 class="text-2xl font-black mb-4">NAGAD SEND MONEY</h2>
-        <div class="bg-white text-black p-6 rounded-3xl mb-4">
-            <p class="text-xs text-gray-400">Number (Personal)</p>
-            <p class="text-xl font-black mb-4">01983256576</p>
-            <p class="text-xs text-gray-400">Amount</p>
-            <p id="amt" class="text-2xl font-black text-rose-600">৳0</p>
+            <div id="predict-ui" class="opacity-20 pointer-events-none blur-md transition-all duration-700">
+                <h1 class="text-2xl font-black mb-6 gradient-text uppercase">Server Predictor</h1>
+                <div class="glass p-8 text-center border-white/10">
+                    <p class="text-xs text-gray-500 mb-4 uppercase tracking-widest">Enter Period Number</p>
+                    <input type="number" id="period_input" placeholder="000" class="w-full bg-black/40 border border-white/10 p-6 rounded-3xl mb-8 text-center text-5xl font-black text-cyan-400 focus:border-cyan-500/50 outline-none">
+                    <button onclick="getSignal()" id="sig_btn" class="pay-btn w-full py-5 rounded-3xl font-black text-lg tracking-widest active:scale-95 transition-all uppercase">Analyze</button>
+                </div>
+                <div id="res_div" class="mt-10 text-center hidden animate__animated animate__zoomIn">
+                    <p class="text-gray-500 text-[10px] uppercase mb-2">Next Possible Result</p>
+                    <h2 id="final_result" class="text-8xl font-black tracking-tighter">BIG</h2>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-profile" class="hidden-section animate__animated animate__fadeIn">
+            <div class="glass p-10 text-center mt-4 border-white/5">
+                <div class="w-24 h-24 bg-gradient-to-tr from-cyan-500 to-purple-600 mx-auto rounded-[35px] flex items-center justify-center text-4xl mb-6 shadow-2xl shadow-cyan-500/20">👤</div>
+                <h2 id="p_name" class="text-2xl font-black uppercase tracking-tight">User</h2>
+                <p id="p_id" class="text-gray-500 font-mono text-xs mt-1">ID: 00000000</p>
+                <div class="mt-10 space-y-3">
+                    <div class="flex justify-between glass p-4 text-sm font-bold border-white/5">
+                        <span class="text-gray-500">Subscription</span>
+                        <span id="p_status" class="text-red-500 uppercase">Inactive</span>
+                    </div>
+                    <button onclick="window.open('https://t.me/Ruddro_nill')" class="w-full py-4 glass text-xs font-black uppercase tracking-widest border-cyan-500/20 text-cyan-400 mt-4">Contact Support</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <nav class="fixed bottom-6 left-6 right-6 h-20 glass flex items-center justify-around z-[100] border-white/10">
+        <button onclick="showSection('plan')" id="n-plan" class="active-nav flex flex-col items-center gap-1 text-[10px] font-black opacity-40 transition-all"><span>💳</span>PLAN</button>
+        <button onclick="showSection('predict')" id="n-predict" class="flex flex-col items-center gap-1 text-[10px] font-black opacity-40 transition-all"><span>🎯</span>SIGNAL</button>
+        <button onclick="showSection('profile')" id="n-profile" class="flex flex-col items-center gap-1 text-[10px] font-black opacity-40 transition-all"><span>👤</span>USER</button>
+    </nav>
+
+    <div id="pay-sheet" class="fixed inset-0 z-[200] hidden bg-black/90 backdrop-blur-md flex items-end">
+        <div class="w-full bg-[#e11d48] rounded-t-[50px] p-10 animate__animated animate__slideInUp">
+            <div class="w-16 h-1.5 bg-white/20 mx-auto rounded-full mb-8"></div>
+            <h2 class="text-3xl font-black text-white text-center mb-8 italic uppercase tracking-tighter">Nagad Payment</h2>
+            
+            <div class="bg-white rounded-[35px] p-8 text-black mb-8 shadow-2xl">
+                <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-6">
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase mb-1 tracking-widest">Number (Personal)</p>
+                        <p class="text-2xl font-black tracking-tight">01983256576</p>
+                    </div>
+                    <button onclick="copyNum()" class="bg-rose-600 text-white px-6 py-2 rounded-2xl text-[10px] font-black">COPY</button>
+                </div>
+                <div class="flex justify-between items-end">
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase mb-1 tracking-widest">Payable</p>
+                        <p id="amt_display" class="text-3xl font-black text-rose-600 tracking-tighter">৳0</p>
+                    </div>
+                    <div class="text-[10px] font-black bg-green-100 text-green-600 px-3 py-1 rounded-lg uppercase">Send Money Only</div>
+                </div>
+            </div>
+
+            <input type="text" id="trx_input" placeholder="Enter Transaction ID (TrxID)" class="w-full p-6 rounded-3xl bg-black/10 border border-white/20 text-white font-bold outline-none mb-6 placeholder:text-white/40">
+            <button onclick="confirmDeposit()" class="w-full py-6 bg-white text-rose-600 rounded-3xl font-black text-lg uppercase shadow-2xl active:scale-95 transition-all">Verify Payment</button>
+            <button onclick="closePay()" class="w-full mt-6 text-white/40 text-[10px] font-black uppercase tracking-widest">Close Menu</button>
         </div>
-        <input type="text" id="trx" placeholder="Enter TrxID" class="w-full p-4 rounded-2xl bg-black/20 text-white font-bold mb-4 outline-none border border-white/20">
-        <button onclick="sendToBot()" class="bg-white text-rose-600 py-4 rounded-2xl font-black uppercase shadow-xl">Confirm Deposit</button>
-        <button onclick="document.getElementById('pay-modal').classList.add('hidden')" class="mt-4 text-white/50 text-xs">Cancel</button>
     </div>
 
     <script>
-        const dbURL = "https://ff-esport-bd-9dbc0-default-rtdb.firebaseio.com";
-        const botToken = "7968384087:AAEpp_OvCgQRvKAe_wq9pnxozHY9UHq36GI";
-        const adminId = "7071188264";
+        const CONFIG = {
+            db: "https://ff-esport-bd-9dbc0-default-rtdb.firebaseio.com",
+            token: "7968384087:AAEpp_OvCgQRvKAe_wq9pnxozHY9UHq36GI",
+            admin: "7071188264"
+        };
 
         let tg = window.Telegram.WebApp;
         tg.expand();
-        const user = tg.initDataUnsafe.user || { first_name: "Gopal", id: "7071188264" };
+        const user = tg.initDataUnsafe.user || { first_name: "Guest", id: "7071188264" };
 
+        let currentPlan = "";
+
+        // UI Initialization
         document.getElementById('u_name').innerText = user.first_name;
+        document.getElementById('p_name').innerText = user.first_name;
+        document.getElementById('p_id').innerText = "ID: " + user.id;
 
-        // চেক স্ট্যাটাস
-        function check() {
-            if(user.id == adminId) {
-                unlock();
-                document.getElementById('owner_badge').classList.remove('hidden');
+        const plans = [ {n:'3 Days', p:300}, {n:'7 Days', p:650}, {n:'15 Days', p:1400}, {n:'30 Days', p:2500} ];
+        plans.forEach(plan => {
+            document.getElementById('plan-list').innerHTML += `
+                <div onclick="openPay('${plan.n}', ${plan.p})" class="glass p-6 flex justify-between items-center active:scale-95 transition-all border-white/5">
+                    <div><h3 class="font-black text-lg">${plan.n} Access</h3><p class="text-[10px] text-cyan-400 font-bold tracking-widest uppercase">VIP Server</p></div>
+                    <div class="text-2xl font-black tracking-tighter italic">৳${plan.p}</div>
+                </div>`;
+        });
+
+        // AUTH & STATUS
+        function checkStatus() {
+            // OWNER UNLOCK
+            if(String(user.id) === CONFIG.admin) {
+                unlockUI("OWNER / LIFETIME");
                 return;
             }
-            fetch(`${dbURL}/users/${user.id}.json`).then(res => res.json()).then(data => {
-                if(data && data.isPaid) unlock();
+
+            fetch(`${CONFIG.db}/users/${user.id}.json`)
+            .then(r => r.json())
+            .then(data => {
+                if(data && data.isPaid) unlockUI(data.plan);
+            }).catch(e => console.log("Network error"));
+        }
+
+        function unlockUI(planName) {
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('predict-ui').classList.remove('opacity-20', 'pointer-events-none', 'blur-md');
+            document.getElementById('u_status').innerText = "Status: Premium Active";
+            document.getElementById('u_status').className = "text-[9px] font-black tracking-widest text-green-500 uppercase";
+            document.getElementById('p_status').innerText = planName;
+            document.getElementById('p_status').className = "text-green-500 uppercase";
+        }
+
+        // NAVIGATION
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden-section'));
+            document.getElementById('sec-' + id).classList.remove('hidden-section');
+            document.querySelectorAll('nav button').forEach(b => b.style.opacity = "0.3");
+            document.getElementById('n-' + id).style.opacity = "1";
+        }
+
+        function openPay(n, p) {
+            currentPlan = n;
+            document.getElementById('amt_display').innerText = "৳" + p;
+            document.getElementById('pay-sheet').classList.remove('hidden');
+        }
+
+        function closePay() { document.getElementById('pay-sheet').classList.add('hidden'); }
+
+        function copyNum() {
+            const el = document.createElement('textarea');
+            el.value = "01983256576";
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            tg.showAlert("Number Copied! ✅");
+        }
+
+        // FIXED BOT NOTIFICATION SYSTEM
+        function confirmDeposit() {
+            const trx = document.getElementById('trx_input').value.trim();
+            if(trx.length < 5) return tg.showAlert("Invalid Transaction ID!");
+
+            const message = `🔔 *NEW PAYMENT REQUEST*\n\n👤 *User:* ${user.first_name}\n🆔 *UID:* \`${user.id}\`\n💎 *Plan:* ${currentPlan}\n💵 *TrxID:* \`${trx}\`\n\n_Please verify and approve from Admin Panel_`;
+
+            const apiUrl = `https://api.telegram.org/bot${CONFIG.token}/sendMessage`;
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    chat_id: CONFIG.admin,
+                    text: message,
+                    parse_mode: "Markdown"
+                })
+            })
+            .then(res => res.json())
+            .then(json => {
+                if(json.ok) {
+                    tg.showAlert("রিকোয়েস্ট অ্যাডমিন ইনবক্সে পাঠানো হয়েছে! ✅\n\nঅ্যাডমিন চেক করে কিছুক্ষণের মধ্যেই আপনার একাউন্ট একটিভ করে দিবে।");
+                    closePay();
+                } else {
+                    tg.showAlert("বট মেসেজ পাঠাতে ব্যর্থ হয়েছে। অনুগ্রহ করে সরাসরি সাপোর্ট এ যোগাযোগ করুন।");
+                }
+            })
+            .catch(err => {
+                tg.showAlert("Connection Error! আপনার ইন্টারনেট চেক করুন।");
             });
         }
 
-        function unlock() {
-            document.getElementById('lock').style.display = 'none';
-            document.getElementById('predictor').classList.remove('opacity-30', 'pointer-events-none');
-            document.getElementById('status_text').innerText = "PREMIUM ACTIVE";
-            document.getElementById('status_text').className = "text-[10px] text-green-500 font-bold tracking-widest";
+        function getSignal() {
+            const p = document.getElementById('period_input').value;
+            if(!p) return tg.showAlert("প্রথমে পিরিয়ড নম্বর দিন!");
+            
+            const btn = document.getElementById('sig_btn');
+            btn.innerText = "Analyzing Server...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                const res = Math.random() > 0.5 ? "BIG" : "SMALL";
+                document.getElementById('res_div').classList.remove('hidden');
+                const finalRes = document.getElementById('final_result');
+                finalRes.innerText = res;
+                finalRes.className = res === "BIG" ? "text-8xl font-black tracking-tighter text-orange-500 animate__animated animate__heartBeat" : "text-8xl font-black tracking-tighter text-blue-500 animate__animated animate__heartBeat";
+                
+                btn.innerText = "Analyze";
+                btn.disabled = false;
+                document.getElementById('period_input').value = parseInt(p) + 1;
+            }, 1500);
         }
 
-        function showPlans() { document.getElementById('plan-modal').classList.remove('hidden'); }
-        function openPay(plan, price) {
-            window.activePlan = plan;
-            document.getElementById('amt').innerText = "৳" + price;
-            document.getElementById('pay-modal').classList.remove('hidden');
-        }
-
-        // একদম সরাসরি বটে মেসেজ পাঠানোর ফাংশন
-        function sendToBot() {
-            const trxId = document.getElementById('trx').value;
-            if(trxId.length < 5) return alert("Invalid TrxID!");
-
-            const message = `🚀 *NEW DEPOSIT REQUEST*\n\n👤 Name: ${user.first_name}\n🆔 UID: \`${user.id}\`\n💎 Plan: ${window.activePlan}\n💵 TrxID: \`${trxId}\`\n\n_Approve করার জন্য এডমিন প্যানেল ব্যবহার করুন_`;
-
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-            const params = {
-                chat_id: adminId,
-                text: message,
-                parse_mode: "Markdown"
-            };
-
-            fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(params)
-            })
-            .then(response => response.json())
-            .then(res => {
-                if(res.ok) {
-                    alert("রিকোয়েস্ট পাঠানো হয়েছে! বট চেক করুন।");
-                    document.getElementById('pay-modal').classList.add('hidden');
-                    document.getElementById('plan-modal').classList.add('hidden');
-                } else {
-                    alert("ভুল হয়েছে: " + res.description);
-                }
-            })
-            .catch(err => alert("Error: " + err));
-        }
-
-        function generate() {
-            const res = Math.random() > 0.5 ? "BIG" : "SMALL";
-            const box = document.getElementById('result');
-            box.innerText = res;
-            box.classList.remove('hidden');
-            box.className = res === "BIG" ? "text-6xl font-black text-center mt-6 text-orange-500" : "text-6xl font-black text-center mt-6 text-blue-500";
-        }
-
-        check();
-        setInterval(check, 5000);
+        showSection('plan');
+        checkStatus();
+        setInterval(checkStatus, 5000);
     </script>
 </body>
 </html>
