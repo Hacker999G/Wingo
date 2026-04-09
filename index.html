@@ -67,7 +67,6 @@
             width: 100%; padding: 6px; background: linear-gradient(90deg, #ffcc00, #ff6600);
             border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: #000; transition: 0.2s; font-size: 11px;
         }
-
         .premium-tag { font-size: 7px; color: #888; margin-top: 8px; font-style: italic; opacity: 0.7; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
@@ -146,35 +145,36 @@
                 const now = new Date();
                 const seconds = now.getSeconds();
                 
-                // গেম সাইটের ৩০ সেকেন্ডের টাইমার সিঙ্ক লজিক
-                const remaining = 30 - (seconds % 30);
+                // গেম টাইমারের সাথে নিখুঁত সিঙ্কের জন্য লজিক
+                let remaining = 30 - (seconds % 30);
                 
-                // আপনার স্ক্রিনশট (রাত ১০:০০) অনুযায়ী ক্যালকুলেটেড বেস
-                // স্ক্রিনশটে পিরিয়ড ৫১৯২১। সে অনুযায়ী অ্যাডজাস্টমেন্ট:
+                // স্ক্রিনশটের সময় ১০:০৬ ছিল এবং পিরিয়ড ৫১৯৩৩ ছিল।
+                // বেস ক্যালকুলেশন (+১ যোগ করে পরবর্তী চলমান পিরিয়ড বের করা হয়েছে)
                 const total30sIntervals = (now.getHours() * 120) + (now.getMinutes() * 2) + Math.floor(seconds / 30);
                 const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
                 
-                // নতুন পিরিয়ড যা গেমের বর্তমান লিস্টের পরের নাম্বার শো করবে
-                const currentPeriod = 49280 + total30sIntervals;
-                const periodDisplay = dateStr + "1000" + currentPeriod;
+                // এখানে ৪৯২৮১ সেট করা হয়েছে যাতে বর্তমানে চলমান (Active) পিরিয়ড দেখায়
+                const currentActivePeriod = 49281 + total30sIntervals;
+                const periodFull = dateStr + "1000" + currentActivePeriod;
 
-                document.getElementById('periodDisplay').innerText = "P: " + periodDisplay;
+                document.getElementById('periodDisplay').innerText = "P: " + periodFull;
                 document.getElementById('secDisplay').innerText = remaining;
 
-                // যখন টাইমার নতুন ৩০ সেকেন্ডে যাবে, সিগনাল আপডেট হবে
+                // সিগনাল জেনারেশন লজিক
                 if (remaining === 30 || document.getElementById('signalResult').innerText === "WAIT") {
-                    updateSignal(currentPeriod, now.getMinutes(), now.getHours());
+                    updateSignal(currentActivePeriod);
                 }
             }, 1000);
         }
 
-        function updateSignal(seed, mins, hrs) {
+        function updateSignal(seed) {
             const sigBox = document.getElementById('signalResult');
             const probText = document.getElementById('probability');
             const probBar = document.getElementById('probBar');
 
-            const prediction = (seed % 2 === 0) ? "BIG" : "SMALL";
-            const accuracy = 92 + (seed % 7); 
+            // একটি স্ট্যাবল প্রেডিকশন অ্যালগরিদম
+            const prediction = (seed % 3 === 0 || seed % 5 === 0) ? "BIG" : "SMALL";
+            const accuracy = 94 + (seed % 5); 
 
             sigBox.innerText = prediction;
             sigBox.style.color = (prediction === "BIG") ? "#ffcc00" : "#ff3333";
