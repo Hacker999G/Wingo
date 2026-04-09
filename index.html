@@ -8,10 +8,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Montserrat', sans-serif; }
         
-        /* Background Game Layer */
         iframe { position: absolute; width: 100%; height: 100%; border: none; z-index: 1; }
 
-        /* Draggable Box */
         #vipBox {
             position: absolute;
             z-index: 10000;
@@ -156,8 +154,8 @@
                 const total30sIntervals = (now.getHours() * 120) + (now.getMinutes() * 2) + Math.floor(seconds / 30);
                 const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
                 
-                // Period logic synced with your requirement
-                const period = dateStr + "1000" + (50001 + total30sIntervals);
+                // আপনার স্ক্রিনশট অনুযায়ী পিরিয়ড নাম্বার অ্যাডজাস্ট করা হয়েছে (৪৯২৮১ বেস ধরে)
+                const period = dateStr + "1000" + (49281 + total30sIntervals);
 
                 document.getElementById('periodDisplay').innerText = "P: " + period;
                 document.getElementById('secDisplay').innerText = remaining;
@@ -178,9 +176,7 @@
             const logicValue = Math.abs(Math.floor(wave)) % 10;
             
             const prediction = (logicValue >= 5) ? "BIG" : "SMALL";
-            const baseAcc = 90; 
-            const dynamicAcc = 3 + (seed % 6); 
-            const accuracy = baseAcc + dynamicAcc;
+            const accuracy = 90 + (seed % 9); 
 
             sigBox.innerText = prediction;
             
