@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TK CLUB AI PREMIUM v6 - 2026</title>
+    <title>DK WIN AI PREMIUM v6 - 2026</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Montserrat', sans-serif; }
@@ -82,14 +82,14 @@
 
     <div id="vipBox" style="top: 10px; left: 10px;">
         <div id="loginUI">
-            <div class="title">TK AI V6 LOGIN</div>
+            <div class="title">DK WIN AI V6 LOGIN</div>
             <input type="password" id="pass" placeholder="Password">
             <button onclick="auth()">START AI</button>
             <div id="err" style="color: #ff3333; font-size: 8px; margin-top: 5px; display: none;">Invalid!</div>
         </div>
 
         <div id="mainUI" style="display: none;">
-            <div class="title">TK PREMIUM V6</div>
+            <div class="title">DK WIN PREMIUM V6</div>
             <div class="period-box" id="periodDisplay">P: LOADING...</div>
             
             <div class="timer-row">
@@ -151,11 +151,13 @@
                 const seconds = now.getSeconds();
                 const remaining = 30 - (seconds % 30);
                 
+                // পিরিয়ড ক্যালকুলেশন: বর্তমান সময় অনুযায়ী ১ করে বাড়বে।
+                // ৪২৯২৮ বেস সেট করা হয়েছে যাতে রাত ১০টার দিকে ৫১৯১৫ এর কাছাকাছি থাকে।
                 const total30sIntervals = (now.getHours() * 120) + (now.getMinutes() * 2) + Math.floor(seconds / 30);
                 const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
                 
-                // আপনার স্ক্রিনশট অনুযায়ী পিরিয়ড নাম্বার অ্যাডজাস্ট করা হয়েছে (৪৯২৮১ বেস ধরে)
-                const period = dateStr + "1000" + (49281 + total30sIntervals);
+                // ১ করে যোগ হওয়ার লজিক
+                const period = dateStr + "1000" + (49277 + total30sIntervals);
 
                 document.getElementById('periodDisplay').innerText = "P: " + period;
                 document.getElementById('secDisplay').innerText = remaining;
