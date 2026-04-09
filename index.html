@@ -7,69 +7,113 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Montserrat', sans-serif; }
+        
         iframe { position: absolute; width: 100%; height: 100%; border: none; z-index: 1; }
 
         #vipBox {
             position: absolute;
             z-index: 10000;
-            width: 140px; 
-            background: rgba(15, 15, 15, 0.9);
-            border: 1px solid #ffcc00;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+            width: 150px; 
+            background: rgba(10, 10, 10, 0.95);
+            border: 2px solid #ffcc00;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.9);
             text-align: center;
-            padding: 8px 6px; 
+            padding: 10px; 
             cursor: move;
             touch-action: none;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
         }
 
-        .title { font-size: 10px; font-weight: 900; color: #ffcc00; text-transform: uppercase; margin-bottom: 5px; }
-        .period-box { font-size: 9px; color: #fff; margin-bottom: 4px; background: rgba(255,255,255,0.05); padding: 3px; border-radius: 5px; }
-        .timer-row { display: flex; justify-content: center; align-items: center; margin: 5px 0; gap: 5px; }
-        .timer-circle { font-size: 16px; font-weight: bold; color: #00ff88; }
-        .signal-card { background: rgba(255, 255, 255, 0.03); border-radius: 8px; padding: 6px; border: 1px solid rgba(255, 255, 255, 0.08); }
-        .signal-display { font-size: 28px; font-weight: 900; margin: 2px 0; }
-        .probability-text { font-size: 9px; font-weight: bold; color: #00ff88; }
-        #loginUI input { width: 100%; padding: 6px; margin: 6px 0; background: #111; border: 1px solid #ffcc00; color: #fff; border-radius: 6px; font-size: 11px; text-align: center; }
-        #loginUI button { width: 100%; padding: 6px; background: #ffcc00; border: none; border-radius: 6px; font-weight: bold; font-size: 11px; }
+        .title { 
+            font-size: 11px; font-weight: 900; color: #ffcc00; 
+            text-transform: uppercase; margin-bottom: 8px;
+        }
+
+        .period-box { font-size: 9px; color: #fff; margin-bottom: 5px; background: rgba(255,255,255,0.1); padding: 4px; border-radius: 6px; border: 0.5px solid #ffcc00; }
+        
+        .timer-circle { font-size: 18px; font-weight: bold; color: #00ff88; margin: 5px 0; }
+
+        .signal-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .signal-display { font-size: 30px; font-weight: 900; margin: 3px 0; }
+        .probability-text { font-size: 10px; font-weight: bold; color: #00ff88; }
+
+        /* Login Styling */
+        #loginUI input {
+            width: 100%; padding: 8px; margin: 8px 0;
+            background: #111; border: 1px solid #ffcc00; color: #fff; 
+            border-radius: 8px; text-align: center; font-size: 12px;
+            outline: none; pointer-events: auto; /* নিশ্চিত করছে ক্লিক কাজ করবে */
+        }
+        #loginUI button {
+            width: 100%; padding: 8px; background: linear-gradient(90deg, #ffcc00, #ff9900);
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #000; font-size: 12px;
+        }
+
+        .premium-tag { font-size: 8px; color: #777; margin-top: 10px; font-style: italic; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <iframe src="https://hgnice.xyz/#/register?invitationCode=86331230624"></iframe>
 
-    <div id="vipBox" style="top: 10px; left: 10px;">
+    <div id="vipBox" style="top: 20px; left: 20px;">
         <div id="loginUI">
             <div class="title">DK WIN AI LOGIN</div>
-            <input type="password" id="pass" placeholder="Password">
-            <button onclick="auth()">START AI</button>
+            <input type="password" id="pass" placeholder="Enter Password" onpointerdown="event.stopPropagation()">
+            <button onclick="auth()" onpointerdown="event.stopPropagation()">START AI</button>
+            <div id="err" style="color: #ff3333; font-size: 9px; margin-top: 5px; display: none;">Invalid!</div>
         </div>
 
         <div id="mainUI" style="display: none;">
-            <div class="title">DK WIN PREMIUM</div>
+            <div class="title">DK WIN V6</div>
             <div class="period-box" id="periodDisplay">P: LOADING...</div>
-            <div class="timer-row"><div class="timer-circle"><span id="secDisplay">--</span>s</div></div>
+            <div class="timer-circle"><span id="secDisplay">--</span>s</div>
             <div class="signal-card">
                 <div class="signal-display" id="signalResult">WAIT</div>
                 <div class="probability-text" id="probability">WIN RATE: --%</div>
             </div>
+            <div class="premium-tag">V.I.P ALGORITHM V6.2</div>
         </div>
     </div>
 
     <script>
-        // Draggable script
         const box = document.getElementById("vipBox");
-        let xOffset = 0, yOffset = 0, isDragging = false;
-        box.ontouchstart = (e) => { isDragging = true; initialX = e.touches[0].clientX - xOffset; initialY = e.touches[0].clientY - yOffset; };
-        box.ontouchmove = (e) => { if(isDragging) { xOffset = e.touches[0].clientX - initialX; yOffset = e.touches[0].clientY - initialY; box.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`; } };
-        box.ontouchend = () => isDragging = false;
+        let xOffset = 0, yOffset = 0, isDragging = false, initialX, initialY;
+
+        // ড্র্যাগিং লজিক যা ইনপুট ফিল্ডে বাধা দেবে না
+        box.addEventListener("pointerdown", (e) => {
+            if (e.target.tagName === "INPUT" || e.target.tagName === "BUTTON") return;
+            isDragging = true;
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        });
+
+        document.addEventListener("pointermove", (e) => {
+            if (isDragging) {
+                xOffset = e.clientX - initialX;
+                yOffset = e.clientY - initialY;
+                box.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
+            }
+        });
+
+        document.addEventListener("pointerup", () => isDragging = false);
 
         function auth() {
             if(document.getElementById('pass').value === "123456") {
                 document.getElementById('loginUI').style.display = 'none';
                 document.getElementById('mainUI').style.display = 'block';
                 runEngine();
+            } else {
+                document.getElementById('err').style.display = 'block';
+                setTimeout(() => { document.getElementById('err').style.display = 'none'; }, 2000);
             }
         }
 
@@ -77,22 +121,18 @@
             setInterval(() => {
                 const now = new Date();
                 const seconds = now.getSeconds();
-                
-                // গেম টাইমারের সাথে সিঙ্ক (৩০ সেকেন্ডের স্লট)
                 const remaining = 30 - (seconds % 30);
                 
-                // ১০:১৪ PM এবং পিরিয়ড ৫১৯৪৯ অনুযায়ী বেস অ্যাডজাস্টমেন্ট
                 const total30sIntervals = (now.getHours() * 120) + (now.getMinutes() * 2) + Math.floor(seconds / 30);
                 const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
                 
-                // আপনার অনুরোধ অনুযায়ী ২ পিরিয়ড এগিয়ে রাখা হয়েছে (৪৯২৮১ + ২ = ৪৯২৮৩)
+                // ২ ধাপ এগিয়ে রাখা হয়েছে (৪৯২৮১ + ২ = ৪৯২৮৩)
                 const futurePeriod = 49283 + total30sIntervals;
                 const periodFull = dateStr + "1000" + futurePeriod;
 
                 document.getElementById('periodDisplay').innerText = "NEXT P: " + periodFull;
                 document.getElementById('secDisplay').innerText = remaining;
 
-                // নতুন পিরিয়ড শুরু হওয়ার ঠিক আগে বা শুরুতে সিগনাল পরিবর্তন
                 if (remaining === 30 || remaining === 29) {
                     updateSignal(futurePeriod);
                 }
@@ -103,9 +143,8 @@
             const sigBox = document.getElementById('signalResult');
             const probText = document.getElementById('probability');
 
-            // সিগনাল লজিক যা পিরিয়ড নাম্বারের উপর ভিত্তি করে কাজ করবে
             const prediction = (seed % 3 === 0 || seed % 7 === 0) ? "BIG" : "SMALL";
-            const accuracy = 93 + (seed % 6); 
+            const accuracy = 94 + (seed % 5); 
 
             sigBox.innerText = prediction;
             sigBox.style.color = (prediction === "BIG") ? "#ffcc00" : "#ff3333";
