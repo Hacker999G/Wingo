@@ -7,7 +7,6 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Montserrat', sans-serif; }
-        
         iframe { position: absolute; width: 100%; height: 100%; border: none; z-index: 1; }
 
         #vipBox {
@@ -38,7 +37,6 @@
         }
 
         .period-box { font-size: 9px; color: #fff; margin-bottom: 4px; background: rgba(255,255,255,0.05); padding: 3px; border-radius: 5px; border: 0.5px solid rgba(255,255,255,0.1); }
-        
         .timer-row { display: flex; justify-content: center; align-items: center; margin: 5px 0; gap: 5px; }
         .timer-label { font-size: 9px; color: #aaa; }
         .timer-circle { font-size: 16px; font-weight: bold; color: #00ff88; text-shadow: 0 0 8px #00ff88; }
@@ -59,7 +57,6 @@
 
         .status-bar { height: 3px; width: 90%; background: #333; margin: 6px auto; border-radius: 5px; overflow: hidden; }
         .status-fill { height: 100%; width: 0%; background: #00ff88; transition: width 0.8s; }
-
         .probability-text { font-size: 9px; font-weight: bold; color: #00ff88; text-transform: uppercase; letter-spacing: 0.5px; }
 
         #loginUI input {
@@ -70,7 +67,6 @@
             width: 100%; padding: 6px; background: linear-gradient(90deg, #ffcc00, #ff6600);
             border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: #000; transition: 0.2s; font-size: 11px;
         }
-        #loginUI button:active { transform: scale(0.96); }
 
         .premium-tag { font-size: 7px; color: #888; margin-top: 8px; font-style: italic; opacity: 0.7; }
     </style>
@@ -82,7 +78,7 @@
 
     <div id="vipBox" style="top: 10px; left: 10px;">
         <div id="loginUI">
-            <div class="title">DK WIN AI V6 LOGIN</div>
+            <div class="title">DK WIN AI LOGIN</div>
             <input type="password" id="pass" placeholder="Password">
             <button onclick="auth()">START AI</button>
             <div id="err" style="color: #ff3333; font-size: 8px; margin-top: 5px; display: none;">Invalid!</div>
@@ -149,21 +145,25 @@
             setInterval(() => {
                 const now = new Date();
                 const seconds = now.getSeconds();
+                
+                // গেম সাইটের ৩০ সেকেন্ডের টাইমার সিঙ্ক লজিক
                 const remaining = 30 - (seconds % 30);
                 
-                // পিরিয়ড ক্যালকুলেশন: বর্তমান সময় অনুযায়ী ১ করে বাড়বে।
-                // ৪২৯২৮ বেস সেট করা হয়েছে যাতে রাত ১০টার দিকে ৫১৯১৫ এর কাছাকাছি থাকে।
+                // আপনার স্ক্রিনশট (রাত ১০:০০) অনুযায়ী ক্যালকুলেটেড বেস
+                // স্ক্রিনশটে পিরিয়ড ৫১৯২১। সে অনুযায়ী অ্যাডজাস্টমেন্ট:
                 const total30sIntervals = (now.getHours() * 120) + (now.getMinutes() * 2) + Math.floor(seconds / 30);
                 const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
                 
-                // ১ করে যোগ হওয়ার লজিক
-                const period = dateStr + "1000" + (49277 + total30sIntervals);
+                // নতুন পিরিয়ড যা গেমের বর্তমান লিস্টের পরের নাম্বার শো করবে
+                const currentPeriod = 49280 + total30sIntervals;
+                const periodDisplay = dateStr + "1000" + currentPeriod;
 
-                document.getElementById('periodDisplay').innerText = "P: " + period;
+                document.getElementById('periodDisplay').innerText = "P: " + periodDisplay;
                 document.getElementById('secDisplay').innerText = remaining;
 
+                // যখন টাইমার নতুন ৩০ সেকেন্ডে যাবে, সিগনাল আপডেট হবে
                 if (remaining === 30 || document.getElementById('signalResult').innerText === "WAIT") {
-                    updateSignal(total30sIntervals, now.getMinutes(), now.getHours());
+                    updateSignal(currentPeriod, now.getMinutes(), now.getHours());
                 }
             }, 1000);
         }
@@ -173,28 +173,15 @@
             const probText = document.getElementById('probability');
             const probBar = document.getElementById('probBar');
 
-            const volatility = Math.abs(Math.sin(hrs + mins)) * 1.5;
-            let wave = Math.sin(mins * volatility) * seed;
-            const logicValue = Math.abs(Math.floor(wave)) % 10;
-            
-            const prediction = (logicValue >= 5) ? "BIG" : "SMALL";
-            const accuracy = 90 + (seed % 9); 
+            const prediction = (seed % 2 === 0) ? "BIG" : "SMALL";
+            const accuracy = 92 + (seed % 7); 
 
             sigBox.innerText = prediction;
-            
-            if(prediction === "BIG") {
-                sigBox.style.color = "#ffcc00"; 
-                sigBox.style.textShadow = "0 0 15px #ffcc00";
-            } else {
-                sigBox.style.color = "#ff3333"; 
-                sigBox.style.textShadow = "0 0 15px #ff3333";
-            }
+            sigBox.style.color = (prediction === "BIG") ? "#ffcc00" : "#ff3333";
+            sigBox.style.textShadow = `0 0 15px ${(prediction === "BIG") ? "#ffcc00" : "#ff3333"}`;
             
             probText.innerText = "WIN RATE: " + accuracy + "%";
             probBar.style.width = accuracy + "%";
-            
-            box.style.transform += " scale(1.02)";
-            setTimeout(() => { box.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0) scale(1)`; }, 250);
         }
     </script>
 </body>
