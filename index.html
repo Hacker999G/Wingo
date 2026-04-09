@@ -8,8 +8,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Montserrat', sans-serif; }
         
+        /* Background Game Layer */
         iframe { position: absolute; width: 100%; height: 100%; border: none; z-index: 1; }
 
+        /* Draggable Box */
         #vipBox {
             position: absolute;
             z-index: 10000;
@@ -151,11 +153,10 @@
                 const seconds = now.getSeconds();
                 const remaining = 30 - (seconds % 30);
                 
-                // ক্যালকুলেশন ৩০ সেকেন্ড ইন্টারভালের জন্য
                 const total30sIntervals = (now.getHours() * 120) + (now.getMinutes() * 2) + Math.floor(seconds / 30);
                 const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
                 
-                // পিরিয়ড সিরিয়াল আপনার দেওয়া ৫১৮৮৯ এর সাথে মিল রেখে আপডেট করা হয়েছে (৫০০০১ + বর্তমান ইন্টারভাল)
+                // Period logic synced with your requirement
                 const period = dateStr + "1000" + (50001 + total30sIntervals);
 
                 document.getElementById('periodDisplay').innerText = "P: " + period;
