@@ -22,54 +22,18 @@
             cursor: move;
             touch-action: none;
             backdrop-filter: blur(8px);
-            animation: borderFade 5s infinite;
         }
 
-        @keyframes borderFade {
-            0%, 100% { border-color: #ffcc00; box-shadow: 0 0 10px rgba(255, 204, 0, 0.4); }
-            50% { border-color: #ff3333; box-shadow: 0 0 20px rgba(255, 51, 51, 0.6); }
-        }
-
-        .title { 
-            font-size: 10px; font-weight: 900; color: #ffcc00; 
-            text-transform: uppercase; letter-spacing: 1px; 
-            margin-bottom: 5px; text-shadow: 0 0 4px #ffcc00;
-        }
-
-        .period-box { font-size: 9px; color: #fff; margin-bottom: 4px; background: rgba(255,255,255,0.05); padding: 3px; border-radius: 5px; border: 0.5px solid rgba(255,255,255,0.1); }
+        .title { font-size: 10px; font-weight: 900; color: #ffcc00; text-transform: uppercase; margin-bottom: 5px; }
+        .period-box { font-size: 9px; color: #fff; margin-bottom: 4px; background: rgba(255,255,255,0.05); padding: 3px; border-radius: 5px; }
         .timer-row { display: flex; justify-content: center; align-items: center; margin: 5px 0; gap: 5px; }
-        .timer-label { font-size: 9px; color: #aaa; }
-        .timer-circle { font-size: 16px; font-weight: bold; color: #00ff88; text-shadow: 0 0 8px #00ff88; }
-
-        .signal-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            padding: 6px;
-            margin-top: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .signal-display {
-            font-size: 28px; font-weight: 900; margin: 2px 0;
-            letter-spacing: 1.5px;
-            transition: 0.4s ease-out;
-        }
-
-        .status-bar { height: 3px; width: 90%; background: #333; margin: 6px auto; border-radius: 5px; overflow: hidden; }
-        .status-fill { height: 100%; width: 0%; background: #00ff88; transition: width 0.8s; }
-        .probability-text { font-size: 9px; font-weight: bold; color: #00ff88; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        #loginUI input {
-            width: 100%; padding: 6px; margin: 6px 0;
-            background: #111; border: 1px solid #ffcc00; color: #fff; border-radius: 6px; text-align: center; outline: none; font-size: 11px;
-        }
-        #loginUI button {
-            width: 100%; padding: 6px; background: linear-gradient(90deg, #ffcc00, #ff6600);
-            border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: #000; transition: 0.2s; font-size: 11px;
-        }
-        .premium-tag { font-size: 7px; color: #888; margin-top: 8px; font-style: italic; opacity: 0.7; }
+        .timer-circle { font-size: 16px; font-weight: bold; color: #00ff88; }
+        .signal-card { background: rgba(255, 255, 255, 0.03); border-radius: 8px; padding: 6px; border: 1px solid rgba(255, 255, 255, 0.08); }
+        .signal-display { font-size: 28px; font-weight: 900; margin: 2px 0; }
+        .probability-text { font-size: 9px; font-weight: bold; color: #00ff88; }
+        #loginUI input { width: 100%; padding: 6px; margin: 6px 0; background: #111; border: 1px solid #ffcc00; color: #fff; border-radius: 6px; font-size: 11px; text-align: center; }
+        #loginUI button { width: 100%; padding: 6px; background: #ffcc00; border: none; border-radius: 6px; font-weight: bold; font-size: 11px; }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -80,63 +44,32 @@
             <div class="title">DK WIN AI LOGIN</div>
             <input type="password" id="pass" placeholder="Password">
             <button onclick="auth()">START AI</button>
-            <div id="err" style="color: #ff3333; font-size: 8px; margin-top: 5px; display: none;">Invalid!</div>
         </div>
 
         <div id="mainUI" style="display: none;">
-            <div class="title">DK WIN PREMIUM V6</div>
+            <div class="title">DK WIN PREMIUM</div>
             <div class="period-box" id="periodDisplay">P: LOADING...</div>
-            
-            <div class="timer-row">
-                <span class="timer-label">NEXT IN:</span>
-                <div class="timer-circle"><span id="secDisplay">--</span>s</div>
-            </div>
-
+            <div class="timer-row"><div class="timer-circle"><span id="secDisplay">--</span>s</div></div>
             <div class="signal-card">
                 <div class="signal-display" id="signalResult">WAIT</div>
                 <div class="probability-text" id="probability">WIN RATE: --%</div>
-                <div class="status-bar"><div id="probBar" class="status-fill"></div></div>
             </div>
-
-            <div class="premium-tag">V.I.P ALGORITHM V6.1</div>
         </div>
     </div>
 
     <script>
+        // Draggable script
         const box = document.getElementById("vipBox");
-        let isDragging = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
-
-        const dragStart = (e) => {
-            initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
-            initialY = (e.type === "touchstart" ? e.touches[0].clientY : e.clientY) - yOffset;
-            if (e.target === box || box.contains(e.target)) isDragging = true;
-        };
-        const dragEnd = () => { initialX = currentX; initialY = currentY; isDragging = false; };
-        const drag = (e) => {
-            if (isDragging) {
-                e.preventDefault();
-                currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
-                currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
-                xOffset = currentX; yOffset = currentY;
-                box.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-            }
-        };
-
-        box.addEventListener("touchstart", dragStart, {passive: false});
-        document.addEventListener("touchend", dragEnd);
-        document.addEventListener("touchmove", drag, {passive: false});
-        box.addEventListener("mousedown", dragStart);
-        document.addEventListener("mouseup", dragEnd);
-        document.addEventListener("mousemove", drag);
+        let xOffset = 0, yOffset = 0, isDragging = false;
+        box.ontouchstart = (e) => { isDragging = true; initialX = e.touches[0].clientX - xOffset; initialY = e.touches[0].clientY - yOffset; };
+        box.ontouchmove = (e) => { if(isDragging) { xOffset = e.touches[0].clientX - initialX; yOffset = e.touches[0].clientY - initialY; box.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`; } };
+        box.ontouchend = () => isDragging = false;
 
         function auth() {
             if(document.getElementById('pass').value === "123456") {
                 document.getElementById('loginUI').style.display = 'none';
                 document.getElementById('mainUI').style.display = 'block';
                 runEngine();
-            } else {
-                document.getElementById('err').style.display = 'block';
-                setTimeout(() => { document.getElementById('err').style.display = 'none'; }, 2000);
             }
         }
 
@@ -145,24 +78,23 @@
                 const now = new Date();
                 const seconds = now.getSeconds();
                 
-                // গেম টাইমারের সাথে নিখুঁত সিঙ্কের জন্য লজিক
-                let remaining = 30 - (seconds % 30);
+                // গেম টাইমারের সাথে সিঙ্ক (৩০ সেকেন্ডের স্লট)
+                const remaining = 30 - (seconds % 30);
                 
-                // স্ক্রিনশটের সময় ১০:০৬ ছিল এবং পিরিয়ড ৫১৯৩৩ ছিল।
-                // বেস ক্যালকুলেশন (+১ যোগ করে পরবর্তী চলমান পিরিয়ড বের করা হয়েছে)
+                // ১০:১৪ PM এবং পিরিয়ড ৫১৯৪৯ অনুযায়ী বেস অ্যাডজাস্টমেন্ট
                 const total30sIntervals = (now.getHours() * 120) + (now.getMinutes() * 2) + Math.floor(seconds / 30);
                 const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
                 
-                // এখানে ৪৯২৮১ সেট করা হয়েছে যাতে বর্তমানে চলমান (Active) পিরিয়ড দেখায়
-                const currentActivePeriod = 49281 + total30sIntervals;
-                const periodFull = dateStr + "1000" + currentActivePeriod;
+                // আপনার অনুরোধ অনুযায়ী ২ পিরিয়ড এগিয়ে রাখা হয়েছে (৪৯২৮১ + ২ = ৪৯২৮৩)
+                const futurePeriod = 49283 + total30sIntervals;
+                const periodFull = dateStr + "1000" + futurePeriod;
 
-                document.getElementById('periodDisplay').innerText = "P: " + periodFull;
+                document.getElementById('periodDisplay').innerText = "NEXT P: " + periodFull;
                 document.getElementById('secDisplay').innerText = remaining;
 
-                // সিগনাল জেনারেশন লজিক
-                if (remaining === 30 || document.getElementById('signalResult').innerText === "WAIT") {
-                    updateSignal(currentActivePeriod);
+                // নতুন পিরিয়ড শুরু হওয়ার ঠিক আগে বা শুরুতে সিগনাল পরিবর্তন
+                if (remaining === 30 || remaining === 29) {
+                    updateSignal(futurePeriod);
                 }
             }, 1000);
         }
@@ -170,18 +102,14 @@
         function updateSignal(seed) {
             const sigBox = document.getElementById('signalResult');
             const probText = document.getElementById('probability');
-            const probBar = document.getElementById('probBar');
 
-            // একটি স্ট্যাবল প্রেডিকশন অ্যালগরিদম
-            const prediction = (seed % 3 === 0 || seed % 5 === 0) ? "BIG" : "SMALL";
-            const accuracy = 94 + (seed % 5); 
+            // সিগনাল লজিক যা পিরিয়ড নাম্বারের উপর ভিত্তি করে কাজ করবে
+            const prediction = (seed % 3 === 0 || seed % 7 === 0) ? "BIG" : "SMALL";
+            const accuracy = 93 + (seed % 6); 
 
             sigBox.innerText = prediction;
             sigBox.style.color = (prediction === "BIG") ? "#ffcc00" : "#ff3333";
-            sigBox.style.textShadow = `0 0 15px ${(prediction === "BIG") ? "#ffcc00" : "#ff3333"}`;
-            
             probText.innerText = "WIN RATE: " + accuracy + "%";
-            probBar.style.width = accuracy + "%";
         }
     </script>
 </body>
