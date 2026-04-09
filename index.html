@@ -2,168 +2,209 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wingo Elite Hack Pro</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TK CLUB AI PREMIUM v6 - 2026</title>
     <style>
-        body { background: #050810; color: white; font-family: sans-serif; user-select: none; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.08); }
-        .gradient-text { background: linear-gradient(to right, #00f2ff, #7000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .pay-btn { background: linear-gradient(135deg, #00f2ff, #7000ff); }
-        .hidden-section { display: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Montserrat', sans-serif; }
+        
+        /* Background Game Layer */
+        iframe { position: absolute; width: 100%; height: 100%; border: none; z-index: 1; }
+
+        /* Draggable Box - NOW COMPACT & MINIMAL */
+        #vipBox {
+            position: absolute;
+            z-index: 10000;
+            width: 140px; /* Reduced width */
+            background: rgba(15, 15, 15, 0.9);
+            border: 1px solid #ffcc00;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+            text-align: center;
+            padding: 8px 6px; /* Compact padding */
+            cursor: move;
+            touch-action: none;
+            backdrop-filter: blur(8px);
+            animation: borderFade 5s infinite;
+        }
+
+        @keyframes borderFade {
+            0%, 100% { border-color: #ffcc00; box-shadow: 0 0 10px rgba(255, 204, 0, 0.4); }
+            50% { border-color: #ff3333; box-shadow: 0 0 20px rgba(255, 51, 51, 0.6); }
+        }
+
+        .title { 
+            font-size: 10px; font-weight: 900; color: #ffcc00; 
+            text-transform: uppercase; letter-spacing: 1px; 
+            margin-bottom: 5px; text-shadow: 0 0 4px #ffcc00;
+        }
+
+        .period-box { font-size: 9px; color: #fff; margin-bottom: 4px; background: rgba(255,255,255,0.05); padding: 3px; border-radius: 5px; border: 0.5px solid rgba(255,255,255,0.1); }
+        
+        .timer-row { display: flex; justify-content: center; align-items: center; margin: 5px 0; gap: 5px; }
+        .timer-label { font-size: 9px; color: #aaa; }
+        .timer-circle { font-size: 16px; font-weight: bold; color: #00ff88; text-shadow: 0 0 8px #00ff88; }
+
+        /* Prediction Card - Compact */
+        .signal-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 6px;
+            margin-top: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .signal-display {
+            font-size: 28px; font-weight: 900; margin: 2px 0;
+            letter-spacing: 1.5px;
+            transition: 0.4s ease-out;
+        }
+
+        .status-bar { height: 3px; width: 90%; background: #333; margin: 6px auto; border-radius: 5px; overflow: hidden; }
+        .status-fill { height: 100%; width: 0%; background: #00ff88; transition: width 0.8s; }
+
+        .probability-text { font-size: 9px; font-weight: bold; color: #00ff88; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Compact Login UI */
+        #loginUI input {
+            width: 100%; padding: 6px; margin: 6px 0;
+            background: #111; border: 1px solid #ffcc00; color: #fff; border-radius: 6px; text-align: center; outline: none; font-size: 11px;
+        }
+        #loginUI button {
+            width: 100%; padding: 6px; background: linear-gradient(90deg, #ffcc00, #ff6600);
+            border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: #000; transition: 0.2s; font-size: 11px;
+        }
+        #loginUI button:active { transform: scale(0.96); }
+
+        .premium-tag { font-size: 7px; color: #888; margin-top: 8px; font-style: italic; opacity: 0.7; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
 </head>
-<body class="overflow-hidden">
+<body>
 
-    <header class="p-6 flex justify-between items-center animate__animated animate__fadeInDown">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl border-2 border-cyan-500/30 flex items-center justify-center bg-cyan-500/10 text-xl text-cyan-400">💎</div>
-            <div>
-                <h2 id="u_name" class="font-bold text-sm">Loading...</h2>
-                <p id="u_status" class="text-[9px] font-black tracking-widest text-red-500 uppercase">Status: Checking...</p>
-            </div>
+    <iframe src="https://tkclub2.com/#/register?invitationCode=41654207537"></iframe>
+
+    <div id="vipBox" style="top: 10px; left: 10px;">
+        <div id="loginUI">
+            <div class="title">TK AI V6 LOGIN</div>
+            <input type="password" id="pass" placeholder="Password">
+            <button onclick="auth()">START AI</button>
+            <div id="err" style="color: #ff3333; font-size: 8px; margin-top: 5px; display: none;">Invalid!</div>
         </div>
-        <div class="glass px-4 py-2 text-[10px] font-bold text-cyan-400 border-cyan-500/20 uppercase">Network: Live</div>
-    </header>
 
-    <main class="h-[calc(100vh-160px)] overflow-y-auto px-6">
-        <section id="sec-plan" class="animate__animated animate__fadeIn">
-            <h1 class="text-3xl font-black mb-6 italic uppercase">Choose <span class="gradient-text">Plan</span></h1>
-            <div class="grid gap-4" id="plan-list"></div>
-        </section>
-
-        <section id="sec-predict" class="hidden-section relative min-h-[400px]">
-            <div id="lock-screen" class="absolute inset-0 z-50 glass flex flex-col items-center justify-center text-center p-8">
-                <div class="text-6xl mb-6">🔒</div>
-                <h2 class="text-xl font-bold mb-2">Access Locked</h2>
-                <p class="text-gray-500 text-sm mb-8">প্ল্যান কিনলে এটি অটোমেটিক আনলক হবে।</p>
-                <button onclick="showSection('plan')" class="px-10 py-3 bg-white text-black rounded-full font-bold uppercase text-xs">Buy Plan</button>
+        <div id="mainUI" style="display: none;">
+            <div class="title">TK PREMIUM V6</div>
+            <div class="period-box" id="periodDisplay">P: LOADING...</div>
+            
+            <div class="timer-row">
+                <span class="timer-label">NEXT IN:</span>
+                <div class="timer-circle"><span id="secDisplay">--</span>s</div>
             </div>
-            <div id="predict-ui" class="opacity-20 pointer-events-none blur-md transition-all duration-700">
-                <h1 class="text-2xl font-black mb-6 gradient-text uppercase">Predictor Pro</h1>
-                <div class="glass p-8 text-center border-white/10">
-                    <input type="number" id="period_input" placeholder="000" class="w-full bg-black/40 border border-white/10 p-6 rounded-3xl mb-8 text-center text-5xl font-black text-cyan-400 focus:border-cyan-500/50 outline-none">
-                    <button onclick="getSignal()" id="sig_btn" class="pay-btn w-full py-5 rounded-3xl font-black text-lg uppercase shadow-lg shadow-cyan-500/20">Analyze</button>
-                </div>
-                <div id="res_div" class="mt-10 text-center hidden animate__animated animate__zoomIn">
-                    <h2 id="final_result" class="text-8xl font-black tracking-tighter italic">BIG</h2>
-                </div>
-            </div>
-        </section>
 
-        <section id="sec-profile" class="hidden-section animate__animated animate__fadeIn">
-            <div class="glass p-10 text-center mt-4 border-white/5">
-                <div class="w-24 h-24 bg-gradient-to-tr from-cyan-500 to-purple-600 mx-auto rounded-[35px] flex items-center justify-center text-4xl mb-6 shadow-2xl">👤</div>
-                <h2 id="p_name" class="text-2xl font-black uppercase">User</h2>
-                <p id="p_id" class="text-gray-500 font-mono text-xs mt-1">ID: 00000000</p>
-                <button onclick="window.open('https://t.me/Ruddro_nill')" class="w-full py-4 glass text-xs font-black uppercase tracking-widest border-cyan-500/20 text-cyan-400 mt-10">Contact Support</button>
+            <div class="signal-card">
+                <div class="signal-display" id="signalResult">WAIT</div>
+                <div class="probability-text" id="probability">WIN RATE: --%</div>
+                <div class="status-bar"><div id="probBar" class="status-fill"></div></div>
             </div>
-        </section>
-    </main>
 
-    <nav class="fixed bottom-6 left-6 right-6 h-20 glass flex items-center justify-around z-[100] border-white/10">
-        <button onclick="showSection('plan')" id="n-plan" class="flex flex-col items-center gap-1 text-[10px] font-black"><span>💳</span>PLAN</button>
-        <button onclick="showSection('predict')" id="n-predict" class="flex flex-col items-center gap-1 text-[10px] font-black"><span>🎯</span>SIGNAL</button>
-        <button onclick="showSection('profile')" id="n-profile" class="flex flex-col items-center gap-1 text-[10px] font-black"><span>👤</span>USER</button>
-    </nav>
+            <div class="premium-tag">V.I.P ALGORITHM V6.1</div>
+        </div>
+    </div>
 
     <script>
-        const CONFIG = {
-            db: "https://ff-esport-bd-9dbc0-default-rtdb.firebaseio.com",
-            admin: "6045231271",
-            // আপনার PayFlow গেটওয়ে ইউজারনেম এখানে দিন (যেমন: WingoHack)
-            gatewayUsername: "WingoHack" 
+        // --- Draggable Logic ---
+        const box = document.getElementById("vipBox");
+        let isDragging = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
+
+        const dragStart = (e) => {
+            initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
+            initialY = (e.type === "touchstart" ? e.touches[0].clientY : e.clientY) - yOffset;
+            if (e.target === box || box.contains(e.target)) isDragging = true;
+        };
+        const dragEnd = () => { initialX = currentX; initialY = currentY; isDragging = false; };
+        const drag = (e) => {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
+                currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
+                xOffset = currentX; yOffset = currentY;
+                box.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+            }
         };
 
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        const user = tg.initDataUnsafe.user || { first_name: "TestUser", id: "12345678" };
+        box.addEventListener("touchstart", dragStart, {passive: false});
+        document.addEventListener("touchend", dragEnd);
+        document.addEventListener("touchmove", drag, {passive: false});
+        box.addEventListener("mousedown", dragStart);
+        document.addEventListener("mouseup", dragEnd);
+        document.addEventListener("mousemove", drag);
 
-        document.getElementById('u_name').innerText = user.first_name;
-        document.getElementById('p_name').innerText = user.first_name;
-        document.getElementById('p_id').innerText = "ID: " + user.id;
-
-        const plans = [ 
-            {n:'3 Days', p:300}, 
-            {n:'7 Days', p:650}, 
-            {n:'15 Days', p:1400}, 
-            {n:'30 Days', p:2500} 
-        ];
-
-        // প্ল্যান লিস্ট রেন্ডার করা
-        plans.forEach(plan => {
-            document.getElementById('plan-list').innerHTML += `
-                <div onclick="initiatePayment('${plan.n}', ${plan.p})" class="glass p-6 flex justify-between items-center active:scale-95 transition-all cursor-pointer">
-                    <div>
-                        <h3 class="font-black text-lg">${plan.n} Access</h3>
-                        <p class="text-[10px] text-cyan-400 uppercase font-bold tracking-widest">VIP Server</p>
-                    </div>
-                    <div class="text-2xl font-black italic">৳${plan.p}</div>
-                </div>`;
-        });
-
-        // পেমেন্ট গেটওয়েতে পাঠানো
-        function initiatePayment(planName, price) {
-            // গেটওয়ে ইউআরএল তৈরি
-            const paymentUrl = `https://payflow-git.vercel.app/pay/${CONFIG.gatewayUsername}?amount=${price}&cus_id=${user.id}&opt_a=${encodeURIComponent(planName)}`;
-            
-            // সরাসরি গেটওয়েতে নিয়ে যাবে
-            window.location.href = paymentUrl;
-        }
-
-        // ইউজার স্ট্যাটাস চেক করা (অটোমেটিক আপডেট হবে ডাটাবেস থেকে)
-        function checkStatus() {
-            if(String(user.id) === CONFIG.admin) {
-                unlockUI("OWNER / LIFETIME");
-                return;
+        // --- Logic & AI Engine ---
+        function auth() {
+            if(document.getElementById('pass').value === "7777") {
+                document.getElementById('loginUI').style.display = 'none';
+                document.getElementById('mainUI').style.display = 'block';
+                runEngine();
+            } else {
+                document.getElementById('err').style.display = 'block';
+                setTimeout(() => { document.getElementById('err').style.display = 'none'; }, 2000);
             }
+        }
 
-            fetch(`${CONFIG.db}/users/${user.id}.json`)
-            .then(r => r.json())
-            .then(data => {
-                if(data && data.isPaid) {
-                    unlockUI(data.plan);
-                } else {
-                    document.getElementById('u_status').innerText = "Status: Unpaid";
+        function runEngine() {
+            setInterval(() => {
+                const now = new Date();
+                const seconds = now.getSeconds();
+                const remaining = 30 - (seconds % 30);
+                
+                const total30sIntervals = (now.getHours() * 120) + (now.getMinutes() * 2) + Math.floor(seconds / 30);
+                const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
+                const period = dateStr + "1000" + (10001 + total30sIntervals);
+
+                document.getElementById('periodDisplay').innerText = "P: " + period;
+                document.getElementById('secDisplay').innerText = remaining;
+
+                // Signal Update logic
+                if (remaining === 30 || document.getElementById('signalResult').innerText === "WAIT") {
+                    updateSignal(total30sIntervals, now.getMinutes(), now.getHours());
                 }
-            });
-        }
-
-        function unlockUI(plan) {
-            document.getElementById('lock-screen').style.display = 'none';
-            document.getElementById('predict-ui').classList.remove('opacity-20', 'pointer-events-none', 'blur-md');
-            document.getElementById('u_status').innerText = "Status: Premium Active (" + plan + ")";
-            document.getElementById('u_status').className = "text-[9px] font-black tracking-widest text-green-500 uppercase";
-        }
-
-        function showSection(id) {
-            document.querySelectorAll('section').forEach(s => s.classList.add('hidden-section'));
-            document.getElementById('sec-' + id).classList.remove('hidden-section');
-            document.querySelectorAll('nav button').forEach(b => b.style.opacity = "0.3");
-            document.getElementById('n-' + id).style.opacity = "1";
-        }
-
-        function getSignal() {
-            const p = document.getElementById('period_input').value;
-            if(!p) return tg.showAlert("Period Number দিন!");
-            const btn = document.getElementById('sig_btn');
-            btn.innerText = "Analyzing...";
-            setTimeout(() => {
-                const res = Math.random() > 0.5 ? "BIG" : "SMALL";
-                document.getElementById('res_div').classList.remove('hidden');
-                document.getElementById('final_result').innerText = res;
-                document.getElementById('final_result').className = res === "BIG" ? "text-8xl font-black text-orange-500 animate__animated animate__pulse" : "text-8xl font-black text-blue-500 animate__animated animate__pulse";
-                btn.innerText = "Analyze";
-                document.getElementById('period_input').value = parseInt(p) + 1;
             }, 1000);
         }
 
-        // Initial Load
-        showSection('plan');
-        checkStatus();
-        setInterval(checkStatus, 7000); // ৭ সেকেন্ড পর পর অটো চেক হবে
+        function updateSignal(seed, mins, hrs) {
+            const sigBox = document.getElementById('signalResult');
+            const probText = document.getElementById('probability');
+            const probBar = document.getElementById('probBar');
+
+            // --- Market Volatility & Trend Algorithm v6.1 ---
+            // Simulate volatility based on hour & dynamic factors
+            const volatility = Math.abs(Math.sin(hrs + mins)) * 1.5;
+            
+            let wave = Math.sin(mins * volatility) * seed;
+            const logicValue = Math.abs(Math.floor(wave)) % 10;
+            
+            const prediction = (logicValue >= 5) ? "BIG" : "SMALL";
+            const baseAcc = 90; // High accuracy floor (90%)
+            const dynamicAcc = 3 + (seed % 6); // Add 3-9% dynamic accuracy
+            const accuracy = baseAcc + dynamicAcc;
+
+            sigBox.innerText = prediction;
+            
+            if(prediction === "BIG") {
+                sigBox.style.color = "#ffcc00"; // Golden Color
+                sigBox.style.textShadow = "0 0 15px #ffcc00";
+            } else {
+                sigBox.style.color = "#ff3333"; // Red Color
+                sigBox.style.textShadow = "0 0 15px #ff3333";
+            }
+            
+            probText.innerText = "WIN RATE: " + accuracy + "%";
+            probBar.style.width = accuracy + "%";
+            
+            // Minimal haptic animation
+            box.style.transform += " scale(1.02)";
+            setTimeout(() => { box.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0) scale(1)`; }, 250);
+        }
     </script>
 </body>
 </html>
