@@ -11,8 +11,8 @@ $username     = isset($user['username']) ? $user['username'] : 'Nobin666';
 $balance      = isset($user['balance']) ? $user['balance'] : '0.00';
 $created_at   = isset($user['created_at']) ? date('Y-m-d', strtotime($user['created_at'])) : '2026-07-04';
 
-// ইমেজ প্রক্সি সরিয়ে ডিরেক্ট অরিজিনাল লিংক সেট করা হয়েছে যেন ছবি নিখুঁতভাবে শো করে
-$profile_pic  = isset($user['profile_pic']) && !empty($user['profile_pic']) ? $user['profile_pic'] : 'https://images.3521315.com/TCG_PROD_IMAGES/B2C/01_PROFILE/PROFILE/0.png';
+// আপনার দেওয়া মেয়ের প্রোফাইল পিকচার লিংকটি এখানে পারমানেন্ট করে দেওয়া হলো
+$profile_pic  = 'https://ctgg.online/img-proxy/https://images.3521315.com//TCG_PROD_IMAGES/B2C/01_PROFILE/PROFILE/0.png';
 ?>
 <!DOCTYPE html>
 <html lang="en">
