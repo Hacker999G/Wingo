@@ -1,1103 +1,199 @@
+<!-- index.html -->
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
     <title>My Account</title>
-
-    <style>
-
-        /* CSS Variables for Exact Theme Match */
-
-        :root {
-
-            --bg-dark: #0b0a09;
-
-            --text-dark: #333333;
-
-            --text-muted: #666666;
-
-            --text-light: #999999;
-
-            --gold-icon: #cca05a;
-
-            --gold-bg: #fff8eb;
-
-            --gold-border: #fdecc4;
-
-            --card-grad: linear-gradient(135deg, #f3f6fa 0%, #d4def1 35%, #e3e9f4 70%, #ffffff 100%);
-
-            --btn-grad: linear-gradient(to bottom, #ffffff 0%, #ecf0f6 45%, #d4dde8 100%);
-
-            --radius: 20px;
-
-        }
-
-
-
-        /* Basic Reset */
-
-        * {
-
-            margin: 0;
-
-            padding: 0;
-
-            box-sizing: border-box;
-
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-
-            -webkit-tap-highlight-color: transparent;
-
-        }
-
-
-
-        body {
-
-            background-color: var(--bg-dark);
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: flex-start;
-
-            min-height: 100vh;
-
-        }
-
-
-
-        /* Mobile Container Wrapper */
-
-        .phone-screen {
-
-            width: 100%;
-
-            max-width: 450px;
-
-            min-height: 100vh;
-
-            background-color: #ffffff;
-
-            display: flex;
-
-            flex-direction: column;
-
-            position: relative;
-
-            overflow-x: hidden;
-
-            padding-bottom: 20px;
-
-        }
-
-
-
-        /* Header Area with Dark Fluid Gradient */
-
-        .top-header {
-
-            background: radial-gradient(circle at top right, #38302a, #13110f 75%);
-
-            height: 145px;
-
-            width: 100%;
-
-            padding: 24px 20px 0 20px;
-
-        }
-
-
-
-        .nav-bar {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            color: #ffffff;
-
-        }
-
-
-
-        .back-arrow {
-
-            width: 24px;
-
-            height: 24px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            cursor: pointer;
-
-        }
-
-
-
-        .back-arrow svg {
-
-            stroke: #ffffff;
-
-            fill: none;
-
-            stroke-width: 2;
-
-            stroke-linecap: round;
-
-            stroke-linejoin: round;
-
-        }
-
-
-
-        .page-title {
-
-            font-size: 18px;
-
-            font-weight: 500;
-
-            letter-spacing: 0.3px;
-
-        }
-
-
-
-        /* Dynamic Viewport Section */
-
-        .main-content {
-
-            padding: 0 16px;
-
-            flex: 1;
-
-            background-image: url('https://ctgg.online/mobile/mc/member-info-bg.f44b2894.png');
-
-            background-size: cover;
-
-            background-repeat: no-repeat;
-
-        }
-
-
-
-        /* Glossy Profile Card */
-
-        .profile-card {
-
-            background: var(--card-grad);
-
-            border-radius: var(--radius);
-
-            padding: 20px;
-
-            margin-top: -75px;
-
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05), inset 0px 2px 4px rgba(255, 255, 255, 0.9);
-
-            border: 1px solid rgba(255, 255, 255, 0.7);
-
-            position: relative;
-
-            z-index: 10;
-
-        }
-
-
-
-        .profile-meta {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 16px;
-
-        }
-
-
-
-        .avatar-box {
-
-            width: 70px;
-
-            height: 70px;
-
-            border-radius: 50%;
-
-            border: 2px solid white;
-
-            overflow: hidden;
-
-            box-shadow: 0px 2px 5px rgba(0,0,0,0.08);
-
-            flex-shrink: 0;
-
-        }
-
-
-
-        .avatar-box img {
-
-            width: 100%;
-
-            height: 100%;
-
-            object-fit: cover;
-
-        }
-
-
-
-        .user-details {
-
-            flex-grow: 1;
-
-        }
-
-
-
-        .name-wrapper {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 6px;
-
-        }
-
-
-
-        .display-name {
-
-            font-size: 18px;
-
-            font-weight: 700;
-
-            color: #111111;
-
-        }
-
-
-
-        .action-svg-small {
-
-            width: 14px;
-
-            height: 14px;
-
-            cursor: pointer;
-
-            fill: none;
-
-            stroke-width: 2;
-
-        }
-
-
-
-        .nick-text {
-
-            font-size: 12px;
-
-            color: var(--text-muted);
-
-            margin-top: 3px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 5px;
-
-        }
-
-
-
-        .join-text {
-
-            font-size: 11px;
-
-            color: var(--text-light);
-
-            margin-top: 3px;
-
-        }
-
-
-
-        /* Wallet/Balance Section */
-
-        .wallet-container {
-
-            margin-top: 18px;
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            padding: 0 4px;
-
-        }
-
-
-
-        .balance-value {
-
-            font-size: 24px;
-
-            font-weight: 700;
-
-            color: #222222;
-
-            display: flex;
-
-            align-items: center;
-
-        }
-
-
-
-        .currency-symbol {
-
-            font-size: 20px;
-
-            font-weight: 400;
-
-            margin-right: 4px;
-
-        }
-
-
-
-        .sync-btn {
-
-            background: none;
-
-            border: none;
-
-            width: 20px;
-
-            height: 20px;
-
-            cursor: pointer;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-        }
-
-
-
-        .sync-btn svg {
-
-            stroke: var(--text-light);
-
-            fill: none;
-
-            stroke-width: 2;
-
-            transition: transform 0.4s ease;
-
-        }
-
-
-
-        .sync-btn:active svg {
-
-            transform: rotate(180deg);
-
-        }
-
-
-
-        /* Core Action Tabs */
-
-        .button-bar {
-
-            display: grid;
-
-            grid-template-columns: repeat(3, 1fr);
-
-            gap: 12px;
-
-            margin-top: 20px;
-
-        }
-
-
-
-        .pill-btn {
-
-            background: var(--btn-grad);
-
-            border: 1px solid #bfc9d5;
-
-            box-shadow: 0px 2px 4px rgba(0,0,0,0.04), inset 0px 1px 1px #ffffff;
-
-            border-radius: 24px;
-
-            padding: 9px 0;
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            color: #3b434e;
-
-            cursor: pointer;
-
-            text-align: center;
-
-            transition: opacity 0.1s ease;
-
-        }
-
-
-
-        .pill-btn:active {
-
-            opacity: 0.7;
-
-        }
-
-
-
-        /* Member Center Header Badge */
-
-        .badge-row {
-
-            margin: 20px 0 16px 2px;
-
-        }
-
-
-
-        .badge-label {
-
-            background-color: #e2e7ee;
-
-            color: #5c6979;
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            padding: 4px 12px;
-
-            border-radius: 12px;
-
-            display: inline-block;
-
-        }
-
-
-
-        /* Grid Menus Configuration */
-
-        .features-grid {
-
-            display: grid;
-
-            grid-template-columns: repeat(4, 1fr);
-
-            row-gap: 22px;
-
-            column-gap: 8px;
-
-            text-align: center;
-
-        }
-
-
-
-        .grid-node {
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            cursor: pointer;
-
-        }
-
-
-
-        /* Custom Soft Outline Circle */
-
-        .circle-frame {
-
-            width: 54px;
-
-            height: 54px;
-
-            background-color: var(--gold-bg);
-
-            border: 1px solid var(--gold-border);
-
-            border-radius: 50%;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            margin-bottom: 8px;
-
-            position: relative;
-
-        }
-
-
-
-        /* Custom SVG Stroke Precision Layout matching image_9eacf6.jpg */
-
-        .circle-frame svg {
-
-            width: 26px;
-
-            height: 26px;
-
-            stroke: var(--gold-icon);
-
-            fill: none;
-
-            stroke-width: 1.4;
-
-            stroke-linecap: round;
-
-            stroke-linejoin: round;
-
-        }
-
-
-
-        .node-title {
-
-            font-size: 11px;
-
-            color: #444444;
-
-            font-weight: 500;
-
-            line-height: 1.25;
-
-            white-space: pre-line; /* Allows precise line breaks */
-
-        }
-
-
-
-        /* Exact Red Indicator Alerts */
-
-        .red-alert-dot {
-
-            position: absolute;
-
-            top: -2px;
-
-            right: -2px;
-
-            background-color: #f93d3d;
-
-            color: white;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            min-width: 16px;
-
-            height: 16px;
-
-            padding: 0 4px;
-
-            border-radius: 50%;
-
-            border: 1.5px solid white;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-        }
-
-
-
-        /* IOS Virtual Navigation Indicator */
-
-        .bottom-capsule {
-
-            width: 100%;
-
-            display: flex;
-
-            justify-content: center;
-
-            padding-top: 24px;
-
-        }
-
-
-
-        .capsule-bar {
-
-            width: 130px;
-
-            height: 4px;
-
-            background-color: #dddddd;
-
-            border-radius: 2px;
-
-        }
-
-    </style>
-
+    <!-- Google Fonts Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Pixel Perfect Icons matching the screenshot layout -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-
-
-    <!-- Main Viewport Context -->
-
-    <div class="phone-screen">
-
-        
-
-        <!-- Header Dynamic Node -->
-
-        <div class="top-header">
-
-            <div class="nav-bar">
-
-                <div class="back-arrow">
-
-                    <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-
-                </div>
-
-                <span class="page-title">My Account</span>
-
-                <div style="width: 24px;"></div>
-
+    <div class="app-container animate-fade-in">
+        <!-- Top Header Segment -->
+        <header class="top-header">
+            <div class="header-content">
+                <button class="back-arrow" aria-label="Back">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <h1 class="header-title">My Account</h1>
+                <div class="header-spacer"></div>
             </div>
+        </header>
 
-        </div>
-
-
-
-        <!-- Scrollable Frame Content -->
-
-        <div class="main-content">
-
-            
-
-            <!-- Information Panel Card -->
-
-            <div class="profile-card">
-
-                <div class="profile-meta">
-
-                    <div class="avatar-box">
-
-                        <img src="https://ctgg.online/img-proxy/https://images.3521315.com//TCG_PROD_IMAGES/B2C/01_PROFILE/PROFILE/0.png" alt="Profile Avatar">
-
+        <!-- Main Account Center Section -->
+        <main class="content-wrapper">
+            <!-- Floating Profile Info Card -->
+            <section class="profile-card animate-slide-up">
+                <div class="profile-top-row">
+                    <!-- Left Avatar Segment -->
+                    <div class="avatar-container">
+                        <img src="https://ctgg.online/img-proxy/https://images.3521315.com//TCG_PROD_IMAGES/B2C/01_PROFILE/PROFILE/0.png" alt="Profile Image" class="avatar-img">
                     </div>
-
-                    <div class="user-details">
-
-                        <div class="name-wrapper">
-
-                            <span class="display-name">Nobin666</span>
-
-                            <svg class="action-svg-small" stroke="#000000" viewBox="0 0 24 24">
-
-                                <rect x="9" y="9" width="11" height="11" rx="1.5"></rect>
-
-                                <path d="M5 15H4a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 4 3h9a1.5 1.5 0 0 1 1.5 1.5v1"></path>
-
-                            </svg>
-
+                    <!-- Right Details Segment -->
+                    <div class="profile-info">
+                        <div class="name-container">
+                            <span class="profile-name" id="username">Nobin666</span>
+                            <button class="copy-btn" id="copyBtn" title="Copy Username">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
                         </div>
-
-                        <div class="nick-text">
-
-                            Nickname: Nobin666
-
-                            <svg class="action-svg-small" stroke="#aaaaaa" style="width:11px; height:11px;" viewBox="0 0 24 24">
-
-                                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-
-                            </svg>
-
+                        <div class="meta-row font-inter">
+                            <span class="meta-label">Nickname:</span>
+                            <span class="meta-value">Nobin666</span>
+                            <button class="edit-btn"><i class="fa-solid fa-pencil"></i></button>
                         </div>
-
-                        <div class="join-text">Joined: 2026-07-04</div>
-
+                        <div class="meta-row font-inter">
+                            <span class="meta-label">Joined:</span>
+                            <span class="meta-value text-grey">2026-07-04</span>
+                        </div>
                     </div>
-
                 </div>
 
-
-
-                <!-- Live Update Metrics Grid -->
-
-                <div class="wallet-container">
-
-                    <div class="balance-value">
-
-                        <span class="currency-symbol">৳</span>0.00
-
+                <!-- Live Account Balance Tracker Row -->
+                <div class="balance-row">
+                    <div class="balance-display font-inter">
+                        <span class="currency-sign">৳</span>
+                        <span class="balance-amount" id="balanceText">0.00</span>
                     </div>
-
-                    <button class="sync-btn">
-
-                        <svg viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-
+                    <button class="refresh-action-btn" id="refreshBtn" title="Refresh Balance">
+                        <i class="fa-solid fa-rotate-right"></i>
                     </button>
-
                 </div>
 
-
-
-                <!-- Navigation Pillars -->
-
-                <div class="button-bar">
-
-                    <div class="pill-btn">Deposit</div>
-
-                    <div class="pill-btn">Withdrawal</div>
-
-                    <div class="pill-btn">My Cards</div>
-
+                <!-- Bottom Triple Command Control Row -->
+                <div class="card-action-row">
+                    <button class="gradient-action-btn ripple-trigger">Deposit</button>
+                    <button class="gradient-action-btn ripple-trigger">Withdrawal</button>
+                    <button class="gradient-action-btn ripple-trigger">My Cards</button>
                 </div>
+            </section>
 
+            <!-- Rounded Sub-Section Label Pill -->
+            <div class="section-divider-pill">
+                <span>Member Center</span>
             </div>
 
-
-
-            <!-- Category Section Marker -->
-
-            <div class="badge-row">
-
-                <span class="badge-label">Member Center</span>
-
-            </div>
-
-
-
-            <!-- Feature Dashboard Area (16 Subnodes with Clean Inline SVGs) -->
-
-            <div class="features-grid">
-
-                
-
-                <!-- Node 1: Reward Center -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34M12 2a4 4 0 0 1 4 4v3H8V6a4 4 0 0 1 4-4z"/></svg>
-
-                        <span class="red-alert-dot">4</span>
-
+            <!-- Functional Grid Nav Area -->
+            <nav class="grid-menu-container">
+                <!-- Row 1 -->
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-trophy"></i>
+                        <span class="notification-badge">4</span>
                     </div>
-
-                    <span class="node-title">Reward&#10;Center</span>
-
+                    <span class="grid-item-label">Reward Center</span>
+                </div>
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-asterisk"></i>
+                    </div>
+                    <span class="grid-item-label">Betting Record</span>
+                </div>
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </div>
+                    <span class="grid-item-label">Profit And Loss</span>
+                </div>
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-file-shield"></i>
+                    </div>
+                    <span class="grid-item-label">Deposit Record</span>
                 </div>
 
-
-
-                <!-- Node 2: Betting Record -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M3 12h4M17 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-
+                <!-- Row 2 -->
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-clipboard-list"></i>
                     </div>
-
-                    <span class="node-title">Betting&#10;Record</span>
-
+                    <span class="grid-item-label">Withdrawal Record</span>
+                </div>
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <span class="grid-item-label">Account Record</span>
+                </div>
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <span class="grid-item-label">My Account</span>
+                </div>
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <span class="grid-item-label">Security Center</span>
                 </div>
 
-
-
-                <!-- Node 3: Profit And Loss -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-
+                <!-- Row 3 -->
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-user-plus"></i>
                     </div>
-
-                    <span class="node-title">Profit And&#10;Loss</span>
-
+                    <span class="grid-item-label">Invite Friends</span>
+                </div>
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-gift"></i>
+                        <span class="notification-badge">1</span>
+                    </div>
+                    <span class="grid-item-label">Mission</span>
+                </div>
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                    <span class="grid-item-label">Rebate</span>
+                </div>
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-at"></i>
+                    </div>
+                    <span class="grid-item-label">Internal Message</span>
                 </div>
 
-
-
-                <!-- Node 4: Deposit Record -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M12 11v6M9 14l3-3 3 3"/></svg>
-
+                <!-- Row 4 -->
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-comment-dots"></i>
                     </div>
-
-                    <span class="node-title">Deposit&#10;Record</span>
-
+                    <span class="grid-item-label">Suggestion</span>
                 </div>
-
-
-
-                <!-- Node 5: Withdrawal Record -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M12 17V11M9 14l3 3 3-3"/></svg>
-
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
                     </div>
-
-                    <span class="node-title">Withdrawal&#10;Record</span>
-
+                    <span class="grid-item-label">Download APP</span>
                 </div>
-
-
-
-                <!-- Node 6: Account Record -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 15l3-3 3 3 4-4"/></svg>
-
+                <div class="grid-menu-item">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-headset"></i>
                     </div>
-
-                    <span class="node-title">Account&#10;Record</span>
-
+                    <span class="grid-item-label">Customer Service</span>
                 </div>
-
-
-
-                <!-- Node 7: My Account -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-
+                <div class="grid-menu-item logout-btn">
+                    <div class="icon-sphere">
+                        <i class="fa-solid fa-right-from-bracket"></i>
                     </div>
-
-                    <span class="node-title">My Account</span>
-
+                    <span class="grid-item-label">Logout</span>
                 </div>
-
-
-
-                <!-- Node 8: Security Center -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-
-                    </div>
-
-                    <span class="node-title">Security&#10;Center</span>
-
-                </div>
-
-
-
-                <!-- Node 9: Invite Friends -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M19 11h4M21 9v4"/></svg>
-
-                    </div>
-
-                    <span class="node-title">Invite Friends</span>
-
-                </div>
-
-
-
-                <!-- Node 10: Mission -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8V3M12 8h5a2.5 2.5 0 0 0 0-5H12M12 8H7a2.5 2.5 0 0 1 0-5h5M3 12h18"/></svg>
-
-                        <span class="red-alert-dot">1</span>
-
-                    </div>
-
-                    <span class="node-title">Mission</span>
-
-                </div>
-
-
-
-                <!-- Node 11: Rebate -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8a4 4 0 1 0 4 4"/></svg>
-
-                    </div>
-
-                    <span class="node-title">Rebate</span>
-
-                </div>
-
-
-
-                <!-- Node 12: Internal Message -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg>
-
-                    </div>
-
-                    <span class="node-title">Internal&#10;Message</span>
-
-                </div>
-
-
-
-                <!-- Node 13: Suggestion -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-
-                    </div>
-
-                    <span class="node-title">Suggestion</span>
-
-                </div>
-
-
-
-                <!-- Node 14: Download APP -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 11v4M10 13l2 2 2-2"/></svg>
-
-                    </div>
-
-                    <span class="node-title">Download&#10;APP</span>
-
-                </div>
-
-
-
-                <!-- Node 15: Customer Service -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><circle cx="4" cy="19" r="1"/><circle cx="20" cy="19" r="1"/></svg>
-
-                    </div>
-
-                    <span class="node-title">Customer&#10;Service</span>
-
-                </div>
-
-
-
-                <!-- Node 16: Logout -->
-
-                <div class="grid-node">
-
-                    <div class="circle-frame">
-
-                        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-
-                    </div>
-
-                    <span class="node-title">Logout</span>
-
-                </div>
-
-
-
-            </div>
-
-        </div>
-
-
-
-        <!-- Virtual Home Strip Area -->
-
-        <div class="bottom-capsule">
-
-            <div class="capsule-bar"></div>
-
-        </div>
-
-
-
+            </nav>
+        </main>
     </div>
 
+    <!-- Hidden toast helper for copy confirm alert -->
+    <div id="toast" class="toast-alert">Username copied to clipboard!</div>
 
-
+    <script src="script.js"></script>
 </body>
-
 </html>
