@@ -1,3 +1,17 @@
+<?php
+// উদাহরণস্বরূপ সেশন বা ডাটাবেজ থেকে লগইন করা ইউজারের ডেটা আনা
+// আপনার প্রোজেক্টের প্রয়োজন অনুযায়ী এই অংশটি পরিবর্তন করে নিবেন
+// include 'config.php'; 
+
+// মনে করি ইউজার ডাটাবেজ থেকে $user ভেরিয়েবলে ডেটা আনা হয়েছে:
+// $user = mysqli_fetch_assoc($result);
+
+// ডামি ডেটা (টেস্ট করার জন্য, ডাটাবেজ কানেক্ট করলে এগুলো স্বয়ংক্রিয়ভাবে আসবে)
+$username     = isset($user['username']) ? $user['username'] : 'Nobin666';
+$balance      = isset($user['balance']) ? $user['balance'] : '0.00';
+$created_at   = isset($user['created_at']) ? date('Y-m-d', strtotime($user['created_at'])) : '2026-07-04';
+$profile_pic  = isset($user['profile_pic']) && !empty($user['profile_pic']) ? $user['profile_pic'] : 'https://ctgg.online/img-proxy/https://images.3521315.com//TCG_PROD_IMAGES/B2C/01_PROFILE/PROFILE/0.png';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -371,22 +385,22 @@
                 <div class="profile-top-row">
                     <!-- Left Avatar Segment -->
                     <div class="avatar-container">
-                        <img src="https://ctgg.online/img-proxy/https://images.3521315.com//TCG_PROD_IMAGES/B2C/01_PROFILE/PROFILE/0.png" alt="Profile Image" class="avatar-img">
+                        <img src="<?php echo htmlspecialchars($profile_pic); ?>" alt="Profile Image" class="avatar-img">
                     </div>
                     <!-- Right Details Segment -->
                     <div class="profile-info">
                         <div class="name-container">
-                            <span class="profile-name" id="username">Nobin666</span>
+                            <span class="profile-name" id="username"><?php echo htmlspecialchars($username); ?></span>
                             <button class="copy-btn" id="copyBtn" title="Copy Username">
                                 <i class="fa-regular fa-copy"></i>
                             </button>
                         </div>
                         <div class="meta-row">
-                            <span>Nickname: Nobin666</span>
+                            <span>Nickname: <?php echo htmlspecialchars($username); ?></span>
                             <button class="edit-btn" onclick="window.location.href='edit_nickname.php'"><i class="fa-solid fa-pencil"></i></button>
                         </div>
                         <div class="meta-row font-inter">
-                            <span>Joined: 2026-07-04</span>
+                            <span>Joined: <?php echo htmlspecialchars($created_at); ?></span>
                         </div>
                     </div>
                 </div>
@@ -395,7 +409,7 @@
                 <div class="balance-row">
                     <div class="balance-display font-inter">
                         <span class="currency-sign">৳</span>
-                        <span class="balance-amount" id="balanceText">0.00</span>
+                        <span class="balance-amount" id="balanceText"><?php echo number_format((float)$balance, 2, '.', ''); ?></span>
                     </div>
                     <button class="refresh-action-btn" id="refreshBtn" title="Refresh Balance">
                         <i class="fa-solid fa-rotate-right"></i>
