@@ -8,7 +8,7 @@
     <!-- Google Fonts Import -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -40,7 +40,7 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* Base Responsive Shell - 390px Mobile View */
+        /* 390px Mobile View Core Shell */
         .app-container {
             width: 100%;
             max-width: 480px;
@@ -111,7 +111,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: -65px; /* Overlaps the header space */
+            margin-top: -65px; 
             z-index: 10;
         }
 
@@ -250,7 +250,7 @@
             color: #000000;
         }
 
-        /* Three Command Buttons */
+        /* 3 Main Action Buttons Layout */
         .card-action-row {
             display: flex;
             justify-content: space-between;
@@ -273,7 +273,11 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .gradient-action-btn:hover {
@@ -315,6 +319,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
+            text-decoration: none;
             transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -399,7 +404,7 @@
             }
         }
 
-        /* Ripple Animation */
+        /* Ripple Animation Element */
         .ripple-element {
             position: absolute;
             border-radius: 50%;
@@ -448,7 +453,7 @@
         <!-- Top Header Segment -->
         <header class="top-header">
             <div class="header-content">
-                <button class="back-arrow" aria-label="Back">
+                <button class="back-arrow" aria-label="Back" onclick="window.location.href='back.php'">
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
                 <h1 class="header-title">My Account</h1>
@@ -476,7 +481,7 @@
                         <div class="meta-row font-inter">
                             <span class="meta-label">Nickname:</span>
                             <span class="meta-value">Nobin666</span>
-                            <button class="edit-btn"><i class="fa-solid fa-pencil"></i></button>
+                            <button class="edit-btn" onclick="window.location.href='edit_nickname.php'"><i class="fa-solid fa-pencil"></i></button>
                         </div>
                         <div class="meta-row font-inter">
                             <span class="meta-label">Joined:</span>
@@ -496,11 +501,11 @@
                     </button>
                 </div>
 
-                <!-- Command Action Row -->
+                <!-- Three Action Buttons Linked to PHP -->
                 <div class="card-action-row">
-                    <button class="gradient-action-btn ripple-trigger">Deposit</button>
-                    <button class="gradient-action-btn ripple-trigger">Withdrawal</button>
-                    <button class="gradient-action-btn ripple-trigger">My Cards</button>
+                    <a href="deposit.php" class="gradient-action-btn ripple-trigger">Deposit</a>
+                    <a href="withdrawal.php" class="gradient-action-btn ripple-trigger">Withdrawal</a>
+                    <a href="my_cards.php" class="gradient-action-btn ripple-trigger">My Cards</a>
                 </div>
             </section>
 
@@ -509,113 +514,113 @@
                 <span>Member Center</span>
             </div>
 
-            <!-- Functional Grid Nav Area -->
+            <!-- Functional Grid Nav Area Linked to PHP -->
             <nav class="grid-menu-container">
                 <!-- Row 1 -->
-                <div class="grid-menu-item">
+                <a href="reward_center.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-trophy"></i>
                         <span class="notification-badge">4</span>
                     </div>
                     <span class="grid-item-label">Reward Center</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="betting_record.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-asterisk"></i>
                     </div>
                     <span class="grid-item-label">Betting Record</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="profit_loss.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-file-invoice-dollar"></i>
                     </div>
                     <span class="grid-item-label">Profit And Loss</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="deposit_record.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-file-shield"></i>
                     </div>
                     <span class="grid-item-label">Deposit Record</span>
-                </div>
+                </a>
 
                 <!-- Row 2 -->
-                <div class="grid-menu-item">
+                <a href="withdrawal_record.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-clipboard-list"></i>
                     </div>
                     <span class="grid-item-label">Withdrawal Record</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="account_record.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-chart-pie"></i>
                     </div>
                     <span class="grid-item-label">Account Record</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="my_account.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-user-gear"></i>
                     </div>
                     <span class="grid-item-label">My Account</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="security_center.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-shield-halved"></i>
                     </div>
                     <span class="grid-item-label">Security Center</span>
-                </div>
+                </a>
 
                 <!-- Row 3 -->
-                <div class="grid-menu-item">
+                <a href="invite_friends.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-user-plus"></i>
                     </div>
                     <span class="grid-item-label">Invite Friends</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="mission.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-gift"></i>
                         <span class="notification-badge">1</span>
                     </div>
                     <span class="grid-item-label">Mission</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="rebate.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-hand-holding-dollar"></i>
                     </div>
                     <span class="grid-item-label">Rebate</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="internal_message.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-at"></i>
                     </div>
                     <span class="grid-item-label">Internal Message</span>
-                </div>
+                </a>
 
                 <!-- Row 4 -->
-                <div class="grid-menu-item">
+                <a href="suggestion.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-comment-dots"></i>
                     </div>
                     <span class="grid-item-label">Suggestion</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="download_app.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-mobile-screen-button"></i>
                     </div>
                     <span class="grid-item-label">Download APP</span>
-                </div>
-                <div class="grid-menu-item">
+                </a>
+                <a href="customer_service.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-headset"></i>
                     </div>
                     <span class="grid-item-label">Customer Service</span>
-                </div>
-                <div class="grid-menu-item logout-btn">
+                </a>
+                <a href="logout.php" class="grid-menu-item">
                     <div class="icon-sphere">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </div>
                     <span class="grid-item-label">Logout</span>
-                </div>
+                </a>
             </nav>
         </main>
     </div>
@@ -625,7 +630,7 @@
 
     <!-- ==========================================================================
        JAVASCRIPT CODE
-       ========================================================================== */ -->
+       ========================================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
@@ -635,13 +640,12 @@
             const usernameText = document.getElementById('username');
             const toast = document.getElementById('toast');
             const actionButtons = document.querySelectorAll('.ripple-trigger');
-            const gridMenuItems = document.querySelectorAll('.grid-menu-item');
-            const backArrow = document.querySelector('.back-arrow');
 
             // 1. Balance Refresh Rotation Handler
             let totalRotation = 0;
             if (refreshBtn) {
-                refreshBtn.addEventListener('click', () => {
+                refreshBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); // App link functionality prevention
                     totalRotation += 360;
                     refreshBtn.style.transform = `rotate(${totalRotation}deg)`;
                     
@@ -652,9 +656,10 @@
                 });
             }
 
-            // 2. Clipboard Copy Logic
+            // 2. Clipboard Copy Engine
             if (copyBtn && usernameText) {
-                copyBtn.addEventListener('click', () => {
+                copyBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
                     const currentStringValue = usernameText.textContent;
                     
                     if (navigator.clipboard && window.isSecureContext) {
@@ -689,7 +694,7 @@
                 }, 2200);
             }
 
-            // 3. Tactile Command Ripple Effect
+            // 3. Tactile Command Ripple Wave Effect
             actionButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     const dynamicOldRipples = this.querySelectorAll('.ripple-element');
@@ -707,21 +712,6 @@
                     this.appendChild(activeWaveSpan);
                 });
             });
-
-            // 4. Grid Nav Item Click Logs
-            gridMenuItems.forEach(clickableItem => {
-                clickableItem.addEventListener('click', function() {
-                    const selectedMenuContextLabel = this.querySelector('.grid-item-label').textContent.trim();
-                    console.log(`System module requested: "${selectedMenuContextLabel}"`);
-                });
-            });
-
-            // 5. Back Button Interactivity
-            if (backArrow) {
-                backArrow.addEventListener('click', () => {
-                    console.log('Back action clicked');
-                });
-            }
         });
     </script>
 </body>
