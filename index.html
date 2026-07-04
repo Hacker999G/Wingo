@@ -1,568 +1,1103 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>My Account</title>
-    <!-- Font Awesome 6 for Professional Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
+
     <style>
-        /* CSS Variables Definition */
+
+        /* CSS Variables for Exact Theme Match */
+
         :root {
-            --primary-color: #3b2418;
-            --secondary-color: #f7f4ef;
-            --accent-color: #cca05a; /* 精密 Match with golden icons */
+
             --bg-dark: #0b0a09;
-            --card-gradient: linear-gradient(135deg, #f3f6fa 0%, #d4def1 35%, #e3e9f4 70%, #ffffff 100%);
-            --btn-gradient: linear-gradient(to bottom, #ffffff 0%, #ecf0f6 45%, #d4dde8 100%);
-            --border-radius: 20px;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --shadow-soft: 0px 10px 20px rgba(0, 0, 0, 0.06);
+
+            --text-dark: #333333;
+
+            --text-muted: #666666;
+
+            --text-light: #999999;
+
+            --gold-icon: #cca05a;
+
+            --gold-bg: #fff8eb;
+
+            --gold-border: #fdecc4;
+
+            --card-grad: linear-gradient(135deg, #f3f6fa 0%, #d4def1 35%, #e3e9f4 70%, #ffffff 100%);
+
+            --btn-grad: linear-gradient(to bottom, #ffffff 0%, #ecf0f6 45%, #d4dde8 100%);
+
+            --radius: 20px;
+
         }
 
-        /* Reset and Base Styles */
+
+
+        /* Basic Reset */
+
         * {
+
             margin: 0;
+
             padding: 0;
+
             box-sizing: border-box;
+
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+            -webkit-tap-highlight-color: transparent;
+
         }
+
+
 
         body {
+
             background-color: var(--bg-dark);
-            display: flex;
-            justify-content: center;
-            align-items: start;
-            min-height: screen;
-        }
 
-        /* Mobile Container (Responsive sizing) */
-        .app-container {
-            width: 100%;
-            max-width: 450px;
+            display: flex;
+
+            justify-content: center;
+
+            align-items: flex-start;
+
             min-height: 100vh;
+
+        }
+
+
+
+        /* Mobile Container Wrapper */
+
+        .phone-screen {
+
+            width: 100%;
+
+            max-width: 450px;
+
+            min-height: 100vh;
+
             background-color: #ffffff;
+
             display: flex;
-            flex-col: column;
-            position: relative;
-            overflow-x: hidden;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            padding-bottom: 24px;
-        }
 
-        /* Header Area with Luxury Dark Gradient Background */
-        .header-bg {
-            background: radial-gradient(circle at top right, #38302a, #13110f 75%);
-            height: 145px;
-            width: 100%;
-            padding: 24px 20px 0 20px;
-        }
-
-        .header-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: #ffffff;
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 4px;
-            transition: var(--transition-smooth);
-        }
-        
-        .back-btn:hover {
-            opacity: 0.7;
-        }
-
-        .header-title {
-            font-size: 18px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        /* Account Content Area */
-        .account-body {
-            padding: 0 16px;
-            flex: 1;
-            /* Using background asset image provided in json config */
-            background-image: url('https://ctgg.online/mobile/mc/member-info-bg.f44b2894.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
-        /* Glassmorphism Profile Card */
-        .profile-card {
-            background: var(--card-gradient);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-top: -75px;
-            box-shadow: var(--shadow-soft), inset 0px 2px 4px rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            position: relative;
-            z-index: 10;
-        }
-
-        .profile-main {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .avatar-wrapper {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 2px solid white;
-            overflow: hidden;
-            box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-            flex-shrink: 0;
-        }
-
-        .avatar-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-info {
-            flex-grow: 1;
-        }
-
-        .username-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .username {
-            font-size: 18px;
-            font-weight: 700;
-            color: #111111;
-        }
-
-        .icon-btn-small {
-            color: #111111;
-            font-size: 13px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .nickname {
-            font-size: 12px;
-            color: #666666;
-            margin-top: 2px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .join-date {
-            font-size: 11px;
-            color: #999999;
-            margin-top: 2px;
-            font-weight: 500;
-        }
-
-        /* Balance Section */
-        .balance-row {
-            margin-top: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 4px;
-        }
-
-        .balance-amount {
-            font-size: 24px;
-            font-weight: 700;
-            color: #222222;
-            display: flex;
-            align-items: center;
-        }
-
-        .refresh-btn {
-            background: none;
-            border: none;
-            color: #999999;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 4px;
-            transition: var(--transition-smooth);
-        }
-
-        .refresh-btn:hover {
-            transform: rotate(180deg);
-            color: #444444;
-        }
-
-        /* Core Action Buttons with Smooth 3D Metallic Effect */
-        .action-buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .action-btn {
-            background: var(--btn-gradient);
-            border: 1px solid #bfc9d5;
-            box-shadow: 0px 2px 4px rgba(0,0,0,0.05), inset 0px 1px 1px #ffffff;
-            border-radius: 24px;
-            padding: 8px 0;
-            font-size: 12px;
-            font-weight: 600;
-            color: #3b434e;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            text-align: center;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0px 4px 8px rgba(0,0,0,0.08);
-        }
-
-        .action-btn:active {
-            transform: translateY(1px);
-        }
-
-        /* Member Center Label Badge */
-        .section-badge-row {
-            margin: 20px 0 16px 4px;
-        }
-
-        .section-badge {
-            background-color: #e2e7ee;
-            color: #5c6979;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 12px;
-            display: inline-block;
-        }
-
-        /* Menu Grid (4 Columns) */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            row-gap: 20px;
-            column-gap: 10px;
-            text-align: center;
-        }
-
-        .menu-item {
-            display: flex;
             flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
 
-        .menu-item:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Exact Golden Soft Circular Outline and Icon Styles */
-        .icon-circle-box {
-            width: 54px;
-            height: 54px;
-            background-color: #fff8eb;
-            border: 1px solid #fdecc4;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
             position: relative;
-            transition: var(--transition-smooth);
+
+            overflow-x: hidden;
+
+            padding-bottom: 20px;
+
         }
 
-        .menu-item:hover .icon-circle-box {
-            background-color: #fdecc4;
-        }
 
-        .icon-circle-box i {
-            font-size: 20px;
-            color: var(--accent-color);
-        }
 
-        .menu-label {
-            font-size: 11px;
-            color: #444444;
-            font-weight: 500;
-            line-height: 1.3;
-            max-width: 85px;
-            word-wrap: break-word;
-        }
+        /* Header Area with Dark Fluid Gradient */
 
-        /* Notification Badge Overlays */
-        .notif-badge {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            background-color: #f93d3d;
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            min-width: 16px;
-            height: 16px;
-            padding: 0 4px;
-            border-radius: 50%;
-            border: 1.5px solid white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .top-header {
 
-        /* IOS Home Indicator Bottom Bar */
-        .bottom-indicator-bar {
+            background: radial-gradient(circle at top right, #38302a, #13110f 75%);
+
+            height: 145px;
+
             width: 100%;
-            display: flex;
-            justify-content: center;
-            padding-top: 24px;
-            background-color: transparent;
+
+            padding: 24px 20px 0 20px;
+
         }
 
-        .indicator-line {
-            width: 130px;
-            height: 4px;
-            background-color: #dddddd;
-            border-radius: 2px;
+
+
+        .nav-bar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            color: #ffffff;
+
         }
+
+
+
+        .back-arrow {
+
+            width: 24px;
+
+            height: 24px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .back-arrow svg {
+
+            stroke: #ffffff;
+
+            fill: none;
+
+            stroke-width: 2;
+
+            stroke-linecap: round;
+
+            stroke-linejoin: round;
+
+        }
+
+
+
+        .page-title {
+
+            font-size: 18px;
+
+            font-weight: 500;
+
+            letter-spacing: 0.3px;
+
+        }
+
+
+
+        /* Dynamic Viewport Section */
+
+        .main-content {
+
+            padding: 0 16px;
+
+            flex: 1;
+
+            background-image: url('https://ctgg.online/mobile/mc/member-info-bg.f44b2894.png');
+
+            background-size: cover;
+
+            background-repeat: no-repeat;
+
+        }
+
+
+
+        /* Glossy Profile Card */
+
+        .profile-card {
+
+            background: var(--card-grad);
+
+            border-radius: var(--radius);
+
+            padding: 20px;
+
+            margin-top: -75px;
+
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05), inset 0px 2px 4px rgba(255, 255, 255, 0.9);
+
+            border: 1px solid rgba(255, 255, 255, 0.7);
+
+            position: relative;
+
+            z-index: 10;
+
+        }
+
+
+
+        .profile-meta {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+
+        }
+
+
+
+        .avatar-box {
+
+            width: 70px;
+
+            height: 70px;
+
+            border-radius: 50%;
+
+            border: 2px solid white;
+
+            overflow: hidden;
+
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.08);
+
+            flex-shrink: 0;
+
+        }
+
+
+
+        .avatar-box img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+        }
+
+
+
+        .user-details {
+
+            flex-grow: 1;
+
+        }
+
+
+
+        .name-wrapper {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+        }
+
+
+
+        .display-name {
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            color: #111111;
+
+        }
+
+
+
+        .action-svg-small {
+
+            width: 14px;
+
+            height: 14px;
+
+            cursor: pointer;
+
+            fill: none;
+
+            stroke-width: 2;
+
+        }
+
+
+
+        .nick-text {
+
+            font-size: 12px;
+
+            color: var(--text-muted);
+
+            margin-top: 3px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+        }
+
+
+
+        .join-text {
+
+            font-size: 11px;
+
+            color: var(--text-light);
+
+            margin-top: 3px;
+
+        }
+
+
+
+        /* Wallet/Balance Section */
+
+        .wallet-container {
+
+            margin-top: 18px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 0 4px;
+
+        }
+
+
+
+        .balance-value {
+
+            font-size: 24px;
+
+            font-weight: 700;
+
+            color: #222222;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+
+        .currency-symbol {
+
+            font-size: 20px;
+
+            font-weight: 400;
+
+            margin-right: 4px;
+
+        }
+
+
+
+        .sync-btn {
+
+            background: none;
+
+            border: none;
+
+            width: 20px;
+
+            height: 20px;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+
+        .sync-btn svg {
+
+            stroke: var(--text-light);
+
+            fill: none;
+
+            stroke-width: 2;
+
+            transition: transform 0.4s ease;
+
+        }
+
+
+
+        .sync-btn:active svg {
+
+            transform: rotate(180deg);
+
+        }
+
+
+
+        /* Core Action Tabs */
+
+        .button-bar {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-top: 20px;
+
+        }
+
+
+
+        .pill-btn {
+
+            background: var(--btn-grad);
+
+            border: 1px solid #bfc9d5;
+
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.04), inset 0px 1px 1px #ffffff;
+
+            border-radius: 24px;
+
+            padding: 9px 0;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color: #3b434e;
+
+            cursor: pointer;
+
+            text-align: center;
+
+            transition: opacity 0.1s ease;
+
+        }
+
+
+
+        .pill-btn:active {
+
+            opacity: 0.7;
+
+        }
+
+
+
+        /* Member Center Header Badge */
+
+        .badge-row {
+
+            margin: 20px 0 16px 2px;
+
+        }
+
+
+
+        .badge-label {
+
+            background-color: #e2e7ee;
+
+            color: #5c6979;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            padding: 4px 12px;
+
+            border-radius: 12px;
+
+            display: inline-block;
+
+        }
+
+
+
+        /* Grid Menus Configuration */
+
+        .features-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            row-gap: 22px;
+
+            column-gap: 8px;
+
+            text-align: center;
+
+        }
+
+
+
+        .grid-node {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            cursor: pointer;
+
+        }
+
+
+
+        /* Custom Soft Outline Circle */
+
+        .circle-frame {
+
+            width: 54px;
+
+            height: 54px;
+
+            background-color: var(--gold-bg);
+
+            border: 1px solid var(--gold-border);
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin-bottom: 8px;
+
+            position: relative;
+
+        }
+
+
+
+        /* Custom SVG Stroke Precision Layout matching image_9eacf6.jpg */
+
+        .circle-frame svg {
+
+            width: 26px;
+
+            height: 26px;
+
+            stroke: var(--gold-icon);
+
+            fill: none;
+
+            stroke-width: 1.4;
+
+            stroke-linecap: round;
+
+            stroke-linejoin: round;
+
+        }
+
+
+
+        .node-title {
+
+            font-size: 11px;
+
+            color: #444444;
+
+            font-weight: 500;
+
+            line-height: 1.25;
+
+            white-space: pre-line; /* Allows precise line breaks */
+
+        }
+
+
+
+        /* Exact Red Indicator Alerts */
+
+        .red-alert-dot {
+
+            position: absolute;
+
+            top: -2px;
+
+            right: -2px;
+
+            background-color: #f93d3d;
+
+            color: white;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            min-width: 16px;
+
+            height: 16px;
+
+            padding: 0 4px;
+
+            border-radius: 50%;
+
+            border: 1.5px solid white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+
+        /* IOS Virtual Navigation Indicator */
+
+        .bottom-capsule {
+
+            width: 100%;
+
+            display: flex;
+
+            justify-content: center;
+
+            padding-top: 24px;
+
+        }
+
+
+
+        .capsule-bar {
+
+            width: 130px;
+
+            height: 4px;
+
+            background-color: #dddddd;
+
+            border-radius: 2px;
+
+        }
+
     </style>
+
 </head>
+
 <body>
 
-    <!-- Main Container -->
-    <div class="app-container">
+
+
+    <!-- Main Viewport Context -->
+
+    <div class="phone-screen">
+
         
-        <!-- Top Luxury Header Area -->
-        <div class="header-bg">
-            <div class="header-nav">
-                <button class="back-btn" onclick="history.back()">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
-                <span class="header-title">My Account</span>
-                <div style="width: 24px;"></div> <!-- Spacer balancing header layout -->
+
+        <!-- Header Dynamic Node -->
+
+        <div class="top-header">
+
+            <div class="nav-bar">
+
+                <div class="back-arrow">
+
+                    <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+
+                </div>
+
+                <span class="page-title">My Account</span>
+
+                <div style="width: 24px;"></div>
+
             </div>
+
         </div>
 
-        <!-- Dynamic Content Body wrapper -->
-        <div class="account-body">
+
+
+        <!-- Scrollable Frame Content -->
+
+        <div class="main-content">
+
             
-            <!-- Metallic Profile Box Component -->
+
+            <!-- Information Panel Card -->
+
             <div class="profile-card">
-                <div class="profile-main">
-                    <!-- Rounded Frame Avatar -->
-                    <div class="avatar-wrapper">
-                        <img src="https://ctgg.online/img-proxy/https://images.3521315.com//TCG_PROD_IMAGES/B2C/01_PROFILE/PROFILE/0.png" alt="User Profile Image">
+
+                <div class="profile-meta">
+
+                    <div class="avatar-box">
+
+                        <img src="https://ctgg.online/img-proxy/https://images.3521315.com//TCG_PROD_IMAGES/B2C/01_PROFILE/PROFILE/0.png" alt="Profile Avatar">
+
                     </div>
-                    <!-- Details Frame -->
-                    <div class="profile-info">
-                        <div class="username-row">
-                            <span class="username">Nobin666</span>
-                            <i class="fa-regular fa-copy icon-btn-small" title="Copy Username" onclick="alert('Username Copied!')"></i>
+
+                    <div class="user-details">
+
+                        <div class="name-wrapper">
+
+                            <span class="display-name">Nobin666</span>
+
+                            <svg class="action-svg-small" stroke="#000000" viewBox="0 0 24 24">
+
+                                <rect x="9" y="9" width="11" height="11" rx="1.5"></rect>
+
+                                <path d="M5 15H4a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 4 3h9a1.5 1.5 0 0 1 1.5 1.5v1"></path>
+
+                            </svg>
+
                         </div>
-                        <div class="nickname">
+
+                        <div class="nick-text">
+
                             Nickname: Nobin666
-                            <i class="fa-solid fa-pen icon-btn-small" style="color: #aaaaaa; font-size: 10px;"></i>
+
+                            <svg class="action-svg-small" stroke="#aaaaaa" style="width:11px; height:11px;" viewBox="0 0 24 24">
+
+                                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+
+                            </svg>
+
                         </div>
-                        <div class="join-date">Joined: 2026-07-04</div>
+
+                        <div class="join-text">Joined: 2026-07-04</div>
+
                     </div>
+
                 </div>
 
-                <!-- Balance and Update Section -->
-                <div class="balance-row">
-                    <div class="balance-amount">
-                        <span style="font-size: 20px; font-weight: 400; margin-right: 4px;">৳</span>
-                        <span id="balance-val">0.00</span>
+
+
+                <!-- Live Update Metrics Grid -->
+
+                <div class="wallet-container">
+
+                    <div class="balance-value">
+
+                        <span class="currency-symbol">৳</span>0.00
+
                     </div>
-                    <button class="refresh-btn" onclick="refreshBalance()" title="Refresh Balance">
-                        <i class="fa-solid fa-rotate-right"></i>
+
+                    <button class="sync-btn">
+
+                        <svg viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+
                     </button>
+
                 </div>
 
-                <!-- Core 3 Button Panel Links -->
-                <div class="action-buttons-grid">
-                    <div class="action-btn" onclick="location.href='#deposit'">Deposit</div>
-                    <div class="action-btn" onclick="location.href='#withdrawal'">Withdrawal</div>
-                    <div class="action-btn" onclick="location.href='#cards'">My Cards</div>
+
+
+                <!-- Navigation Pillars -->
+
+                <div class="button-bar">
+
+                    <div class="pill-btn">Deposit</div>
+
+                    <div class="pill-btn">Withdrawal</div>
+
+                    <div class="pill-btn">My Cards</div>
+
                 </div>
+
             </div>
 
-            <!-- Member Center Label -->
-            <div class="section-badge-row">
-                <span class="section-badge">Member Center</span>
+
+
+            <!-- Category Section Marker -->
+
+            <div class="badge-row">
+
+                <span class="badge-label">Member Center</span>
+
             </div>
 
-            <!-- Modern Interactive Grid Menus (16 Items Specified) -->
-            <div class="menu-grid">
+
+
+            <!-- Feature Dashboard Area (16 Subnodes with Clean Inline SVGs) -->
+
+            <div class="features-grid">
+
                 
-                <!-- 1. Reward Center -->
-                <div class="menu-item" onclick="location.href='#reward'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-trophy"></i>
-                        <span class="notif-badge">4</span>
+
+                <!-- Node 1: Reward Center -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34M12 2a4 4 0 0 1 4 4v3H8V6a4 4 0 0 1 4-4z"/></svg>
+
+                        <span class="red-alert-dot">4</span>
+
                     </div>
-                    <span class="menu-label">Reward<br>Center</span>
+
+                    <span class="node-title">Reward&#10;Center</span>
+
                 </div>
 
-                <!-- 2. Betting Record -->
-                <div class="menu-item" onclick="location.href='#bet-record'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-gandalf" style="transform: rotate(45deg); font-size: 18px;">✨</i>
+
+
+                <!-- Node 2: Betting Record -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M3 12h4M17 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+
                     </div>
-                    <span class="menu-label">Betting<br>Record</span>
+
+                    <span class="node-title">Betting&#10;Record</span>
+
                 </div>
 
-                <!-- 3. Profit And Loss -->
-                <div class="menu-item" onclick="location.href='#profit-loss'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-file-invoice-dollar"></i>
+
+
+                <!-- Node 3: Profit And Loss -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+
                     </div>
-                    <span class="menu-label">Profit And<br>Loss</span>
+
+                    <span class="node-title">Profit And&#10;Loss</span>
+
                 </div>
 
-                <!-- 4. Deposit Record -->
-                <div class="menu-item" onclick="location.href='#deposit-record'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-clipboard-list"></i>
+
+
+                <!-- Node 4: Deposit Record -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M12 11v6M9 14l3-3 3 3"/></svg>
+
                     </div>
-                    <span class="menu-label">Deposit<br>Record</span>
+
+                    <span class="node-title">Deposit&#10;Record</span>
+
                 </div>
 
-                <!-- 5. Withdrawal Record -->
-                <div class="menu-item" onclick="location.href='#withdrawal-record'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-file-shield"></i>
+
+
+                <!-- Node 5: Withdrawal Record -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M12 17V11M9 14l3 3 3-3"/></svg>
+
                     </div>
-                    <span class="menu-label">Withdrawal<br>Record</span>
+
+                    <span class="node-title">Withdrawal&#10;Record</span>
+
                 </div>
 
-                <!-- 6. Account Record -->
-                <div class="menu-item" onclick="location.href='#account-record'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-chart-pie"></i>
+
+
+                <!-- Node 6: Account Record -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 15l3-3 3 3 4-4"/></svg>
+
                     </div>
-                    <span class="menu-label">Account<br>Record</span>
+
+                    <span class="node-title">Account&#10;Record</span>
+
                 </div>
 
-                <!-- 7. My Account -->
-                <div class="menu-item" onclick="location.href='#my-account'">
-                    <div class="icon-circle-box">
-                        <i class="fa-regular fa-user-circle"></i>
+
+
+                <!-- Node 7: My Account -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+
                     </div>
-                    <span class="menu-label">My Account</span>
+
+                    <span class="node-title">My Account</span>
+
                 </div>
 
-                <!-- 8. Security Center -->
-                <div class="menu-item" onclick="location.href='#security'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-shield-halved"></i>
+
+
+                <!-- Node 8: Security Center -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+
                     </div>
-                    <span class="menu-label">Security<br>Center</span>
+
+                    <span class="node-title">Security&#10;Center</span>
+
                 </div>
 
-                <!-- 9. Invite Friends -->
-                <div class="menu-item" onclick="location.href='#invite'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-user-plus"></i>
+
+
+                <!-- Node 9: Invite Friends -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M19 11h4M21 9v4"/></svg>
+
                     </div>
-                    <span class="menu-label">Invite Friends</span>
+
+                    <span class="node-title">Invite Friends</span>
+
                 </div>
 
-                <!-- 10. Mission -->
-                <div class="menu-item" onclick="location.href='#mission'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-gift"></i>
-                        <span class="notif-badge">1</span>
+
+
+                <!-- Node 10: Mission -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8V3M12 8h5a2.5 2.5 0 0 0 0-5H12M12 8H7a2.5 2.5 0 0 1 0-5h5M3 12h18"/></svg>
+
+                        <span class="red-alert-dot">1</span>
+
                     </div>
-                    <span class="menu-label">Mission</span>
+
+                    <span class="node-title">Mission</span>
+
                 </div>
 
-                <!-- 11. Rebate -->
-                <div class="menu-item" onclick="location.href='#rebate'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-coins"></i>
+
+
+                <!-- Node 11: Rebate -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8a4 4 0 1 0 4 4"/></svg>
+
                     </div>
-                    <span class="menu-label">Rebate</span>
+
+                    <span class="node-title">Rebate</span>
+
                 </div>
 
-                <!-- 12. Internal Message -->
-                <div class="menu-item" onclick="location.href='#messages'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-at"></i>
+
+
+                <!-- Node 12: Internal Message -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg>
+
                     </div>
-                    <span class="menu-label">Internal<br>Message</span>
+
+                    <span class="node-title">Internal&#10;Message</span>
+
                 </div>
 
-                <!-- 13. Suggestion -->
-                <div class="menu-item" onclick="location.href='#suggestion'">
-                    <div class="icon-circle-box">
-                        <i class="fa-regular fa-comment-dots"></i>
+
+
+                <!-- Node 13: Suggestion -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+
                     </div>
-                    <span class="menu-label">Suggestion</span>
+
+                    <span class="node-title">Suggestion</span>
+
                 </div>
 
-                <!-- 14. Download APP -->
-                <div class="menu-item" onclick="location.href='#download'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-mobile-screen-button"></i>
+
+
+                <!-- Node 14: Download APP -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 11v4M10 13l2 2 2-2"/></svg>
+
                     </div>
-                    <span class="menu-label">Download<br>APP</span>
+
+                    <span class="node-title">Download&#10;APP</span>
+
                 </div>
 
-                <!-- 15. Customer Service -->
-                <div class="menu-item" onclick="location.href='#customer-service'">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-headset"></i>
+
+
+                <!-- Node 15: Customer Service -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><circle cx="4" cy="19" r="1"/><circle cx="20" cy="19" r="1"/></svg>
+
                     </div>
-                    <span class="menu-label">Customer<br>Service</span>
+
+                    <span class="node-title">Customer&#10;Service</span>
+
                 </div>
 
-                <!-- 16. Logout -->
-                <div class="menu-item" onclick="handleLogout()">
-                    <div class="icon-circle-box">
-                        <i class="fa-solid fa-right-from-bracket"></i>
+
+
+                <!-- Node 16: Logout -->
+
+                <div class="grid-node">
+
+                    <div class="circle-frame">
+
+                        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+
                     </div>
-                    <span class="menu-label">Logout</span>
+
+                    <span class="node-title">Logout</span>
+
                 </div>
+
+
 
             </div>
+
         </div>
 
-        <!-- Decorative Bottom Indicator Line -->
-        <div class="bottom-indicator-bar">
-            <div class="indicator-line"></div>
+
+
+        <!-- Virtual Home Strip Area -->
+
+        <div class="bottom-capsule">
+
+            <div class="capsule-bar"></div>
+
         </div>
+
+
 
     </div>
 
-    <!-- Actions JavaScript Scripts logic -->
-    <script>
-        // Refresh balance animation effect
-        function refreshBalance() {
-            const balanceText = document.getElementById('balance-val');
-            balanceText.style.opacity = "0.3";
-            
-            setTimeout(() => {
-                balanceText.innerHTML = "0.00";
-                balanceText.style.opacity = "1";
-            }, 500);
-        }
 
-        // Standard exit event
-        function handleLogout() {
-            if(confirm("Are you sure you want to log out?")) {
-                alert("Logged out securely.");
-            }
-        }
-    </script>
+
 </body>
+
 </html>
