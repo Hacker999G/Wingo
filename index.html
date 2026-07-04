@@ -15,12 +15,11 @@ $nickname = "Nobin666";
 $joined_date = "2026-07-04";
 $balance = "0.00";
 
-// নোটিফিকেশন কাউন্ট (ডাটাবেজ থেকে ডাইনামিকালি আসবে)
+// নোটিফিকেশন কাউন্ট ভেরিয়েবল (ডাটাবেজ থেকে ডাইনামিকালি হ্যান্ডেল হবে)
 $reward_count = 0; 
 $mission_count = 0;
 
-// ডাটাবেজ থেকে ইউজারের তথ্য এবং নোটিফিকেশন কাউন্ট রিড করা
-// (আপনার টেবিল স্ট্রাকচার অনুযায়ী কলামের নাম পরিবর্তন করে নিতে পারেন)
+// ডাটাবেজ থেকে ডেটা রিড করা
 $query = "SELECT username, nickname, joined_date, balance, reward_notif, mission_notif FROM users WHERE id = ?";
 $stmt = $conn->prepare($query);
 if($stmt){
@@ -34,7 +33,6 @@ if($stmt){
         $joined_date = $user['joined_date'];
         $balance = number_format($user['balance'], 2);
         
-        // ডাটাবেজ থেকে নোটিফিকেশন ভ্যালু অ্যাসাইন
         $reward_count = (int)$user['reward_notif'];
         $mission_count = (int)$user['mission_notif'];
     }
@@ -58,67 +56,66 @@ if($stmt){
             padding: 0;
         }
 
-        /* স্ক্রিনশটের ডার্ক শেড ব্যাকগ্রাউন্ড */
+        /* ডার্ক ব্রাউন টপ ব্যাকগ্রাউন্ড */
         .top-header-bg {
-            background: radial-gradient(circle at top right, #3a322b, #141210 70%);
-            height: 140px;
+            background: radial-gradient(circle at top right, #38302a, #13110f 75%);
+            height: 145px;
             position: relative;
         }
 
-        /* মেটালিক সিলভার-গ্রেডিয়েন্ট প্রফাইল বক্স */
+        /* সিলভার মেটালিক গ্লসি প্রোফাইল বক্স */
         .custom-profile-card {
-            background: linear-gradient(135deg, #f1f4f8 0%, #cfdaf0 40%, #e1e7f3 70%, #fbfcfd 100%);
+            background: linear-gradient(135deg, #f3f6fa 0%, #d4def1 35%, #e3e9f4 70%, #ffffff 100%);
             border-radius: 24px;
             box-shadow: 
-                0px 12px 24px rgba(0, 0, 0, 0.07), 
-                inset 0px 2px 4px rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+                0px 10px 20px rgba(0, 0, 0, 0.06), 
+                inset 0px 2px 4px rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.7);
             position: relative;
             z-index: 20;
-            margin-top: -65px;
+            margin-top: -75px;
         }
 
-        /* সিলভার-মেটালিক অ্যাকশন বাটন */
+        /* থ্রিডি মেটালিক বাটন */
         .metallic-btn {
-            background: linear-gradient(to bottom, #ffffff 0%, #ecf0f6 50%, #d5dee9 100%);
-            border: 1px solid #c2cbd6;
-            box-shadow: 0px 3px 5px rgba(0,0,0,0.05), inset 0px 1px 2px #ffffff;
+            background: linear-gradient(to bottom, #ffffff 0%, #ecf0f6 45%, #d4dde8 100%);
+            border: 1px solid #bfc9d5;
+            box-shadow: 0px 3px 5px rgba(0,0,0,0.05), inset 0px 1px 1px #ffffff;
             border-radius: 24px;
             font-weight: 600;
-            color: #3a414c;
+            color: #3b434e;
         }
 
-        /* স্ক্রিনশটের মতো গোল্ডেন আইকন ব্যাকগ্রাউন্ড */
+        /* স্ক্রিনশটের হুবহু আইকন সার্কেল (একদম লাইট গোল্ডেন-হলুদ টোন) */
         .icon-circle {
-            background-color: #fff9ea;
-            border: 1px solid #fdecc6;
+            background-color: #fff8eb;
+            border: 1px solid #fdecc4;
             width: 54px;
             height: 54px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 6px;
-            box-shadow: 0 2px 4px rgba(220, 163, 75, 0.06);
+            margin-bottom: 7px;
         }
 
-        /* আইকনের ভেতরের ফাইন গোল্ডেন ভেক্টর কালার */
+        /* আইকনের সূক্ষ্ম গোল্ডেন লাইন কালার */
         .icon-circle svg {
-            width: 26px;
-            height: 26px;
-            stroke: #d9a047;
+            width: 28px;
+            height: 28px;
+            stroke: #cca05a;
             fill: none;
-            stroke-width: 1.8;
+            stroke-width: 1.4;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
-        /* নোটিফিকেশন রেড ডট/ব্যাজ */
+        /* নোটিফিকেশন রেড ব্যাজ */
         .badge-count {
             position: absolute;
             top: -2px;
             right: -2px;
-            background-color: #ff3b30;
+            background-color: #f93d3d;
             color: white;
             font-size: 10px;
             font-weight: bold;
@@ -135,19 +132,18 @@ if($stmt){
 </head>
 <body class="flex justify-center items-start min-h-screen">
 
-    <!-- মোবাইল সাইজ কন্টেইনার -->
+    <!-- মোবাইল সাইজ কন্টেইনার র্যাপার -->
     <div class="w-full max-w-[450px] min-h-screen bg-white flex flex-col shadow-xl relative overflow-hidden">
         
         <!-- টপ হেডার এরিয়া -->
         <div class="top-header-bg w-full px-5 pt-6">
             <div class="flex items-center justify-between text-white">
-                <!-- ব্যাক অ্যারো SVG -->
                 <button class="p-1">
                     <svg class="w-6 h-6 stroke-current fill-none stroke-2" viewBox="0 0 24 24">
                         <path d="M15 19l-7-7 7-7"/>
                     </svg>
                 </button>
-                <h1 class="text-lg font-semibold tracking-wide">My Account</h1>
+                <h1 class="text-lg font-medium tracking-wide">My Account</h1>
                 <div class="w-6"></div> 
             </div>
         </div>
@@ -155,29 +151,28 @@ if($stmt){
         <!-- মেইন বডি (মেম্বার ইনফো ব্যাকগ্রাউন্ড ইমেজ সহ) -->
         <div class="px-4 flex-1 pb-10" style="background-image: url('https://ctgg.online/mobile/mc/member-info-bg.f44b2894.png'); background-size: cover; background-repeat: no-repeat;">
             
-            <!-- পারফেক্ট সাইজড প্রফাইল বক্স কার্ড -->
+            <!-- প্রফাইল বক্স কার্ড -->
             <div class="custom-profile-card p-5 mx-1">
                 <div class="flex items-center space-x-4">
-                    <!-- প্রফাইল পিকচার -->
-                    <div class="w-16 h-16 rounded-full border-2 border-white overflow-hidden shadow-sm flex-shrink-0">
+                    <!-- গোল প্রফাইল পিকচার -->
+                    <div class="w-[70px] h-[70px] rounded-full border-2 border-white overflow-hidden shadow-sm flex-shrink-0">
                         <img src="https://ctgg.online/img-proxy/https://images.3521315.com//TCG_PROD_IMAGES/B2C/01_PROFILE/PROFILE/0.png" alt="Profile" class="w-full h-full object-cover">
                     </div>
                     <!-- ইউজার ডাটা টেক্সট -->
                     <div class="flex-1">
-                        <div class="flex items-center space-x-1">
+                        <div class="flex items-center space-x-1.5">
                             <span class="text-lg font-bold text-gray-900 tracking-tight"><?php echo htmlspecialchars($username); ?></span>
-                            <!-- কপি আইকন SVG -->
-                            <svg class="w-4 h-4 stroke-gray-700 fill-none cursor-pointer" viewBox="0 0 24 24" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            <!-- কপি বাটন -->
+                            <svg class="w-4 h-4 stroke-black fill-none cursor-pointer" viewBox="0 0 24 24" stroke-width="2">
+                                <rect x="9" y="9" width="11" height="11" rx="1.5"></rect>
+                                <path d="M5 15H4a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 4 3h9a1.5 1.5 0 0 1 1.5 1.5v1"></path>
                             </svg>
                         </div>
                         <p class="text-xs font-medium text-gray-500 mt-0.5 flex items-center">
                             Nickname: <?php echo htmlspecialchars($nickname); ?>
-                            <!-- এডিট পেন SVG -->
+                            <!-- এডিট পেন -->
                             <svg class="w-3 h-3 stroke-gray-400 fill-none ml-1.5 cursor-pointer" viewBox="0 0 24 24" stroke-width="2">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
                             </svg>
                         </p>
                         <p class="text-[11px] font-medium text-gray-400 mt-0.5">Joined: <?php echo htmlspecialchars($joined_date); ?></p>
@@ -187,10 +182,10 @@ if($stmt){
                 <!-- টাকা ব্যালেন্স এবং রিফ্রেশ রো -->
                 <div class="mt-4 flex items-center justify-between px-1">
                     <div class="flex items-center text-2xl font-bold text-gray-800 tracking-wide">
-                        <span class="text-lg font-normal mr-1">৳</span>
+                        <span class="text-xl font-normal mr-1">৳</span>
                         <span><?php echo $balance; ?></span>
                     </div>
-                    <!-- রিফ্রেশ বাটন SVG -->
+                    <!-- রিফ্রেশ বাটন -->
                     <button class="text-gray-400 hover:text-gray-600 p-1">
                         <svg class="w-5 h-5 stroke-current fill-none stroke-2" viewBox="0 0 24 24">
                             <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
@@ -198,7 +193,7 @@ if($stmt){
                     </button>
                 </div>
 
-                <!-- ৩টি থ্রিডি মেটালিক বাটন -->
+                <!-- ৩টি মেটালিক বাটন -->
                 <div class="grid grid-cols-3 gap-3 mt-5">
                     <button class="metallic-btn py-2 text-xs shadow-sm">Deposit</button>
                     <button class="metallic-btn py-2 text-xs shadow-sm">Withdrawal</button>
@@ -208,17 +203,18 @@ if($stmt){
 
             <!-- মেম্বার সেন্টার লেবেল -->
             <div class="mt-5 mb-4 px-1">
-                <span class="bg-[#e2e7ee] text-[#5c6979] text-[11px] font-bold px-3 py-1 rounded-full shadow-inner">
+                <span class="bg-[#e2e7ee] text-[#5c6979] text-[11px] font-bold px-3 py-1 rounded-full">
                     Member Center
                 </span>
             </div>
 
-            <!-- ১৬টি প্রফেশনাল লাইন-আর্ট ভেক্টর আইকন গ্রিড মেনু -->
+            <!-- ১৬টি প্রফেশনাল ও হুবহু কাস্টম আইকন গ্রিড মেনু -->
             <div class="grid grid-cols-4 gap-y-5 text-center mt-2">
                 
-                <!-- 1. Reward Center (ডাটাবেজ ডাইনামিক নোটিফিকেশন) -->
+                <!-- 1. Reward Center -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle relative">
+                        <!-- অরিজিনাল ট্রফি কাপ শেপ -->
                         <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34M12 2a4 4 0 0 1 4 4v3H8V6a4 4 0 0 1 4-4z"/></svg>
                         <?php if($reward_count > 0): ?>
                             <span class="badge-count"><?php echo $reward_count; ?></span>
@@ -230,7 +226,8 @@ if($stmt){
                 <!-- 2. Betting Record -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        <!-- অরিজিনাল স্পিনিং স্টার শেপ -->
+                        <svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M3 12h4M17 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Betting<br>Record</span>
                 </div>
@@ -238,7 +235,8 @@ if($stmt){
                 <!-- 3. Profit And Loss -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        <!-- মানি বিল/রিসিপ্ট শেপ -->
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Profit And<br>Loss</span>
                 </div>
@@ -246,7 +244,8 @@ if($stmt){
                 <!-- 4. Deposit Record -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
-                        <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v8M9 11l3-3 3 3"/></svg>
+                        <!-- ক্লিপবোর্ড আপ-অ্যারো শেপ -->
+                        <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M12 11v6M9 14l3-3 3 3"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Deposit<br>Record</span>
                 </div>
@@ -254,7 +253,8 @@ if($stmt){
                 <!-- 5. Withdrawal Record -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
-                        <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 16V8M9 13l3 3 3-3"/></svg>
+                        <!-- ক্লিপবোর্ড ডাউন-অ্যারো শেপ -->
+                        <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M12 17V11M9 14l3 3 3-3"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Withdrawal<br>Record</span>
                 </div>
@@ -262,7 +262,8 @@ if($stmt){
                 <!-- 6. Account Record -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
-                        <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+                        <!-- সার্চ গ্লাস উইথ চার্ট শেপ -->
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 15l3-3 3 3 4-4"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Account<br>Record</span>
                 </div>
@@ -270,6 +271,7 @@ if($stmt){
                 <!-- 7. My Account -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
+                        <!-- ইউজার প্রোফাইল আউটলাইন শেপ -->
                         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">My Account</span>
@@ -278,6 +280,7 @@ if($stmt){
                 <!-- 8. Security Center -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
+                        <!-- নিরাপত্তা শিল্ড শেপ -->
                         <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Security<br>Center</span>
@@ -286,15 +289,17 @@ if($stmt){
                 <!-- 9. Invite Friends -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
-                        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+                        <!-- ইউজার প্লাস শেপ -->
+                        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M19 11h4M21 9v4"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Invite Friends</span>
                 </div>
 
-                <!-- 10. Mission (ডাটাবেজ ডাইনামিক নোটিফিকেশন) -->
+                <!-- 10. Mission -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle relative">
-                        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        <!-- গিফট বক্স শেপ -->
+                        <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8V3M12 8h5a2.5 2.5 0 0 0 0-5H12M12 8H7a2.5 2.5 0 0 1 0-5h5M3 12h18"/></svg>
                         <?php if($mission_count > 0): ?>
                             <span class="badge-count"><?php echo $mission_count; ?></span>
                         <?php endif; ?>
@@ -305,7 +310,8 @@ if($stmt){
                 <!-- 11. Rebate -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
-                        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+                        <!-- রিফান্ড/কয়েন এক্সচেঞ্জ শেপ -->
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8a4 4 0 1 0 4 4"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Rebate</span>
                 </div>
@@ -313,6 +319,7 @@ if($stmt){
                 <!-- 12. Internal Message -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
+                        <!-- অ্যাট (@) সিম্বল মেসেজ শেপ -->
                         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Internal<br>Message</span>
@@ -321,6 +328,7 @@ if($stmt){
                 <!-- 13. Suggestion -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
+                        <!-- স্টোরি চ্যাট বক্স শেপ -->
                         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Suggestion</span>
@@ -329,7 +337,8 @@ if($stmt){
                 <!-- 14. Download APP -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
-                        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                        <!-- মোবাইল অ্যাপ ডিরেক্ট ডাউনলোড শেপ -->
+                        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 11v4M10 13l2 2 2-2"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Download<br>APP</span>
                 </div>
@@ -337,7 +346,8 @@ if($stmt){
                 <!-- 15. Customer Service -->
                 <div class="flex flex-col items-center">
                     <div class="icon-circle">
-                        <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+                        <!-- হেডসেট সাপোর্ট ২৪/৭ শেপ -->
+                        <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><circle cx="4" cy="19" r="1"/><circle cx="20" cy="19" r="1"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Customer<br>Service</span>
                 </div>
@@ -345,6 +355,7 @@ if($stmt){
                 <!-- 16. Logout -->
                 <div class="flex flex-col items-center cursor-pointer" onclick="window.location.href='logout.php';">
                     <div class="icon-circle">
+                        <!-- এক্সিট রাইট অ্যারো লগআউট শেপ -->
                         <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
                     </div>
                     <span class="text-[11px] text-gray-700 font-medium leading-tight">Logout</span>
@@ -353,8 +364,8 @@ if($stmt){
             </div>
         </div>
 
-        <!-- আইওএস বটম বার ইন্ডিকেটর -->
-        <div class="w-full flex justify-center py-3 bg-white border-t border-gray-100">
+        <!-- বটম বার ইন্ডিকেটর -->
+        <div class="w-full flex justify-center py-3 bg-white">
             <div class="w-32 h-1 bg-gray-300 rounded-full"></div>
         </div>
 
